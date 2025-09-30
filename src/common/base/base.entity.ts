@@ -1,3 +1,4 @@
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import {
   CreateDateColumn,
   PrimaryGeneratedColumn,
@@ -12,7 +13,9 @@ abstract class BaseEntity {
   updatedAt!: Date;
 }
 
+@ObjectType()
 export class BaseUUIDEntity extends BaseEntity {
+  @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 }
