@@ -2,39 +2,48 @@ import { InputType, Field, ID, PartialType, ArgsType } from '@nestjs/graphql';
 import { FindManyOptions, ILike } from 'typeorm';
 import { Customer } from '../entities/customer.entity';
 import { PaginationInput } from 'src/common/dto/pagination.dto';
-import { IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 @InputType()
 export class CreateCustomerInput {
   @Field({ nullable: false })
+  @IsNotEmpty()
   name!: string;
 
   @Field({ nullable: false })
+  @IsNotEmpty()
   address!: string;
 
   @Field({ nullable: false })
+  @IsNotEmpty()
   city!: string;
 
   @Field({ nullable: false })
+  @IsNotEmpty()
   country!: string;
 
   @Field({ nullable: false })
+  @IsNotEmpty()
   ice!: string;
 
-  @Field()
+  @Field({ nullable: true })
+  @IsOptional()
   contact_name?: string;
 
-  @Field()
+  @Field({ nullable: true })
+  @IsOptional()
   contact_phone?: string;
 
-  @Field()
+  @Field({ nullable: true })
+  @IsOptional()
   contact_email?: string;
 }
 
 @InputType()
 export class UpdateCustomerInput extends PartialType(CreateCustomerInput) {
-  @Field(() => ID)
-  id: string;
+  @Field(() => ID, { nullable: false })
+  @IsNotEmpty()
+  id!: string;
 }
 
 @ArgsType()
