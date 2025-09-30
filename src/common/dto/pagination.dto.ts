@@ -33,7 +33,7 @@ export class PaginationInput {
   limit: number = LIMIT_DEFAULT;
 }
 
-@ObjectType()
+@ObjectType('Pagination')
 export class PaginationDto {
   constructor(props: { total: number } & PaginationInput) {
     const totalPages = Math.ceil(props.total / props.limit);
