@@ -92,4 +92,8 @@ export class ProductService {
   ): Promise<[Product[], number]> {
     return this.repo.findAndCount(options);
   }
+
+  deleteProduct(id: string): Promise<boolean> {
+    return this.repo.deleteProduct(id);
+  }
 }
