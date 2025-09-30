@@ -4,10 +4,6 @@ import { CreateCustomerDto, UpdateCustomerDto } from './dto/customer.dto';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { DatabaseError } from 'pg';
 import { CustomerAlreadyExist } from './dto/customer.error';
-import {
-  CreateCustomerResult,
-  UpdateCustomerResult,
-} from './dto/customer.type';
 
 @Injectable()
 export class CustomerRepository extends Repository<Customer> {
