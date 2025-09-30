@@ -34,6 +34,22 @@ export class ProductRepository extends Repository<Product> {
     }
   }
 
+  async updateProduct(
+    product: UpdateProductDto,
+    entityManager?: EntityManager,
+  ): Promise<Product> {
+    try {
+      const manager = this.getManager(entityManager);
+
+      await manager.update(Product, product.id, product);
+      return manager.findOne(Product, {
+        where: { id: product.id },
+      }) as Promise<Product>;
+    } catch (error) {
+      throw this.handleDatabaseError(error, product);
+    }
+  }
+
   private handleDatabaseError(
     error: any,
     product: CreateProductDto | UpdateProductDto,
