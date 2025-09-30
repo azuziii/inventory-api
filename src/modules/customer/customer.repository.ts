@@ -15,15 +15,21 @@ export class CustomerRepository extends Repository<Customer> {
     super(Customer, entityManager);
   }
 
+  private getManager(externalManagr?: EntityManager): EntityManager {
+    return externalManagr || this.entityManager;
+  }
+
   async createCustomer(
-    entityManager: EntityManager,
     customer: CreateCustomerDto,
+    entityManager?: EntityManager,
   ): Promise<Customer> {
-    const newCustomer = entityManager.create(Customer, customer);
+    const manager = this.getManager(entityManager);
+
+    const newCustomer = manager.create(Customer, customer);
 
     try {
-      const insertResult = await entityManager.insert(Customer, newCustomer);
-      return entityManager.findOne(Customer, {
+      const insertResult = await manager.insert(Customer, newCustomer);
+      return manager.findOne(Customer, {
         where: {
           id: insertResult.identifiers[0].id,
         },
@@ -34,12 +40,13 @@ export class CustomerRepository extends Repository<Customer> {
   }
 
   async updateCustomer(
-    entityManager: EntityManager,
     customer: UpdateCustomerDto,
+    entityManager?: EntityManager,
   ): Promise<Customer> {
     try {
-      await entityManager.update(Customer, customer.id, customer);
-      return entityManager.findOne(Customer, {
+      const manager = this.getManager(entityManager);
+      await manager.update(Customer, customer.id, customer);
+      return manager.findOne(Customer, {
         where: { id: customer.id },
       }) as Promise<Customer>;
     } catch (error) {

@@ -10,15 +10,21 @@ export class ProductRepository extends Repository<Product> {
     super(Product, entityManager);
   }
 
+  private getManager(externalManagr?: EntityManager): EntityManager {
+    return externalManagr || this.entityManager;
+  }
+
   async createProduct(
-    entityManager: EntityManager,
     product: CreateProductDto,
+    entityManager?: EntityManager,
   ): Promise<Product> {
-    const newProduct = entityManager.create(Product, product);
+    const manager = this.getManager(entityManager);
+
+    const newProduct = manager.create(Product, product);
 
     try {
-      const insertResult = await entityManager.insert(Product, newProduct);
-      return entityManager.findOne(Product, {
+      const insertResult = await manager.insert(Product, newProduct);
+      return manager.findOne(Product, {
         where: {
           id: insertResult.identifiers[0].id,
         },
