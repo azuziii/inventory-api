@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ProductRepository } from './product.repository';
-import { DataSource, EntityManager } from 'typeorm';
+import { DataSource, EntityManager, FindManyOptions } from 'typeorm';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import {
   CreateProductResult,
@@ -85,5 +85,11 @@ export class ProductService {
     }
 
     return product;
+  }
+
+  listProducts(
+    options: FindManyOptions<Product>,
+  ): Promise<[Product[], number]> {
+    return this.repo.findAndCount(options);
   }
 }
