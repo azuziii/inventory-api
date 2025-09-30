@@ -5,7 +5,7 @@ export interface CreateProductDto {
   code: string;
   price: number;
   isSample: boolean;
-  customer: Customer;
+  customer: Customer | null;
 }
 
 export interface UpdateProductDto extends Partial<CreateProductDto> {
