@@ -7,3 +7,7 @@ export interface CreateProductDto {
   isSample: boolean;
   customer: Customer;
 }
+
+export interface UpdateProductDto extends Partial<CreateProductDto> {
+  id: string;
+}
