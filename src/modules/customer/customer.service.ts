@@ -53,7 +53,6 @@ export class CustomerService {
   }
 
   async getCustomerOrFail(id: string): Promise<typeof CustomerQueryResult> {
-    console.log(this.repo);
     const customer = await this.repo.findOne({
       where: {
         id,
