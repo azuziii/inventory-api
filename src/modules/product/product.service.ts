@@ -2,7 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { ProductRepository } from './product.repository';
 import { DataSource, EntityManager } from 'typeorm';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
-import { CreateProductResult, UpdateProductResult } from './dto/product.type';
+import {
+  CreateProductResult,
+  ProductQueryResult,
+  UpdateProductResult,
+} from './dto/product.type';
 import { ProductAlreadyExist, ProductNotFound } from './dto/product.error';
 import { Product } from './entities/product.entity';
 
@@ -65,5 +69,21 @@ export class ProductService {
         throw error;
       }
     });
+  }
+
+  async getProductOrFail(id: string): Promise<typeof ProductQueryResult> {
+    const product = await this.repo.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (!product) {
+      return new ProductNotFound({
+        id,
+      });
+    }
+
+    return product;
   }
 }
