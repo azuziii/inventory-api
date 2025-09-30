@@ -18,7 +18,7 @@ export class CustomerRepository extends Repository<Customer> {
   async createCustomer(
     entityManager: EntityManager,
     customer: CreateCustomerDto,
-  ): Promise<typeof CreateCustomerResult> {
+  ): Promise<Customer> {
     const newCustomer = entityManager.create(Customer, customer);
 
     try {
@@ -29,21 +29,21 @@ export class CustomerRepository extends Repository<Customer> {
         },
       }) as Promise<Customer>;
     } catch (error) {
-      return this.handleDatabaseError(error, customer);
+      throw this.handleDatabaseError(error, customer);
     }
   }
 
   async updateCustomer(
     entityManager: EntityManager,
     customer: UpdateCustomerDto,
-  ): Promise<typeof UpdateCustomerResult> {
+  ): Promise<Customer> {
     try {
       await entityManager.update(Customer, customer.id, customer);
       return entityManager.findOne(Customer, {
         where: { id: customer.id },
       }) as Promise<Customer>;
     } catch (error) {
-      return this.handleDatabaseError(error, customer);
+      throw this.handleDatabaseError(error, customer);
     }
   }
 
@@ -70,7 +70,7 @@ export class CustomerRepository extends Repository<Customer> {
 
     switch (error.driverError.constraint) {
       case 'UQ_customer_ice':
-        return new CustomerAlreadyExist({
+        throw new CustomerAlreadyExist({
           field: 'ice',
         });
       default:
