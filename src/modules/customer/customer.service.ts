@@ -1,0 +1,81 @@
+import { Injectable } from '@nestjs/common';
+import {
+  DataSource,
+  EntityManager,
+  FindManyOptions,
+  FindOneOptions,
+} from 'typeorm';
+import { CustomerRepository } from './customer.repository';
+import { CreateCustomerDto, UpdateCustomerDto } from './dto/customer.dto';
+import { Customer } from './entities/customer.entity';
+import { CustomerNotFound } from './dto/customer.error';
+import {
+  CreateCustomerResult,
+  CustomerQueryResult,
+  UpdateCustomerResult,
+} from './dto/customer.type';
+
+@Injectable()
+export class CustomerService {
+  constructor(
+    private readonly repo: CustomerRepository,
+    private readonly datasource: DataSource,
+  ) {}
+
+  async createCustomer(
+    customerDto: CreateCustomerDto,
+  ): Promise<typeof CreateCustomerResult> {
+    return this.datasource.transaction(async (entityManager: EntityManager) => {
+      return this.repo.createCustomer(entityManager, customerDto);
+    });
+  }
+
+  async updateCustomer(
+    customerDto: UpdateCustomerDto,
+  ): Promise<typeof UpdateCustomerResult> {
+    return this.datasource.transaction(async (entityManager: EntityManager) => {
+      const customer = await entityManager.findOne(Customer, {
+        where: { id: customerDto.id },
+      });
+
+      if (!customer) {
+        return new CustomerNotFound({
+          id: customerDto.id,
+        });
+      }
+
+      return this.repo.updateCustomer(entityManager, customerDto);
+    });
+  }
+
+  getCustomer(options: FindOneOptions<Customer>): Promise<Customer | null> {
+    return this.repo.findOne(options);
+  }
+
+  async getCustomerOrFail(id: string): Promise<typeof CustomerQueryResult> {
+    console.log(this.repo);
+    const customer = await this.repo.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (!customer) {
+      return new CustomerNotFound({
+        id,
+      });
+    }
+
+    return customer;
+  }
+
+  listCustomers(
+    options: FindManyOptions<Customer>,
+  ): Promise<[Customer[], number]> {
+    return this.repo.findAndCount(options);
+  }
+
+  deleteCustomer(id: string): Promise<boolean> {
+    return this.repo.deleteCustomer(id);
+  }
+}
