@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ProductRepository } from './product.repository';
 import { DataSource, EntityManager } from 'typeorm';
-import { CreateProductDto } from './dto/product.dto';
-import { CreateProductResult } from './dto/product.type';
-import { ProductAlreadyExist } from './dto/product.error';
+import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
+import { CreateProductResult, UpdateProductResult } from './dto/product.type';
+import { ProductAlreadyExist, ProductNotFound } from './dto/product.error';
+import { Product } from './entities/product.entity';
 
 @Injectable()
 export class ProductService {
@@ -27,6 +28,40 @@ export class ProductService {
         if (error instanceof ProductAlreadyExist) {
           return error;
         }
+        throw error;
+      }
+    });
+  }
+
+  async updateProduct(
+    productDto: UpdateProductDto,
+  ): Promise<typeof UpdateProductResult> {
+    return this.datasource.transaction(async (entityManager: EntityManager) => {
+      try {
+        const product = await entityManager.findOne(Product, {
+          where: { id: productDto.id },
+        });
+
+        if (!product) {
+          return new ProductNotFound({
+            id: productDto.id,
+          });
+        }
+
+        const updatedProduct = await this.repo.updateProduct(
+          productDto,
+          entityManager,
+        );
+        return updatedProduct;
+      } catch (error) {
+        console.log(error);
+        if (
+          error instanceof ProductNotFound ||
+          error instanceof ProductAlreadyExist
+        ) {
+          return error;
+        }
+
         throw error;
       }
     });
