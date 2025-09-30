@@ -23,3 +23,10 @@ export class CreateProductInput {
   @IsNotEmpty()
   customer_id!: string;
 }
+
+@InputType()
+export class UpdateProductInput extends PartialType(CreateProductInput) {
+  @Field(() => ID, { nullable: false })
+  @IsNotEmpty()
+  id!: string;
+}
