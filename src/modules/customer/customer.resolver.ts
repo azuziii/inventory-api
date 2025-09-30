@@ -1,19 +1,25 @@
-import { Resolver, Query, Args, ID } from '@nestjs/graphql';
+import { Resolver, Query, Args, ID, Mutation } from '@nestjs/graphql';
 import { CustomerService } from './customer.service';
 import { Customer } from './entities/customer.entity';
 import {
+  CreateCustomerResponse,
   CustomerQueryResponse,
   CustomersQueryResponse,
+  UpdateCustomerResponse,
 } from './dto/customer.type';
-import { CustomerArguments } from './dto/customer.input';
+import {
+  CreateCustomerInput,
+  CustomerArguments,
+  UpdateCustomerInput,
+} from './dto/customer.input';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Resolver(() => Customer)
 export class CustomerResolver {
   constructor(private readonly customerService: CustomerService) {}
 
-  @Query(() => CustomerQueryResponse)
-  async customerResponse(
+  @Query(() => CustomerQueryResponse, { name: 'customerResponse' })
+  async getCustomer(
     @Args('id', { type: () => ID }) id: string,
   ): Promise<CustomerQueryResponse> {
     const customer = await this.customerService.getCustomerOrFail(id);
@@ -23,12 +29,11 @@ export class CustomerResolver {
     };
   }
 
-  @Query(() => CustomersQueryResponse)
-  async customersResponse(
+  @Query(() => CustomersQueryResponse, { name: 'customersResponse' })
+  async listCustomer(
     @Args()
     args: CustomerArguments,
   ): Promise<CustomersQueryResponse> {
-    console.log(args);
     const [customers, count] = await this.customerService.listCustomers(
       args.toManyOptions(),
     );
@@ -40,5 +45,34 @@ export class CustomerResolver {
         total: count,
       }),
     };
+  }
+
+  @Mutation(() => CreateCustomerResponse, { name: 'createCustomerResponse' })
+  async createCustomer(
+    @Args('input', { type: () => CreateCustomerInput, nullable: false })
+    input: CreateCustomerInput,
+  ): Promise<CreateCustomerResponse> {
+    const customer = await this.customerService.createCustomer(input);
+
+    return {
+      customer,
+    };
+  }
+
+  @Mutation(() => UpdateCustomerResponse, { name: 'updateCustomerResponse' })
+  async updateCustomer(
+    @Args('input', { type: () => UpdateCustomerInput, nullable: false })
+    input: UpdateCustomerInput,
+  ): Promise<UpdateCustomerResponse> {
+    const customer = await this.customerService.updateCustomer(input);
+
+    return {
+      customer,
+    };
+  }
+
+  @Mutation(() => Boolean)
+  deleteCustomer(@Args('id', { type: () => ID }) id: string): Promise<boolean> {
+    return this.customerService.deleteCustomer(id);
   }
 }
