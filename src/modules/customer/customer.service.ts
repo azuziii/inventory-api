@@ -28,8 +28,8 @@ export class CustomerService {
     return this.datasource.transaction(async (entityManager: EntityManager) => {
       try {
         const customer = await this.repo.createCustomer(
-          entityManager,
           customerDto,
+          entityManager,
         );
 
         return customer;
@@ -58,8 +58,8 @@ export class CustomerService {
         }
 
         const updatedCustomer = await this.repo.updateCustomer(
-          entityManager,
           customerDto,
+          entityManager,
         );
         return updatedCustomer;
       } catch (error) {
