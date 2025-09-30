@@ -50,6 +50,16 @@ export class ProductRepository extends Repository<Product> {
     }
   }
 
+  async deleteProduct(id: string): Promise<boolean> {
+    const deleteResult = await this.delete(id);
+
+    if (typeof deleteResult.affected != 'number') {
+      return false;
+    }
+
+    return true;
+  }
+
   private handleDatabaseError(
     error: any,
     product: CreateProductDto | UpdateProductDto,
