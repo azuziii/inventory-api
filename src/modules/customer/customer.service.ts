@@ -8,7 +8,7 @@ import {
 import { CustomerRepository } from './customer.repository';
 import { CreateCustomerDto, UpdateCustomerDto } from './dto/customer.dto';
 import { Customer } from './entities/customer.entity';
-import { CustomerNotFound } from './dto/customer.error';
+import { CustomerAlreadyExist, CustomerNotFound } from './dto/customer.error';
 import {
   CreateCustomerResult,
   CustomerQueryResult,
@@ -26,7 +26,19 @@ export class CustomerService {
     customerDto: CreateCustomerDto,
   ): Promise<typeof CreateCustomerResult> {
     return this.datasource.transaction(async (entityManager: EntityManager) => {
-      return this.repo.createCustomer(entityManager, customerDto);
+      try {
+        const customer = await this.repo.createCustomer(
+          entityManager,
+          customerDto,
+        );
+
+        return customer;
+      } catch (error) {
+        if (error instanceof CustomerAlreadyExist) {
+          return error;
+        }
+        throw error;
+      }
     });
   }
 
@@ -34,17 +46,33 @@ export class CustomerService {
     customerDto: UpdateCustomerDto,
   ): Promise<typeof UpdateCustomerResult> {
     return this.datasource.transaction(async (entityManager: EntityManager) => {
-      const customer = await entityManager.findOne(Customer, {
-        where: { id: customerDto.id },
-      });
-
-      if (!customer) {
-        return new CustomerNotFound({
-          id: customerDto.id,
+      try {
+        const customer = await entityManager.findOne(Customer, {
+          where: { id: customerDto.id },
         });
-      }
 
-      return this.repo.updateCustomer(entityManager, customerDto);
+        if (!customer) {
+          return new CustomerNotFound({
+            id: customerDto.id,
+          });
+        }
+
+        const updatedCustomer = await this.repo.updateCustomer(
+          entityManager,
+          customerDto,
+        );
+        return updatedCustomer;
+      } catch (error) {
+        console.log(error);
+        if (
+          error instanceof CustomerNotFound ||
+          error instanceof CustomerAlreadyExist
+        ) {
+          return error;
+        }
+
+        throw error;
+      }
     });
   }
 
