@@ -20,7 +20,7 @@ export class InUse extends BaseError {
     Object.assign(this, props);
 
     if (!this.message) {
-      this.message = `${this.entityType} cannot be deleted because it is referenced by existing ${props.resourceType} records.`;
+      this.message = `${this.entityType} can't be deleted because it's used in other ${props.resourceType} records.`;
     }
   }
 
