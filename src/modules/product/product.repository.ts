@@ -2,9 +2,10 @@ import { EntityManager, QueryFailedError, Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import { DatabaseError } from 'pg';
-import { InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ProductAlreadyExist } from './dto/product.error';
 
+@Injectable()
 export class ProductRepository extends Repository<Product> {
   constructor(private readonly entityManager: EntityManager) {
     super(Product, entityManager);
