@@ -63,7 +63,6 @@ export class CustomerService {
         );
         return updatedCustomer;
       } catch (error) {
-        console.log(error);
         if (
           error instanceof CustomerNotFound ||
           error instanceof CustomerAlreadyExist
