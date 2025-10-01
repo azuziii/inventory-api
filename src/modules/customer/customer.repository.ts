@@ -3,7 +3,7 @@ import { Customer } from './entities/customer.entity';
 import { CreateCustomerDto, UpdateCustomerDto } from './dto/customer.dto';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { DatabaseError } from 'pg';
-import { CustomerAlreadyExist } from './dto/customer.error';
+import { CustomerAlreadyExist, CustomerInUse } from './dto/customer.error';
 
 @Injectable()
 export class CustomerRepository extends Repository<Customer> {
@@ -79,6 +79,10 @@ export class CustomerRepository extends Repository<Customer> {
       case 'UQ_customer_ice':
         throw new CustomerAlreadyExist({
           field: 'ice',
+        });
+      case 'FK_product_customer':
+        throw new CustomerInUse({
+          resourceType: 'Product',
         });
       default:
         throw new InternalServerErrorException();
