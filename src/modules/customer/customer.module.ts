@@ -17,5 +17,6 @@ import { ICustomer } from './interfaces/customer.interface';
       useExisting: CustomerService,
     },
   ],
+  exports: [ICustomer],
 })
 export class CustomerModule {}
