@@ -3,7 +3,7 @@ import { Product } from './entities/product.entity';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import { DatabaseError } from 'pg';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { ProductAlreadyExist } from './dto/product.error';
+import { ProductAlreadyExist } from './errors/product.error';
 
 @Injectable()
 export class ProductRepository extends Repository<Product> {

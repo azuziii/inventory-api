@@ -7,7 +7,7 @@ import {
   ProductQueryResult,
   UpdateProductResult,
 } from './dto/product.type';
-import { ProductAlreadyExist, ProductNotFound } from './dto/product.error';
+import { ProductAlreadyExist, ProductNotFound } from './errors/product.error';
 import { Product } from './entities/product.entity';
 
 @Injectable()

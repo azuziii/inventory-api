@@ -3,7 +3,7 @@ import { Customer } from './entities/customer.entity';
 import { CreateCustomerDto, UpdateCustomerDto } from './dto/customer.dto';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { DatabaseError } from 'pg';
-import { CustomerAlreadyExist, CustomerInUse } from './dto/customer.error';
+import { CustomerAlreadyExist, CustomerInUse } from './errors/customer.error';
 
 @Injectable()
 export class CustomerRepository extends Repository<Customer> {

@@ -9,7 +9,10 @@ import {
 import { CustomerRepository } from './customer.repository';
 import { CreateCustomerDto, UpdateCustomerDto } from './dto/customer.dto';
 import { Customer } from './entities/customer.entity';
-import { CustomerAlreadyExist, CustomerNotFound } from './dto/customer.error';
+import {
+  CustomerAlreadyExist,
+  CustomerNotFound,
+} from './errors/customer.error';
 import {
   CreateCustomerResult,
   CustomerQueryResult,
