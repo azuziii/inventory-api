@@ -4,6 +4,7 @@ import {
   EntityManager,
   FindManyOptions,
   FindOneOptions,
+  ReturnDocument,
 } from 'typeorm';
 import { CustomerRepository } from './customer.repository';
 import { CreateCustomerDto, UpdateCustomerDto } from './dto/customer.dto';
@@ -12,8 +13,10 @@ import { CustomerAlreadyExist, CustomerNotFound } from './dto/customer.error';
 import {
   CreateCustomerResult,
   CustomerQueryResult,
+  DeleteCustomerResult,
   UpdateCustomerResult,
 } from './dto/customer.type';
+import { InUse } from 'src/common/errors/in-use.error';
 
 @Injectable()
 export class CustomerService {
@@ -101,7 +104,18 @@ export class CustomerService {
     return this.repo.findAndCount(options);
   }
 
-  deleteCustomer(id: string): Promise<boolean> {
-    return this.repo.deleteCustomer(id);
+  async deleteCustomer(id: string): Promise<typeof DeleteCustomerResult> {
+    try {
+      const deleteResult = await this.repo.deleteCustomer(id);
+      return {
+        success: deleteResult,
+      };
+    } catch (error) {
+      if (error instanceof InUse) {
+        return error;
+      }
+
+      throw error;
+    }
   }
 }
