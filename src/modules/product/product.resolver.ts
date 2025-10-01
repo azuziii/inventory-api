@@ -1,6 +1,7 @@
 import {
   Args,
   ID,
+  Mutation,
   Parent,
   Query,
   ResolveField,
@@ -8,8 +9,15 @@ import {
 } from '@nestjs/graphql';
 import { ProductService } from './product.service';
 import { Product } from './entities/product.entity';
-import { ProductQueryResponse } from './dto/product.type';
+import {
+  CreateProductResponse,
+  ProductQueryResponse,
+} from './dto/product.type';
 import { Customer } from '../customer/entities/customer.entity';
+import { GetCustomerPipe } from '../customer/pipes/get-customer/get-customer.pipe';
+import { UsePipes } from '@nestjs/common';
+import { CreateProductDto } from './dto/product.dto';
+import { CreateProductInput } from './dto/product.input';
 
 @Resolver(() => Product)
 export class ProductResolver {
@@ -20,6 +28,25 @@ export class ProductResolver {
     @Args('id', { type: () => ID }) id: string,
   ): Promise<ProductQueryResponse> {
     const product = await this.productService.getProductOrFail(id);
+
+    return {
+      product,
+    };
+  }
+
+  @Mutation(() => CreateProductResponse, { name: 'createProductResponse' })
+  @UsePipes(GetCustomerPipe)
+  async createProduct(
+    @Args('input', { type: () => CreateProductInput, nullable: false })
+    input: CreateProductDto,
+  ): Promise<CreateProductResponse> {
+    if ('__isError' in input.customer) {
+      return {
+        product: input.customer,
+      };
+    }
+
+    const product = await this.productService.createProduct(input);
 
     return {
       product,
