@@ -5,6 +5,7 @@ import {
   PipeTransform,
 } from '@nestjs/common';
 import { ICustomer } from '../../interfaces/customer.interface';
+import { CustomerNotFound } from '../../dto/customer.error';
 
 @Injectable()
 export class GetCustomerPipe implements PipeTransform {
@@ -16,11 +17,12 @@ export class GetCustomerPipe implements PipeTransform {
   ) {
     if (!customer_id || typeof customer_id != 'string') return value;
 
-    const customer = await this.customerService.getCustomer({
-      where: {
-        id: customer_id,
-      },
-    });
+    const customer =
+      (await this.customerService.getCustomer({
+        where: {
+          id: customer_id,
+        },
+      })) || new CustomerNotFound({ id: customer_id });
 
     return {
       ...value,
