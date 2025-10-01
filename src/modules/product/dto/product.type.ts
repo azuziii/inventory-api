@@ -3,6 +3,7 @@ import { Product } from '../entities/product.entity';
 import { NotFound } from 'src/common/errors/not-found.error';
 import { AlreadyExist } from 'src/common/errors/alread-exist.error';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { CustomerNotFound } from 'src/modules/customer/dto/customer.error';
 
 export const ProductQueryResult = createUnionType({
   name: 'ProductQueryResult',
@@ -11,7 +12,7 @@ export const ProductQueryResult = createUnionType({
 
 export const CreateProductResult = createUnionType({
   name: 'CreateProductResult',
-  types: () => [Product, AlreadyExist],
+  types: () => [Product, AlreadyExist, CustomerNotFound],
 });
 
 export const UpdateProductResult = createUnionType({
