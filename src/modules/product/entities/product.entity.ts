@@ -28,6 +28,7 @@ export class Product extends BaseUUIDEntity {
   @Column({ type: 'boolean', default: false })
   isSample!: boolean;
 
-  @ManyToOne(() => Customer)
+  @Field(() => Customer, { nullable: false })
+  @ManyToOne(() => Customer, { lazy: true })
   customer!: Customer;
 }
