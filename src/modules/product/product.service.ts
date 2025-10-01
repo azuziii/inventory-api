@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { ProductRepository } from './product.repository';
 import { DataSource, EntityManager, FindManyOptions } from 'typeorm';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
+import { ProductAlreadyExist, ProductNotFound } from './errors/product.error';
+import { Product } from './entities/product.entity';
 import {
   CreateProductResult,
   ProductQueryResult,
   UpdateProductResult,
-} from './dto/product.type';
-import { ProductAlreadyExist, ProductNotFound } from './errors/product.error';
-import { Product } from './entities/product.entity';
+} from './results/product.result';
 
 @Injectable()
 export class ProductService {

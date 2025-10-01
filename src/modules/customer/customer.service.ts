@@ -4,7 +4,6 @@ import {
   EntityManager,
   FindManyOptions,
   FindOneOptions,
-  ReturnDocument,
 } from 'typeorm';
 import { CustomerRepository } from './customer.repository';
 import { CreateCustomerDto, UpdateCustomerDto } from './dto/customer.dto';
@@ -13,13 +12,13 @@ import {
   CustomerAlreadyExist,
   CustomerNotFound,
 } from './errors/customer.error';
+import { InUse } from 'src/common/errors/in-use.error';
 import {
   CreateCustomerResult,
   CustomerQueryResult,
   DeleteCustomerResult,
   UpdateCustomerResult,
-} from './dto/customer.type';
-import { InUse } from 'src/common/errors/in-use.error';
+} from './results/customer.result';
 
 @Injectable()
 export class CustomerService {

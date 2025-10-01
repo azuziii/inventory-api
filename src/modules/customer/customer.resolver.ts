@@ -2,18 +2,18 @@ import { Resolver, Query, Args, ID, Mutation } from '@nestjs/graphql';
 import { CustomerService } from './customer.service';
 import { Customer } from './entities/customer.entity';
 import {
-  CreateCustomerResponse,
-  CustomerQueryResponse,
-  CustomersQueryResponse,
-  DeleteCustomerResult,
-  UpdateCustomerResponse,
-} from './dto/customer.type';
-import {
   CreateCustomerInput,
   CustomerArguments,
   UpdateCustomerInput,
 } from './dto/customer.input';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import {
+  CreateCustomerResponse,
+  CustomerQueryResponse,
+  CustomersQueryResponse,
+  UpdateCustomerResponse,
+} from './responses/customer.response';
+import { DeleteCustomerResult } from './results/customer.result';
 
 @Resolver(() => Customer)
 export class CustomerResolver {

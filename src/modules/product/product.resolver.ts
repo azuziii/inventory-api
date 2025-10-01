@@ -9,17 +9,17 @@ import {
 } from '@nestjs/graphql';
 import { ProductService } from './product.service';
 import { Product } from './entities/product.entity';
-import {
-  CreateProductResponse,
-  ProductQueryResponse,
-  ProductsQueryResponse,
-} from './dto/product.type';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { Customer } from '../customer/entities/customer.entity';
 import { GetCustomerPipe } from '../customer/pipes/get-customer/get-customer.pipe';
 import { UsePipes } from '@nestjs/common';
 import { CreateProductDto } from './dto/product.dto';
 import { CreateProductInput, ProductArguments } from './dto/product.input';
+import {
+  CreateProductResponse,
+  ProductQueryResponse,
+  ProductsQueryResponse,
+} from './responses/product.response';
 
 @Resolver(() => Product)
 export class ProductResolver {
