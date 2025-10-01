@@ -3,6 +3,7 @@ import { NotFound } from 'src/common/errors/not-found.error';
 import { AlreadyExist } from 'src/common/errors/alread-exist.error';
 import { Customer } from '../entities/customer.entity';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { InUse } from 'src/common/errors/in-use.error';
 
 export const CustomerQueryResult = createUnionType({
   name: 'CustomerQueryResult',
@@ -17,6 +18,11 @@ export const CreateCustomerResult = createUnionType({
 export const UpdateCustomerResult = createUnionType({
   name: 'UpdateCustomerResult',
   types: () => [Customer, NotFound, AlreadyExist],
+});
+
+export const DeleteCustomerResult = createUnionType({
+  name: 'DeleteCustomerResult',
+  types: () => [DeleteSuccess, InUse],
 });
 
 @ObjectType()
@@ -44,4 +50,16 @@ export class CreateCustomerResponse {
 export class UpdateCustomerResponse {
   @Field(() => UpdateCustomerResult)
   customer: typeof UpdateCustomerResult;
+}
+
+@ObjectType()
+export class DeleteCustomerResponse {
+  @Field(() => UpdateCustomerResult)
+  customer: typeof UpdateCustomerResult;
+}
+
+@ObjectType()
+export class DeleteSuccess {
+  @Field(() => Boolean)
+  success = true;
 }
