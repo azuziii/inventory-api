@@ -5,6 +5,7 @@ import {
   CreateCustomerResponse,
   CustomerQueryResponse,
   CustomersQueryResponse,
+  DeleteCustomerResult,
   UpdateCustomerResponse,
 } from './dto/customer.type';
 import {
@@ -71,8 +72,10 @@ export class CustomerResolver {
     };
   }
 
-  @Mutation(() => Boolean)
-  deleteCustomer(@Args('id', { type: () => ID }) id: string): Promise<boolean> {
+  @Mutation(() => DeleteCustomerResult)
+  deleteCustomer(
+    @Args('id', { type: () => ID }) id: string,
+  ): Promise<typeof DeleteCustomerResult> {
     return this.customerService.deleteCustomer(id);
   }
 }
