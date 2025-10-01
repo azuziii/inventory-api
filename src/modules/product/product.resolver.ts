@@ -12,12 +12,14 @@ import { Product } from './entities/product.entity';
 import {
   CreateProductResponse,
   ProductQueryResponse,
+  ProductsQueryResponse,
 } from './dto/product.type';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { Customer } from '../customer/entities/customer.entity';
 import { GetCustomerPipe } from '../customer/pipes/get-customer/get-customer.pipe';
 import { UsePipes } from '@nestjs/common';
 import { CreateProductDto } from './dto/product.dto';
-import { CreateProductInput } from './dto/product.input';
+import { CreateProductInput, ProductArguments } from './dto/product.input';
 
 @Resolver(() => Product)
 export class ProductResolver {
@@ -50,6 +52,24 @@ export class ProductResolver {
 
     return {
       product,
+    };
+  }
+
+  @Query(() => ProductsQueryResponse, { name: 'productsResponse' })
+  async listProduct(
+    @Args()
+    args: ProductArguments,
+  ): Promise<ProductsQueryResponse> {
+    const [products, count] = await this.productService.listProducts(
+      args.toManyOptions(),
+    );
+
+    return {
+      products,
+      pagination: new PaginationDto({
+        ...args,
+        total: count,
+      }),
     };
   }
 
