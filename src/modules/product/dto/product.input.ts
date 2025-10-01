@@ -17,7 +17,7 @@ export class CreateProductInput {
 
   @Field({ nullable: true, defaultValue: false })
   @IsOptional()
-  isSample = false;
+  isSample: boolean = false;
 
   @Field()
   @IsNotEmpty()
