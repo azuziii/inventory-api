@@ -22,13 +22,13 @@ export const UpdateProductResult = createUnionType({
 @ObjectType()
 export class ProductQueryResponse {
   @Field(() => ProductQueryResult)
-  Product: typeof ProductQueryResult;
+  product: typeof ProductQueryResult;
 }
 
 @ObjectType()
 export class ProductsQueryResponse {
   @Field(() => [Product!]!)
-  Products: Product[];
+  products: Product[];
 
   @Field(() => PaginationDto)
   pagination: PaginationDto;
@@ -37,11 +37,11 @@ export class ProductsQueryResponse {
 @ObjectType()
 export class CreateProductResponse {
   @Field(() => CreateProductResult)
-  Product: typeof CreateProductResult;
+  product: typeof CreateProductResult;
 }
 
 @ObjectType()
 export class UpdateProductResponse {
   @Field(() => UpdateProductResult)
-  Product: typeof UpdateProductResult;
+  product: typeof UpdateProductResult;
 }
