@@ -51,18 +51,22 @@ export class CustomerRepository extends Repository<Customer> {
   }
 
   async deleteCustomer(id: string): Promise<boolean> {
-    const deleteResult = await this.delete(id);
+    try {
+      const deleteResult = await this.delete(id);
 
-    if (typeof deleteResult.affected != 'number') {
-      return false;
+      if (typeof deleteResult.affected != 'number') {
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      throw this.handleDatabaseError(error);
     }
-
-    return true;
   }
 
   private handleDatabaseError(
     error: any,
-    customer: CreateCustomerDto | UpdateCustomerDto,
+    customer?: CreateCustomerDto | UpdateCustomerDto,
   ) {
     if (!(error instanceof QueryFailedError)) throw error;
 
