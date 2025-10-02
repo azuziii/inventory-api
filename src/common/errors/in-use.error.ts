@@ -7,23 +7,21 @@ export interface InUseProps {
 }
 
 @ObjectType()
-export class InUse extends BaseError {
-  constructor(
-    props: InUseProps & {
-      entityType: string;
-    },
-  ) {
+export class InUse extends BaseError implements InUseProps {
+  constructor({
+    entityType,
+    ...props
+  }: InUseProps & {
+    entityType: string;
+  }) {
     super({
       code: 'IN_USE',
+      entityType,
+      message: `${entityType} can't be deleted because it's used in other ${props.resourceType} records.`,
     });
 
     Object.assign(this, props);
-
-    if (!this.message) {
-      this.message = `${this.entityType} can't be deleted because it's used in other ${props.resourceType} records.`;
-    }
   }
 
-  @Field()
-  entityType!: string;
+  resourceType!: string;
 }
