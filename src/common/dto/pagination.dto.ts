@@ -2,6 +2,11 @@ import { ArgsType, Field, InputType, Int, ObjectType } from '@nestjs/graphql';
 import { Transform } from 'class-transformer';
 import { isNumber, IsOptional } from 'class-validator';
 
+export interface PaginationProps
+  extends Pick<PaginationInput, 'page' | 'limit'> {
+  total: number;
+}
+
 const PAGE_DEFAULT = 1;
 const PAGE_MIN = 1;
 const LIMIT_DEFAULT = 10;
@@ -35,7 +40,7 @@ export class PaginationInput {
 
 @ObjectType('Pagination')
 export class PaginationDto {
-  constructor(props: { total: number } & PaginationInput) {
+  constructor(props: PaginationProps) {
     const totalPages = Math.ceil(props.total / props.limit);
 
     this.total = props.total;
