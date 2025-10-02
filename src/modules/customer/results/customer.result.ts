@@ -3,7 +3,7 @@ import { Customer } from '../entities/customer.entity';
 import { NotFound } from 'src/common/errors/not-found.error';
 import { AlreadyExist } from 'src/common/errors/alread-exist.error';
 import { InUse } from 'src/common/errors/in-use.error';
-import { DeleteSuccess } from 'src/common/responses/delete.response';
+import { DeleteResponse } from 'src/common/responses/delete.response';
 
 export const CustomerQueryResult = createUnionType({
   name: 'CustomerQueryResult',
@@ -22,5 +22,5 @@ export const UpdateCustomerResult = createUnionType({
 
 export const DeleteCustomerResult = createUnionType({
   name: 'DeleteCustomerResult',
-  types: () => [DeleteSuccess, InUse],
+  types: () => [DeleteResponse, InUse],
 });

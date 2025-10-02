@@ -108,9 +108,9 @@ export class CustomerService {
 
   async deleteCustomer(id: string): Promise<typeof DeleteCustomerResult> {
     try {
-      const deleteResult = await this.repo.deleteCustomer(id);
+      await this.repo.deleteCustomer(id);
       return {
-        success: deleteResult,
+        id,
       };
     } catch (error) {
       if (error instanceof InUse) {

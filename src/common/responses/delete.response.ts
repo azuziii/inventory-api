@@ -1,7 +1,7 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class DeleteSuccess {
-  @Field(() => Boolean)
-  success = true;
+export class DeleteResponse {
+  @Field(() => ID)
+  id: string;
 }
