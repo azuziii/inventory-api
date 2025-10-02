@@ -73,7 +73,7 @@ export class CustomerResolver {
     };
   }
 
-  @Mutation(() => DeleteCustomerResponse)
+  @Mutation(() => DeleteCustomerResponse, { name: 'deleteCustomerResponse' })
   async deleteCustomer(
     @Args('id', { type: () => ID }) id: string,
   ): Promise<DeleteCustomerResponse> {
