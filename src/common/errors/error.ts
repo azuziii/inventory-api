@@ -6,7 +6,7 @@ interface ErrorProps {
 }
 
 @ObjectType({ isAbstract: true })
-export class BaseError {
+export abstract class BaseError {
   constructor(props: ErrorProps) {
     Object.assign(this, props);
   }
