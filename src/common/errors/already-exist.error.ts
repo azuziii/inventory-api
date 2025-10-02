@@ -8,6 +8,8 @@ export interface AlreadyExistProps {
 
 @ObjectType()
 export class AlreadyExist extends BaseError implements AlreadyExistProps {
+  static readonly __typename: string = 'ALREADY_EXISTS';
+
   constructor({
     entityType,
     ...props

@@ -8,6 +8,8 @@ export interface NotFoundProps {
 
 @ObjectType()
 export class NotFound extends BaseError implements NotFoundProps {
+  static readonly __typename: string = 'NOT_FOUND';
+
   constructor({
     entityType,
     ...props

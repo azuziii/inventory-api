@@ -8,6 +8,8 @@ export interface InUseProps {
 
 @ObjectType()
 export class InUse extends BaseError implements InUseProps {
+  static readonly __typename: string = 'IN_USE';
+
   constructor({
     entityType,
     ...props

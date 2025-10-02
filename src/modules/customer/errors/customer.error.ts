@@ -8,6 +8,8 @@ import { NotFound, NotFoundProps } from 'src/common/errors/not-found.error';
 
 @ObjectType()
 export class CustomerAlreadyExist extends AlreadyExist {
+  static readonly __typename = 'CUSTOMER_ALREADY_EXISTS';
+
   constructor(props: AlreadyExistProps) {
     super({
       entityType: 'Customer',
@@ -18,6 +20,8 @@ export class CustomerAlreadyExist extends AlreadyExist {
 
 @ObjectType()
 export class CustomerNotFound extends NotFound {
+  static readonly __typename = 'CUSTOMER_NOT_FOUND';
+
   constructor(props: NotFoundProps) {
     super({
       entityType: 'Customer',
@@ -28,6 +32,8 @@ export class CustomerNotFound extends NotFound {
 
 @ObjectType()
 export class CustomerInUse extends InUse {
+  static readonly __typename = 'CUSTOMER_IN_USE';
+
   constructor(props: InUseProps) {
     super({
       entityType: 'Customer',
