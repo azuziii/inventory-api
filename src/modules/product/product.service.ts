@@ -4,11 +4,9 @@ import { DataSource, EntityManager, FindManyOptions } from 'typeorm';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import { ProductAlreadyExist, ProductNotFound } from './errors/product.error';
 import { Product } from './entities/product.entity';
-import {
-  CreateProductResult,
-  ProductQueryResult,
-  UpdateProductResult,
-} from './results/product.result';
+import { CreateProductResult } from './results/create-product.result';
+import { UpdateProductResult } from './results/update-product.result';
+import { ProductQueryResult } from './results/query-product.result';
 
 @Injectable()
 export class ProductService {

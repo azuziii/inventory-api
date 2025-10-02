@@ -1,11 +1,9 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Product } from '../entities/product.entity';
 import { PaginationDto, PaginationProps } from 'src/common/dto/pagination.dto';
-import {
-  CreateProductResult,
-  ProductQueryResult,
-  UpdateProductResult,
-} from '../results/product.result';
+import { ProductQueryResult } from '../results/query-product.result';
+import { CreateProductResult } from '../results/create-product.result';
+import { UpdateProductResult } from '../results/update-product.result';
 
 @ObjectType()
 export class ProductQueryResponse {

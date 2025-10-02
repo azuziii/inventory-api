@@ -1,12 +1,10 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import {
-  CreateCustomerResult,
-  CustomerQueryResult,
-  DeleteCustomerResult,
-  UpdateCustomerResult,
-} from '../results/customer.result';
 import { Customer } from '../entities/customer.entity';
 import { PaginationDto, PaginationProps } from 'src/common/dto/pagination.dto';
+import { CreateCustomerResult } from '../results/create-customer.result';
+import { DeleteCustomerResult } from '../results/delete-customer.result';
+import { CustomerQueryResult } from '../results/query-customer.result';
+import { UpdateCustomerResult } from '../results/update-customer.result';
 
 @ObjectType()
 export class CustomerQueryResponse {
