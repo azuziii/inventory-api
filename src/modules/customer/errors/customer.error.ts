@@ -2,7 +2,7 @@ import { ObjectType } from '@nestjs/graphql';
 import {
   AlreadyExist,
   AlreadyExistProps,
-} from 'src/common/errors/alread-exist.error';
+} from 'src/common/errors/already-exist.error';
 import { InUse, InUseProps } from 'src/common/errors/in-use.error';
 import { NotFound, NotFoundProps } from 'src/common/errors/not-found.error';
 

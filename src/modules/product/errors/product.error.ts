@@ -1,7 +1,7 @@
 import {
   AlreadyExist,
   AlreadyExistProps,
-} from 'src/common/errors/alread-exist.error';
+} from 'src/common/errors/already-exist.error';
 import { NotFound, NotFoundProps } from 'src/common/errors/not-found.error';
 
 export class ProductAlreadyExist extends AlreadyExist {
