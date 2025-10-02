@@ -11,7 +11,7 @@ export class BaseError {
     Object.assign(this, props);
   }
 
-  readonly __isError: true;
+  readonly __isError = true;
 
   @Field()
   code!: string;
