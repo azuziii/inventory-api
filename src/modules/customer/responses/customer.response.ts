@@ -2,6 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import {
   CreateCustomerResult,
   CustomerQueryResult,
+  DeleteCustomerResult,
   UpdateCustomerResult,
 } from '../results/customer.result';
 import { Customer } from '../entities/customer.entity';
@@ -36,6 +37,6 @@ export class UpdateCustomerResponse {
 
 @ObjectType()
 export class DeleteCustomerResponse {
-  @Field(() => UpdateCustomerResult)
-  customer: typeof UpdateCustomerResult;
+  @Field(() => DeleteCustomerResult)
+  customer: typeof DeleteCustomerResult;
 }
