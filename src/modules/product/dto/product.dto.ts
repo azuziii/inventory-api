@@ -1,12 +1,12 @@
-import { NotFound } from 'src/common/errors/not-found.error';
 import { Customer } from 'src/modules/customer/entities/customer.entity';
+import { CustomerNotFound } from 'src/modules/customer/errors/customer.error';
 
 export interface CreateProductDto {
   name: string;
   code: string;
   price: number;
   isSample: boolean;
-  customer: Customer | NotFound;
+  customer: Customer | CustomerNotFound;
 }
 
 export interface UpdateProductDto extends Partial<CreateProductDto> {
