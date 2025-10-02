@@ -3,7 +3,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 export interface ErrorProps {
   code: string;
   entityType: string;
-  message?: string;
+  message: string;
 }
 
 @ObjectType({ isAbstract: true })
