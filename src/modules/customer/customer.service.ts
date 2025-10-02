@@ -19,6 +19,7 @@ import {
   DeleteCustomerResult,
   UpdateCustomerResult,
 } from './results/customer.result';
+import { DeleteResponse } from 'src/common/responses/delete.response';
 
 @Injectable()
 export class CustomerService {
@@ -109,9 +110,7 @@ export class CustomerService {
   async deleteCustomer(id: string): Promise<typeof DeleteCustomerResult> {
     try {
       await this.repo.deleteCustomer(id);
-      return {
-        id,
-      };
+      return new DeleteResponse(id);
     } catch (error) {
       if (error instanceof InUse) {
         return error;
