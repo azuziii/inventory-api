@@ -7,26 +7,22 @@ export interface AlreadyExistProps {
 }
 
 @ObjectType()
-export class AlreadyExist extends BaseError {
-  constructor(
-    props: AlreadyExistProps & {
-      entityType: string;
-    },
-  ) {
+export class AlreadyExist extends BaseError implements AlreadyExistProps {
+  constructor({
+    entityType,
+    ...props
+  }: AlreadyExistProps & {
+    entityType: string;
+  }) {
     super({
       code: 'ALREADY_EXISTS',
+      entityType,
+      message: `${props.field} already exists`,
     });
 
     Object.assign(this, props);
-
-    if (!this.message) {
-      this.message = `${this.field} already exists`;
-    }
   }
 
   @Field()
   field!: string;
-
-  @Field()
-  entityType!: string;
 }
