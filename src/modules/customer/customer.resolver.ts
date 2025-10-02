@@ -14,7 +14,6 @@ import {
   DeleteCustomerResponse,
   UpdateCustomerResponse,
 } from './responses/customer.response';
-import { DeleteCustomerResult } from './results/customer.result';
 
 @Resolver(() => Customer)
 export class CustomerResolver {
