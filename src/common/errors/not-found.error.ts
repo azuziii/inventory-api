@@ -7,26 +7,22 @@ export interface NotFoundProps {
 }
 
 @ObjectType()
-export class NotFound extends BaseError {
-  constructor(
-    props: NotFoundProps & {
-      entityType: string;
-    },
-  ) {
+export class NotFound extends BaseError implements NotFoundProps {
+  constructor({
+    entityType,
+    ...props
+  }: NotFoundProps & {
+    entityType: string;
+  }) {
     super({
       code: 'NOT_FOUND',
+      entityType,
+      message: `${entityType} not found.`,
     });
 
     Object.assign(this, props);
-
-    if (!this.message) {
-      this.message = `${this.entityType} not found.`;
-    }
   }
 
   @Field(() => ID)
   id!: string;
-
-  @Field()
-  entityType!: string;
 }
