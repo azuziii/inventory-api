@@ -6,7 +6,6 @@ import {
   CustomerArguments,
   UpdateCustomerInput,
 } from './dto/customer.input';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
 import {
   CreateCustomerResponse,
   CustomerQueryResponse,
@@ -23,11 +22,8 @@ export class CustomerResolver {
   async getCustomer(
     @Args('id', { type: () => ID }) id: string,
   ): Promise<CustomerQueryResponse> {
-    const customer = await this.customerService.getCustomerOrFail(id);
-
-    return {
-      customer,
-    };
+    const queryResult = await this.customerService.getCustomerOrFail(id);
+    return new CustomerQueryResponse(queryResult);
   }
 
   @Query(() => CustomersQueryResponse, { name: 'customersResponse' })
@@ -38,14 +34,10 @@ export class CustomerResolver {
     const [customers, count] = await this.customerService.listCustomers(
       args.toManyOptions(),
     );
-
-    return {
-      customers,
-      pagination: new PaginationDto({
-        ...args,
-        total: count,
-      }),
-    };
+    return new CustomersQueryResponse(customers, {
+      ...args,
+      total: count,
+    });
   }
 
   @Mutation(() => CreateCustomerResponse, { name: 'createCustomerResponse' })
@@ -53,11 +45,8 @@ export class CustomerResolver {
     @Args('input', { type: () => CreateCustomerInput, nullable: false })
     input: CreateCustomerInput,
   ): Promise<CreateCustomerResponse> {
-    const customer = await this.customerService.createCustomer(input);
-
-    return {
-      customer,
-    };
+    const createResult = await this.customerService.createCustomer(input);
+    return new CreateCustomerResponse(createResult);
   }
 
   @Mutation(() => UpdateCustomerResponse, { name: 'updateCustomerResponse' })
@@ -65,11 +54,8 @@ export class CustomerResolver {
     @Args('input', { type: () => UpdateCustomerInput, nullable: false })
     input: UpdateCustomerInput,
   ): Promise<UpdateCustomerResponse> {
-    const customer = await this.customerService.updateCustomer(input);
-
-    return {
-      customer,
-    };
+    const updateResult = await this.customerService.updateCustomer(input);
+    return new UpdateCustomerResponse(updateResult);
   }
 
   @Mutation(() => DeleteCustomerResponse, { name: 'deleteCustomerResponse' })
@@ -77,8 +63,6 @@ export class CustomerResolver {
     @Args('id', { type: () => ID }) id: string,
   ): Promise<DeleteCustomerResponse> {
     const deleteResult = await this.customerService.deleteCustomer(id);
-    return {
-      customer: deleteResult,
-    };
+    return new DeleteCustomerResponse(deleteResult);
   }
 }
