@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 
-interface ErrorProps {
+export interface ErrorProps {
   code: string;
   entityType: string;
   message?: string;
