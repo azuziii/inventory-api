@@ -2,6 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 
 interface ErrorProps {
   code: string;
+  entityType: string;
   message?: string;
 }
 
@@ -18,4 +19,6 @@ export abstract class BaseError implements ErrorProps {
 
   @Field()
   message!: string;
+
+  entityType!: string;
 }
