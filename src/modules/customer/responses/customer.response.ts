@@ -11,32 +11,32 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 @ObjectType()
 export class CustomerQueryResponse {
   @Field(() => CustomerQueryResult)
-  customer: typeof CustomerQueryResult;
+  customer!: typeof CustomerQueryResult;
 }
 
 @ObjectType()
 export class CustomersQueryResponse {
   @Field(() => [Customer!]!)
-  customers: Customer[];
+  customers!: Customer[];
 
   @Field(() => PaginationDto)
-  pagination: PaginationDto;
+  pagination!: PaginationDto;
 }
 
 @ObjectType()
 export class CreateCustomerResponse {
   @Field(() => CreateCustomerResult)
-  customer: typeof CreateCustomerResult;
+  customer!: typeof CreateCustomerResult;
 }
 
 @ObjectType()
 export class UpdateCustomerResponse {
   @Field(() => UpdateCustomerResult)
-  customer: typeof UpdateCustomerResult;
+  customer!: typeof UpdateCustomerResult;
 }
 
 @ObjectType()
 export class DeleteCustomerResponse {
   @Field(() => DeleteCustomerResult)
-  customer: typeof DeleteCustomerResult;
+  customer!: typeof DeleteCustomerResult;
 }

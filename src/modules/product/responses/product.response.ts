@@ -10,26 +10,26 @@ import {
 @ObjectType()
 export class ProductQueryResponse {
   @Field(() => ProductQueryResult)
-  product: typeof ProductQueryResult;
+  product!: typeof ProductQueryResult;
 }
 
 @ObjectType()
 export class ProductsQueryResponse {
   @Field(() => [Product!]!)
-  products: Product[];
+  products!: Product[];
 
   @Field(() => PaginationDto)
-  pagination: PaginationDto;
+  pagination!: PaginationDto;
 }
 
 @ObjectType()
 export class CreateProductResponse {
   @Field(() => CreateProductResult)
-  product: typeof CreateProductResult;
+  product!: typeof CreateProductResult;
 }
 
 @ObjectType()
 export class UpdateProductResponse {
   @Field(() => UpdateProductResult)
-  product: typeof UpdateProductResult;
+  product!: typeof UpdateProductResult;
 }
