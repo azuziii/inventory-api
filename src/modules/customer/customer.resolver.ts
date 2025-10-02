@@ -11,6 +11,7 @@ import {
   CreateCustomerResponse,
   CustomerQueryResponse,
   CustomersQueryResponse,
+  DeleteCustomerResponse,
   UpdateCustomerResponse,
 } from './responses/customer.response';
 import { DeleteCustomerResult } from './results/customer.result';
@@ -72,10 +73,13 @@ export class CustomerResolver {
     };
   }
 
-  @Mutation(() => DeleteCustomerResult)
-  deleteCustomer(
+  @Mutation(() => DeleteCustomerResponse)
+  async deleteCustomer(
     @Args('id', { type: () => ID }) id: string,
-  ): Promise<typeof DeleteCustomerResult> {
-    return this.customerService.deleteCustomer(id);
+  ): Promise<DeleteCustomerResponse> {
+    const deleteResult = await this.customerService.deleteCustomer(id);
+    return {
+      customer: deleteResult,
+    };
   }
 }
