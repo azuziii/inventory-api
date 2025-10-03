@@ -6,5 +6,6 @@ import { CustomerNotFound } from 'src/modules/customer/errors/customer.error';
 
 export const UpdateProductResult = createUnionType({
   name: 'UpdateProductResult',
+  // TODO: Fix issue where if customer wasn't found GraphQL __typename would be NotFound, and not CustomerNotFound.
   types: () => [Product, NotFound, AlreadyExist, CustomerNotFound],
 });
