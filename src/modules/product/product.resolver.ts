@@ -9,7 +9,6 @@ import {
 } from '@nestjs/graphql';
 import { ProductService } from './product.service';
 import { Product } from './entities/product.entity';
-import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { Customer } from '../customer/entities/customer.entity';
 import { GetCustomerPipe } from '../customer/pipes/get-customer/get-customer.pipe';
 import { UsePipes } from '@nestjs/common';
