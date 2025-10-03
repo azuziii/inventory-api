@@ -43,9 +43,7 @@ export class ProductResolver {
     input: CreateProductInput,
   ): Promise<CreateProductResponse> {
     if ('__isError' in input.customer) {
-      return {
-        product: input.customer,
-      };
+      return new CreateProductResponse(input.customer);
     }
 
     const createResult = await this.productService.createProduct(input);
