@@ -4,10 +4,12 @@ import {
 } from 'src/common/errors/already-exist.error';
 import { NotFound, NotFoundProps } from 'src/common/errors/not-found.error';
 
+const ENTITY_TYPE = 'Product';
+
 export class ProductAlreadyExist extends AlreadyExist {
   constructor(props: AlreadyExistProps) {
     super({
-      entityType: 'Product',
+      entityType: ENTITY_TYPE,
       ...props,
     });
   }
@@ -16,7 +18,7 @@ export class ProductAlreadyExist extends AlreadyExist {
 export class ProductNotFound extends NotFound {
   constructor(props: NotFoundProps) {
     super({
-      entityType: 'Product',
+      entityType: ENTITY_TYPE,
       ...props,
     });
   }

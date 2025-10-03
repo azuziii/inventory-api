@@ -6,13 +6,15 @@ import {
 import { InUse, InUseProps } from 'src/common/errors/in-use.error';
 import { NotFound, NotFoundProps } from 'src/common/errors/not-found.error';
 
+const ENTITY_TYPE = 'Customer';
+
 @ObjectType()
 export class CustomerAlreadyExist extends AlreadyExist {
-  static readonly __typename = 'CUSTOMER_ALREADY_EXISTS';
+  static readonly __typename = 'CustomerAlreadyExist';
 
   constructor(props: AlreadyExistProps) {
     super({
-      entityType: 'Customer',
+      entityType: ENTITY_TYPE,
       ...props,
     });
   }
@@ -20,11 +22,11 @@ export class CustomerAlreadyExist extends AlreadyExist {
 
 @ObjectType()
 export class CustomerNotFound extends NotFound {
-  static readonly __typename = 'CUSTOMER_NOT_FOUND';
+  static readonly __typename = 'CustomerNotFound';
 
   constructor(props: NotFoundProps) {
     super({
-      entityType: 'Customer',
+      entityType: ENTITY_TYPE,
       ...props,
     });
   }
@@ -32,11 +34,11 @@ export class CustomerNotFound extends NotFound {
 
 @ObjectType()
 export class CustomerInUse extends InUse {
-  static readonly __typename = 'CUSTOMER_IN_USE';
+  static readonly __typename = 'CustomerInUse';
 
   constructor(props: InUseProps) {
     super({
-      entityType: 'Customer',
+      entityType: ENTITY_TYPE,
       ...props,
     });
   }
