@@ -6,13 +6,17 @@ import {
   InputType,
   PartialType,
 } from '@nestjs/graphql';
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 import { FindManyOptions, ILike } from 'typeorm';
 import { Product } from '../entities/product.entity';
 import { PaginationInput } from 'src/common/dto/pagination.dto';
+import { CreateProductDto } from './product.dto';
+import { Customer } from 'src/modules/customer/entities/customer.entity';
+import { CustomerNotFound } from 'src/modules/customer/errors/customer.error';
+import { UpdateCustomerDto } from 'src/modules/customer/dto/customer.dto';
 
 @InputType()
-export class CreateProductInput {
+export class CreateProductInput implements CreateProductDto {
   @Field({ nullable: false })
   @IsNotEmpty()
   name!: string;
@@ -32,10 +36,15 @@ export class CreateProductInput {
   @Field()
   @IsNotEmpty()
   customer_id!: string;
+
+  customer!: Customer | CustomerNotFound;
 }
 
 @InputType()
-export class UpdateProductInput extends PartialType(CreateProductInput) {
+export class UpdateProductInput
+  extends PartialType(CreateProductInput)
+  implements UpdateCustomerDto
+{
   @Field(() => ID, { nullable: false })
   @IsNotEmpty()
   id!: string;
