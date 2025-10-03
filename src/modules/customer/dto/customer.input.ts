@@ -3,9 +3,10 @@ import { FindManyOptions, ILike } from 'typeorm';
 import { Customer } from '../entities/customer.entity';
 import { PaginationInput } from 'src/common/dto/pagination.dto';
 import { IsNotEmpty, IsOptional } from 'class-validator';
+import { CreateCustomerDto, UpdateCustomerDto } from './customer.dto';
 
 @InputType()
-export class CreateCustomerInput {
+export class CreateCustomerInput implements CreateCustomerDto {
   @Field({ nullable: false })
   @IsNotEmpty()
   name!: string;
@@ -40,7 +41,10 @@ export class CreateCustomerInput {
 }
 
 @InputType()
-export class UpdateCustomerInput extends PartialType(CreateCustomerInput) {
+export class UpdateCustomerInput
+  extends PartialType(CreateCustomerInput)
+  implements UpdateCustomerDto
+{
   @Field(() => ID, { nullable: false })
   @IsNotEmpty()
   id!: string;
