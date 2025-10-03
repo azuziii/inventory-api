@@ -12,7 +12,6 @@ import { Product } from './entities/product.entity';
 import { Customer } from '../customer/entities/customer.entity';
 import { GetCustomerPipe } from '../customer/pipes/get-customer/get-customer.pipe';
 import { UsePipes } from '@nestjs/common';
-import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import {
   CreateProductInput,
   ProductArguments,
@@ -41,7 +40,7 @@ export class ProductResolver {
   @UsePipes(GetCustomerPipe)
   async createProduct(
     @Args('input', { type: () => CreateProductInput, nullable: false })
-    input: CreateProductDto,
+    input: CreateProductInput,
   ): Promise<CreateProductResponse> {
     if ('__isError' in input.customer) {
       return {
@@ -57,7 +56,7 @@ export class ProductResolver {
   @UsePipes(GetCustomerPipe)
   async updateProduct(
     @Args('input', { type: () => UpdateProductInput, nullable: false })
-    input: UpdateProductDto,
+    input: UpdateProductInput,
   ): Promise<UpdateProductResponse> {
     if (input.customer && '__isError' in input.customer) {
       return new UpdateProductResponse(input.customer);
