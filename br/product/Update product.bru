@@ -1,0 +1,43 @@
+meta {
+  name: Update product
+  type: graphql
+  seq: 4
+}
+
+post {
+  url: http://localhost:3366/graphql
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  mutation {
+    updateProductResponse(input: {
+      id: "b37d8259-5c8a-4bde-b8e4-7c353c6acb90"
+      name: "d"
+      customer_id: "e3e165c7-d0f7-456b-895f-170906c35546"
+    }) {
+      product{
+        ... on  Product{
+          name
+          customer {
+            id
+            name
+          }
+        }
+        ... on NotFound {
+          __typename
+          message
+        }
+        ... on AlreadyExist {
+          __typename
+          message
+        }
+        ... on CustomerNotFound {
+          __typename
+          message
+        }
+      }
+    }
+  }
+}

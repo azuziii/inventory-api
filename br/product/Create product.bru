@@ -1,0 +1,43 @@
+meta {
+  name: Create product
+  type: graphql
+  seq: 3
+}
+
+post {
+  url: http://localhost:3366/graphql
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  mutation {
+   createProductResponse(
+    input:{
+      name:"av"
+      code:"asd"
+      price:55.2
+      isSample:true
+      customer_id: "568c1d4a-426b-4222-9da8-1f3bed6d40dc"
+    }
+  ){
+    product{
+      ... on Product {
+        id
+        name
+      }
+      ... on AlreadyExist {
+        message
+      }
+      ... on CustomerNotFound {
+        message
+        code
+        id
+        __typename
+      }
+      
+    }
+  }
+  }
+  
+}

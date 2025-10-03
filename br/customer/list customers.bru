@@ -1,0 +1,24 @@
+meta {
+  name: list customers
+  type: graphql
+  seq: 2
+}
+
+post {
+  url: http://localhost:3366/graphql
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  query {
+    customersResponse {
+     customers{
+      id
+      name
+      ice
+    }
+    }
+  }
+  
+}

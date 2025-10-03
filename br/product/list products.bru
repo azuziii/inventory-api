@@ -1,0 +1,40 @@
+meta {
+  name: list products
+  type: graphql
+  seq: 2
+}
+
+post {
+  url: http://localhost:3366/graphql
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  query {
+    productsResponse(name:"1") {
+      products {
+        id
+        name
+        isSample
+        price
+        customer {
+          ... on Customer {
+            id
+            name
+          }
+          
+        }
+      }
+      pagination {
+        total
+        page
+        limit
+        totalPages
+        hasNextPage
+        hasPrevPage
+      }
+    }
+  }
+  
+}

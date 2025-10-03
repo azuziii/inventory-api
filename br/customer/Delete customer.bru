@@ -1,0 +1,24 @@
+meta {
+  name: Delete customer
+  type: graphql
+  seq: 5
+}
+
+post {
+  url: http://localhost:3366/graphql
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  mutation {
+    deleteCustomer(id:"568c1d4a-426b-4222-9da8-1f3bed6d40dc") {
+      ... on  DeleteResponse{
+        success
+      }
+      ... on InUse {
+        message
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+meta {
+  name: Delete product
+  type: graphql
+  seq: 5
+}
+
+post {
+  url: http://localhost:3366/graphql
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  mutation {
+    deleteCustomerResponse(id: "9324daf8-1613-4f03-86fc-96e105797d84") {
+      customer {
+        ... on DeleteResponse {
+          id
+        }
+        ... on InUse {
+          message
+        }
+      }
+    }
+  }
+  
+}

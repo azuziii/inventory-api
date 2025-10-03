@@ -1,0 +1,37 @@
+meta {
+  name: Get customer
+  type: graphql
+  seq: 1
+}
+
+post {
+  url: http://localhost:3366/graphql
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  query  {
+    customerResponse(id:"9324daf8-1613-4f03-86fc-96e105797d84"){
+      customer {
+       __typename
+        ... on Customer {
+          name
+          ice
+        }
+        ... on NotFound {
+          code
+          message
+          id
+        }
+      }
+    }
+  }
+  
+}
+
+body:graphql:vars {
+  {
+    "id":"1933d211-5734-4e3f-8b0b-3f9e81b1dd28"
+  }
+}
