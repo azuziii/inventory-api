@@ -47,6 +47,7 @@ export class UpdateProductInput
 {
   @Field(() => ID, { nullable: false })
   @IsNotEmpty()
+  @IsUUID()
   id!: string;
 }
 
