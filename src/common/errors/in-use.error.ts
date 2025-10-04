@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { BaseError } from './error';
+import { BaseErrorWithEntityType } from './error';
 
 export interface InUseProps {
   resourceType: string;
@@ -7,7 +7,7 @@ export interface InUseProps {
 }
 
 @ObjectType()
-export class InUse extends BaseError implements InUseProps {
+export class InUse extends BaseErrorWithEntityType implements InUseProps {
   static readonly __typename: string = 'InUse';
 
   constructor({

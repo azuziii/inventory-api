@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { BaseError } from './error';
+import { BaseErrorWithEntityType } from './error';
 
 export interface NotFoundProps {
   id: string;
@@ -7,7 +7,7 @@ export interface NotFoundProps {
 }
 
 @ObjectType()
-export class NotFound extends BaseError implements NotFoundProps {
+export class NotFound extends BaseErrorWithEntityType implements NotFoundProps {
   static readonly __typename: string = 'NotFound';
 
   constructor({

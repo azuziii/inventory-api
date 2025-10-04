@@ -1,5 +1,5 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { BaseError } from './error';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { BaseErrorWithEntityType } from './error';
 
 export interface AlreadyExistProps {
   field: string;
@@ -7,7 +7,10 @@ export interface AlreadyExistProps {
 }
 
 @ObjectType()
-export class AlreadyExist extends BaseError implements AlreadyExistProps {
+export class AlreadyExist
+  extends BaseErrorWithEntityType
+  implements AlreadyExistProps
+{
   static readonly __typename: string = 'AlreadyExist';
 
   constructor({
