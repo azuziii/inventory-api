@@ -35,6 +35,7 @@ export class CreateProductInput implements CreateProductDto {
 
   @Field()
   @IsNotEmpty()
+  @IsUUID()
   customer_id!: string;
 
   customer!: Customer | CustomerNotFound;
@@ -55,6 +56,7 @@ export class UpdateProductInput
 export class ProductArguments extends PaginationInput {
   @Field(() => ID, { nullable: true })
   @IsOptional()
+  @IsUUID()
   id?: string;
 
   @Field({ nullable: true })
