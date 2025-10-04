@@ -23,6 +23,7 @@ import {
   ProductsQueryResponse,
   UpdateProductResponse,
 } from './responses/product.response';
+import { ErrorResultType } from 'src/common/decorators/meta/error-result-type.decorator';
 
 @Resolver(() => Product)
 export class ProductResolver {
@@ -36,6 +37,7 @@ export class ProductResolver {
     return new ProductQueryResponse(queryResult);
   }
 
+  @ErrorResultType(CreateProductResponse)
   @Mutation(() => CreateProductResponse, { name: 'createProductResponse' })
   @UsePipes(GetCustomerPipe)
   async createProduct(
@@ -50,6 +52,7 @@ export class ProductResolver {
     return new CreateProductResponse(createResult);
   }
 
+  @ErrorResultType(UpdateProductResponse)
   @Mutation(() => UpdateProductResponse, { name: 'updateProductResponse' })
   @UsePipes(GetCustomerPipe)
   async updateProduct(
