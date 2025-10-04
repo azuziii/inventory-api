@@ -29,7 +29,7 @@ export class GqlExceptionToDataInterceptor implements NestInterceptor {
             console.error(
               `Metedata with key:'${ERROR_RESULT_TYPE_META}' was not set for '${gqlCtx.getHandler().name}'`,
             );
-            return of(err);
+            throw err;
           }
 
           const response = err.getResponse();
