@@ -8,6 +8,8 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ProductModule } from './modules/product/product.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { GqlExceptionToDataInterceptor } from './common/interceptors/gql-exception-to-data-interceptor/gql-exception-to-data-interceptor.interceptor';
 
 @Module({
   imports: [
@@ -38,6 +40,12 @@ import { ProductModule } from './modules/product/product.module';
     ProductModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: GqlExceptionToDataInterceptor,
+    },
+  ],
 })
 export class AppModule {}
