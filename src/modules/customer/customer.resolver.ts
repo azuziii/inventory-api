@@ -13,6 +13,7 @@ import {
   DeleteCustomerResponse,
   UpdateCustomerResponse,
 } from './responses/customer.response';
+import { ErrorResultType } from 'src/common/decorators/meta/error-result-type.decorator';
 
 @Resolver(() => Customer)
 export class CustomerResolver {
@@ -40,6 +41,7 @@ export class CustomerResolver {
     });
   }
 
+  @ErrorResultType(CreateCustomerResponse)
   @Mutation(() => CreateCustomerResponse, { name: 'createCustomerResponse' })
   async createCustomer(
     @Args('input', { type: () => CreateCustomerInput, nullable: false })
@@ -49,6 +51,7 @@ export class CustomerResolver {
     return new CreateCustomerResponse(createResult);
   }
 
+  @ErrorResultType(UpdateCustomerResponse)
   @Mutation(() => UpdateCustomerResponse, { name: 'updateCustomerResponse' })
   async updateCustomer(
     @Args('input', { type: () => UpdateCustomerInput, nullable: false })
