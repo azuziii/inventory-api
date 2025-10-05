@@ -12,32 +12,31 @@ post {
 
 body:graphql {
   mutation {
-   createProductResponse(
-    input:{
-      name:"av"
-      code:"asd"
-      price:55.2
-      isSample:true
-      customer_id: "568c1d4a-426b-4222-9da8-1f3bed6d40dc"
-    }
-  ){
-    product{
-      ... on Product {
-        id
-        name
+    createProductResponse(
+      input: {
+        name: "av"
+        code: "asd"
+        price: 55.2
+        isSample: true
+        customer_id: "568c1d4a-426b-4222-9da8-1f3bed6d40dc"
       }
-      ... on AlreadyExist {
-        message
-      }
-      ... on CustomerNotFound {
-        message
-        code
-        id
+    ) {
+      product {
         __typename
+        ... on Product {
+          name
+        }
+        ... on ProductAlreadyExist {
+          message
+        }
+        ... on CustomerNotFound {
+          message
+        }
+        ... on InvalidData {
+          message
+        }
       }
-      
     }
-  }
   }
   
 }

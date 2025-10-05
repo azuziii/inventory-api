@@ -11,22 +11,25 @@ post {
 }
 
 body:graphql {
-  query  {
-   productResponse(id:"d50c78b1-65e8-4613-ae14-1ba4553cc7e5"){
-    product{
-      __typename
-      ... on Product {
-        name
-        customer {
+  query {
+    productResponse(id: "d50c78b1-65e8-4613-ae14-1ba4553cc7e5") {
+      product {
+        __typename
+        ... on Product {
           name
-          ice
+          customer {
+            name
+            ice
+          }
+        }
+        ... on ProductNotFound {
+          message
+        }
+        ... on InvalidData {
+          message
         }
       }
-      ... on NotFound {
-        code
-      }
     }
-  }
   }
   
 }

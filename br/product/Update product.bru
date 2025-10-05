@@ -12,32 +12,36 @@ post {
 
 body:graphql {
   mutation {
-    updateProductResponse(input: {
-      id: "b37d8259-5c8a-4bde-b8e4-7c353c6acb90"
-      name: "d"
-      customer_id: "e3e165c7-d0f7-456b-895f-170906c35546"
-    }) {
-      product{
-        ... on  Product{
+    updateProductResponse(
+      input: {
+        id: "b37d8259-5c8a-4bde-b8e4-7c353c6acb90"
+        name: "d"
+        customer_id: "e3e165c7-d0f7-456b-895f-170906c35546"
+      }
+    ) {
+      product {
+        __typename
+        ... on Product {
           name
           customer {
             id
             name
           }
         }
-        ... on NotFound {
-          __typename
+        ... on ProductNotFound {
           message
         }
-        ... on AlreadyExist {
-          __typename
+        ... on ProductAlreadyExist {
           message
         }
         ... on CustomerNotFound {
-          __typename
+          message
+        }
+        ... on InvalidData {
           message
         }
       }
     }
   }
+  
 }
