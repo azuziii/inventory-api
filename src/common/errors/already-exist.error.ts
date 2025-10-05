@@ -6,28 +6,27 @@ export interface AlreadyExistProps {
   message?: string;
 }
 
-@ObjectType()
-export class AlreadyExist
-  extends BaseErrorWithEntityType
-  implements AlreadyExistProps
-{
-  static readonly __typename: string = 'AlreadyExist';
+export function AlreadyExist(entityType: string) {
+  const name = `${entityType}AlreadyExist`;
 
-  constructor({
-    entityType,
-    ...props
-  }: AlreadyExistProps & {
-    entityType: string;
-  }) {
-    super({
-      code: 'ALREADY_EXISTS',
-      entityType,
-      message: `${props.field} already exists`,
-    });
+  @ObjectType(name)
+  class AlreadyExist
+    extends BaseErrorWithEntityType
+    implements AlreadyExistProps
+  {
+    constructor(props: AlreadyExistProps) {
+      super({
+        code: 'ALREADY_EXISTS',
+        entityType,
+        message: `${props.field} already exists`,
+      });
 
-    Object.assign(this, props);
+      Object.assign(this, props);
+    }
+
+    @Field()
+    field!: string;
   }
 
-  @Field()
-  field!: string;
+  return AlreadyExist;
 }

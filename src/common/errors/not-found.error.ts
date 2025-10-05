@@ -6,25 +6,23 @@ export interface NotFoundProps {
   message?: string;
 }
 
-@ObjectType()
-export class NotFound extends BaseErrorWithEntityType implements NotFoundProps {
-  static readonly __typename: string = 'NotFound';
+export function NotFound(entityType: string) {
+  const name = `${entityType}NotFound`;
+  @ObjectType(name)
+  class NotFound extends BaseErrorWithEntityType implements NotFoundProps {
+    constructor(props: NotFoundProps) {
+      super({
+        code: 'NOT_FOUND',
+        entityType,
+        message: `${entityType} not found.`,
+      });
 
-  constructor({
-    entityType,
-    ...props
-  }: NotFoundProps & {
-    entityType: string;
-  }) {
-    super({
-      code: 'NOT_FOUND',
-      entityType,
-      message: `${entityType} not found.`,
-    });
+      Object.assign(this, props);
+    }
 
-    Object.assign(this, props);
+    @Field(() => ID)
+    id!: string;
   }
 
-  @Field(() => ID)
-  id!: string;
+  return NotFound;
 }
