@@ -19,6 +19,7 @@ import { ErrorResultType } from 'src/common/decorators/meta/error-result-type.de
 export class CustomerResolver {
   constructor(private readonly customerService: CustomerService) {}
 
+  @ErrorResultType(CustomerQueryResponse)
   @Query(() => CustomerQueryResponse, { name: 'customerResponse' })
   async getCustomer(
     @Args('id', { type: () => ID }) id: string,
@@ -61,6 +62,7 @@ export class CustomerResolver {
     return new UpdateCustomerResponse(updateResult);
   }
 
+  @ErrorResultType(DeleteCustomerResponse)
   @Mutation(() => DeleteCustomerResponse, { name: 'deleteCustomerResponse' })
   async deleteCustomer(
     @Args('id', { type: () => ID }) id: string,

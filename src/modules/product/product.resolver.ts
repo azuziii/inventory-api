@@ -29,6 +29,7 @@ import { ErrorResultType } from 'src/common/decorators/meta/error-result-type.de
 export class ProductResolver {
   constructor(private readonly productService: ProductService) {}
 
+  @ErrorResultType(ProductQueryResponse)
   @Query(() => ProductQueryResponse, { name: 'productResponse' })
   async getProduct(
     @Args('id', { type: () => ID }) id: string,
