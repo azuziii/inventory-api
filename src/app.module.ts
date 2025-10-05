@@ -1,15 +1,15 @@
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { GraphQLModule } from '@nestjs/graphql';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CustomerModule } from './modules/customer/customer.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { join } from 'path';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ProductModule } from './modules/product/product.module';
-import { APP_INTERCEPTOR } from '@nestjs/core';
 import { GqlExceptionToDataInterceptor } from './common/interceptors/gql-exception-to-data-interceptor/gql-exception-to-data-interceptor.interceptor';
+import { CustomerModule } from './modules/customer/customer.module';
+import { ProductModule } from './modules/product/product.module';
 
 @Module({
   imports: [

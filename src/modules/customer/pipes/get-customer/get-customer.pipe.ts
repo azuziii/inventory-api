@@ -4,8 +4,8 @@ import {
   Injectable,
   PipeTransform,
 } from '@nestjs/common';
-import { ICustomer } from '../../interfaces/customer.interface';
 import { CustomerNotFound } from '../../errors/customer.error';
+import { ICustomer } from '../../interfaces/customer.interface';
 
 @Injectable()
 export class GetCustomerPipe implements PipeTransform {

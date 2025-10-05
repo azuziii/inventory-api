@@ -1,8 +1,8 @@
-import { EntityManager, QueryFailedError, Repository } from 'typeorm';
-import { Customer } from './entities/customer.entity';
-import { CreateCustomerDto, UpdateCustomerDto } from './dto/customer.dto';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { DatabaseError } from 'pg';
+import { EntityManager, QueryFailedError, Repository } from 'typeorm';
+import { CreateCustomerDto, UpdateCustomerDto } from './dto/customer.dto';
+import { Customer } from './entities/customer.entity';
 import { CustomerAlreadyExist, CustomerInUse } from './errors/customer.error';
 
 @Injectable()

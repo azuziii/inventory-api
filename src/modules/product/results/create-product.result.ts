@@ -1,8 +1,8 @@
-import { AlreadyExist } from 'src/common/errors/already-exist.error';
-import { Product } from '../entities/product.entity';
-import { CustomerNotFound } from 'src/modules/customer/errors/customer.error';
 import { createUnionType } from '@nestjs/graphql';
+import { AlreadyExist } from 'src/common/errors/already-exist.error';
 import { InvalidData } from 'src/common/errors/invalid-data.error';
+import { CustomerNotFound } from 'src/modules/customer/errors/customer.error';
+import { Product } from '../entities/product.entity';
 
 export const CreateProductResult = createUnionType({
   name: 'CreateProductResult',

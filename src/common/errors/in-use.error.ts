@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { ObjectType } from '@nestjs/graphql';
 import { BaseErrorWithEntityType } from './error';
 
 export interface InUseProps {

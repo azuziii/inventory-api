@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { DeleteResponse } from 'src/common/responses/delete.response';
 import {
   DataSource,
   EntityManager,
@@ -8,15 +9,10 @@ import {
 import { CustomerRepository } from './customer.repository';
 import { CreateCustomerDto, UpdateCustomerDto } from './dto/customer.dto';
 import { Customer } from './entities/customer.entity';
-import {
-  CustomerAlreadyExist,
-  CustomerNotFound,
-} from './errors/customer.error';
-import { InUse } from 'src/common/errors/in-use.error';
-import { DeleteResponse } from 'src/common/responses/delete.response';
+import { CustomerNotFound } from './errors/customer.error';
 import { CreateCustomerResult } from './results/create-customer.result';
-import { CustomerQueryResult } from './results/query-customer.result';
 import { DeleteCustomerResult } from './results/delete-customer.result';
+import { CustomerQueryResult } from './results/query-customer.result';
 import { UpdateCustomerResult } from './results/update-customer.result';
 
 @Injectable()

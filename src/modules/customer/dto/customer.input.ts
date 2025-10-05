@@ -1,8 +1,8 @@
-import { InputType, Field, ID, PartialType, ArgsType } from '@nestjs/graphql';
+import { ArgsType, Field, ID, InputType, PartialType } from '@nestjs/graphql';
+import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
+import { PaginationInput } from 'src/common/dto/pagination.dto';
 import { FindManyOptions, ILike } from 'typeorm';
 import { Customer } from '../entities/customer.entity';
-import { PaginationInput } from 'src/common/dto/pagination.dto';
-import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 import { CreateCustomerDto, UpdateCustomerDto } from './customer.dto';
 
 @InputType()

@@ -1,5 +1,5 @@
-import { GetCustomerPipe } from './get-customer.pipe';
 import { ICustomer } from '../../interfaces/customer.interface';
+import { GetCustomerPipe } from './get-customer.pipe';
 
 describe('GetCustomerPipe', () => {
   it('should be defined', () => {

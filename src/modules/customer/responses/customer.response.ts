@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Customer } from '../entities/customer.entity';
 import { PaginationDto, PaginationProps } from 'src/common/dto/pagination.dto';
+import { Customer } from '../entities/customer.entity';
 import { CreateCustomerResult } from '../results/create-customer.result';
 import { DeleteCustomerResult } from '../results/delete-customer.result';
 import { CustomerQueryResult } from '../results/query-customer.result';

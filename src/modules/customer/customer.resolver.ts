@@ -1,11 +1,13 @@
-import { Resolver, Query, Args, ID, Mutation } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { GetByIdArgs } from 'src/common/args/get-by-id.args';
+import { ErrorResultType } from 'src/common/decorators/meta/error-result-type.decorator';
 import { CustomerService } from './customer.service';
-import { Customer } from './entities/customer.entity';
 import {
   CreateCustomerInput,
   CustomerArguments,
   UpdateCustomerInput,
 } from './dto/customer.input';
+import { Customer } from './entities/customer.entity';
 import {
   CreateCustomerResponse,
   CustomerQueryResponse,
@@ -13,8 +15,6 @@ import {
   DeleteCustomerResponse,
   UpdateCustomerResponse,
 } from './responses/customer.response';
-import { ErrorResultType } from 'src/common/decorators/meta/error-result-type.decorator';
-import { GetByIdArgs } from 'src/common/args/get-by-id.args';
 
 @Resolver(() => Customer)
 export class CustomerResolver {

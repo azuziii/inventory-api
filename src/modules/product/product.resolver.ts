@@ -1,30 +1,29 @@
+import { UsePipes } from '@nestjs/common';
 import {
   Args,
-  ID,
   Mutation,
   Parent,
   Query,
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { ProductService } from './product.service';
-import { Product } from './entities/product.entity';
+import { GetByIdArgs } from 'src/common/args/get-by-id.args';
+import { ErrorResultType } from 'src/common/decorators/meta/error-result-type.decorator';
 import { Customer } from '../customer/entities/customer.entity';
 import { GetCustomerPipe } from '../customer/pipes/get-customer/get-customer.pipe';
-import { UsePipes } from '@nestjs/common';
 import {
   CreateProductInput,
   ProductArguments,
   UpdateProductInput,
 } from './dto/product.input';
+import { Product } from './entities/product.entity';
+import { ProductService } from './product.service';
 import {
   CreateProductResponse,
   ProductQueryResponse,
   ProductsQueryResponse,
   UpdateProductResponse,
 } from './responses/product.response';
-import { ErrorResultType } from 'src/common/decorators/meta/error-result-type.decorator';
-import { GetByIdArgs } from 'src/common/args/get-by-id.args';
 
 @Resolver(() => Product)
 export class ProductResolver {
