@@ -24,7 +24,7 @@ export class PaginationInput {
     }
     return numValue;
   })
-  page: number = PAGE_DEFAULT;
+  page!: number;
 
   @Field(() => Int, { defaultValue: 10, nullable: true })
   @IsOptional()
@@ -35,7 +35,7 @@ export class PaginationInput {
     }
     return numValue;
   })
-  limit: number = LIMIT_DEFAULT;
+  limit!: number;
 }
 
 @ObjectType('Pagination')
