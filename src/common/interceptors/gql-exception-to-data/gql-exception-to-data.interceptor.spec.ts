@@ -1,5 +1,5 @@
 import { Reflector } from '@nestjs/core';
-import { GqlExceptionToDataInterceptor } from './gql-exception-to-data-interceptor.interceptor';
+import { GqlExceptionToDataInterceptor } from './gql-exception-to-data.interceptor';
 
 describe('GqlExceptionToDataInterceptor', () => {
   it('should be defined', () => {

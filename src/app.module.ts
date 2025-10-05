@@ -7,7 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { GqlExceptionToDataInterceptor } from './common/interceptors/gql-exception-to-data-interceptor/gql-exception-to-data-interceptor.interceptor';
+import { GqlExceptionToDataInterceptor } from './common/interceptors/gql-exception-to-data/gql-exception-to-data.interceptor';
 import { CustomerModule } from './modules/customer/customer.module';
 import { ProductModule } from './modules/product/product.module';
 
