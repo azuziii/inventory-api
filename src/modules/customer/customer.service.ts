@@ -48,7 +48,7 @@ export class CustomerService {
       });
 
       if (!customer) {
-        return new CustomerNotFound({
+        throw new CustomerNotFound({
           id: customerDto.id,
         });
       }
