@@ -11,18 +11,19 @@ post {
 }
 
 body:graphql {
-  query  {
-    customerResponse(id:"9324daf8-1613-4f03-86fc-96e105797d84"){
+  query {
+    customerResponse(id: "9324daf8-1613-4f03-86fc-96e105797d84") {
       customer {
-       __typename
+        __typename
         ... on Customer {
           name
           ice
         }
-        ... on NotFound {
-          code
+        ... on CustomerNotFound {
           message
-          id
+        }
+        ... on InvalidData {
+          message
         }
       }
     }

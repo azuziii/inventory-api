@@ -1,0 +1,36 @@
+meta {
+  name: Update customer
+  type: graphql
+  seq: 4
+}
+
+post {
+  url: http://localhost:3366/graphql
+  body: graphql
+  auth: none
+}
+
+body:graphql {
+  mutation {
+    updateCustomerResponse(
+      input: { id: "9324daf8-16d13-4f03-86fc-96e105797d84", name: "ttttest" }
+    ) {
+      customer {
+        __typename
+        ... on Customer {
+          name
+        }
+        ... on CustomerNotFound {
+          message
+        }
+        ... on CustomerAlreadyExist {
+          message
+        }
+        ... on InvalidData {
+          message
+        }
+      }
+    }
+  }
+  
+}
