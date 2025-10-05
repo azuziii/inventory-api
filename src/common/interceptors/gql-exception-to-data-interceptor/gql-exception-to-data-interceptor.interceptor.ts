@@ -51,6 +51,8 @@ export class GqlExceptionToDataInterceptor implements NestInterceptor {
               }),
             ),
           );
+        } else if ('__isError' in err) {
+          return of(new ResponseWrapperClass(err));
         }
         return of(err);
       }),
