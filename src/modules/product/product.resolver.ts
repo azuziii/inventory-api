@@ -45,10 +45,6 @@ export class ProductResolver {
     @Args('input', { type: () => CreateProductInput, nullable: false })
     input: CreateProductInput,
   ): Promise<CreateProductResponse> {
-    if ('__isError' in input.customer) {
-      return new CreateProductResponse(input.customer);
-    }
-
     const createResult = await this.productService.createProduct(input);
     return new CreateProductResponse(createResult);
   }
@@ -60,10 +56,6 @@ export class ProductResolver {
     @Args('input', { type: () => UpdateProductInput, nullable: false })
     input: UpdateProductInput,
   ): Promise<UpdateProductResponse> {
-    if (input.customer && '__isError' in input.customer) {
-      return new UpdateProductResponse(input.customer);
-    }
-
     const updateResult = await this.productService.updateProduct(input);
     return new UpdateProductResponse(updateResult);
   }
