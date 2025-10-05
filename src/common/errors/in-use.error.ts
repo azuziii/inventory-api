@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { ObjectType } from '@nestjs/graphql';
 import { BaseErrorWithEntityType } from './error';
 
 export interface InUseProps {
@@ -6,24 +6,23 @@ export interface InUseProps {
   message?: string;
 }
 
-@ObjectType()
-export class InUse extends BaseErrorWithEntityType implements InUseProps {
-  static readonly __typename: string = 'InUse';
+export function InUse(entityType: string) {
+  const name = `${entityType}InUse`;
 
-  constructor({
-    entityType,
-    ...props
-  }: InUseProps & {
-    entityType: string;
-  }) {
-    super({
-      code: 'IN_USE',
-      entityType,
-      message: `${entityType} can't be deleted because it's used in other ${props.resourceType} records.`,
-    });
+  @ObjectType(name)
+  class InUse extends BaseErrorWithEntityType implements InUseProps {
+    constructor(props: InUseProps) {
+      super({
+        code: 'IN_USE',
+        entityType,
+        message: `${entityType} can't be deleted because it's used in other ${props.resourceType} records.`,
+      });
 
-    Object.assign(this, props);
+      Object.assign(this, props);
+    }
+
+    resourceType!: string;
   }
 
-  resourceType!: string;
+  return InUse;
 }
