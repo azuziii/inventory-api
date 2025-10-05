@@ -23,43 +23,38 @@ import {
   ProductsQueryResponse,
   UpdateProductResponse,
 } from './responses/product.response';
+import { ErrorResultType } from 'src/common/decorators/meta/error-result-type.decorator';
+import { GetByIdArgs } from 'src/common/args/get-by-id.args';
 
 @Resolver(() => Product)
 export class ProductResolver {
   constructor(private readonly productService: ProductService) {}
 
+  @ErrorResultType(ProductQueryResponse)
   @Query(() => ProductQueryResponse, { name: 'productResponse' })
-  async getProduct(
-    @Args('id', { type: () => ID }) id: string,
-  ): Promise<ProductQueryResponse> {
+  async getProduct(@Args() { id }: GetByIdArgs): Promise<ProductQueryResponse> {
     const queryResult = await this.productService.getProductOrFail(id);
     return new ProductQueryResponse(queryResult);
   }
 
+  @ErrorResultType(CreateProductResponse)
   @Mutation(() => CreateProductResponse, { name: 'createProductResponse' })
   @UsePipes(GetCustomerPipe)
   async createProduct(
     @Args('input', { type: () => CreateProductInput, nullable: false })
     input: CreateProductInput,
   ): Promise<CreateProductResponse> {
-    if ('__isError' in input.customer) {
-      return new CreateProductResponse(input.customer);
-    }
-
     const createResult = await this.productService.createProduct(input);
     return new CreateProductResponse(createResult);
   }
 
+  @ErrorResultType(UpdateProductResponse)
   @Mutation(() => UpdateProductResponse, { name: 'updateProductResponse' })
   @UsePipes(GetCustomerPipe)
   async updateProduct(
     @Args('input', { type: () => UpdateProductInput, nullable: false })
     input: UpdateProductInput,
   ): Promise<UpdateProductResponse> {
-    if (input.customer && '__isError' in input.customer) {
-      return new UpdateProductResponse(input.customer);
-    }
-
     const updateResult = await this.productService.updateProduct(input);
     return new UpdateProductResponse(updateResult);
   }

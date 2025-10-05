@@ -30,19 +30,12 @@ export class CustomerService {
     customerDto: CreateCustomerDto,
   ): Promise<typeof CreateCustomerResult> {
     return this.datasource.transaction(async (entityManager: EntityManager) => {
-      try {
-        const customer = await this.repo.createCustomer(
-          customerDto,
-          entityManager,
-        );
+      const customer = await this.repo.createCustomer(
+        customerDto,
+        entityManager,
+      );
 
-        return customer;
-      } catch (error) {
-        if (error instanceof CustomerAlreadyExist) {
-          return error;
-        }
-        throw error;
-      }
+      return customer;
     });
   }
 
@@ -50,32 +43,21 @@ export class CustomerService {
     customerDto: UpdateCustomerDto,
   ): Promise<typeof UpdateCustomerResult> {
     return this.datasource.transaction(async (entityManager: EntityManager) => {
-      try {
-        const customer = await entityManager.findOne(Customer, {
-          where: { id: customerDto.id },
+      const customer = await entityManager.findOne(Customer, {
+        where: { id: customerDto.id },
+      });
+
+      if (!customer) {
+        throw new CustomerNotFound({
+          id: customerDto.id,
         });
-
-        if (!customer) {
-          return new CustomerNotFound({
-            id: customerDto.id,
-          });
-        }
-
-        const updatedCustomer = await this.repo.updateCustomer(
-          customerDto,
-          entityManager,
-        );
-        return updatedCustomer;
-      } catch (error) {
-        if (
-          error instanceof CustomerNotFound ||
-          error instanceof CustomerAlreadyExist
-        ) {
-          return error;
-        }
-
-        throw error;
       }
+
+      const updatedCustomer = await this.repo.updateCustomer(
+        customerDto,
+        entityManager,
+      );
+      return updatedCustomer;
     });
   }
 
@@ -91,7 +73,7 @@ export class CustomerService {
     });
 
     if (!customer) {
-      return new CustomerNotFound({
+      throw new CustomerNotFound({
         id,
       });
     }
@@ -106,15 +88,7 @@ export class CustomerService {
   }
 
   async deleteCustomer(id: string): Promise<typeof DeleteCustomerResult> {
-    try {
-      await this.repo.deleteCustomer(id);
-      return new DeleteResponse(id);
-    } catch (error) {
-      if (error instanceof InUse) {
-        return error;
-      }
-
-      throw error;
-    }
+    await this.repo.deleteCustomer(id);
+    return new DeleteResponse(id);
   }
 }

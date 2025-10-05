@@ -19,19 +19,9 @@ export class ProductService {
     productDto: CreateProductDto,
   ): Promise<typeof CreateProductResult> {
     return this.datasource.transaction(async (entityManager: EntityManager) => {
-      try {
-        const product = await this.repo.createProduct(
-          productDto,
-          entityManager,
-        );
+      const product = await this.repo.createProduct(productDto, entityManager);
 
-        return product;
-      } catch (error) {
-        if (error instanceof ProductAlreadyExist) {
-          return error;
-        }
-        throw error;
-      }
+      return product;
     });
   }
 
@@ -39,33 +29,21 @@ export class ProductService {
     productDto: UpdateProductDto,
   ): Promise<typeof UpdateProductResult> {
     return this.datasource.transaction(async (entityManager: EntityManager) => {
-      try {
-        const product = await entityManager.findOne(Product, {
-          where: { id: productDto.id },
+      const product = await entityManager.findOne(Product, {
+        where: { id: productDto.id },
+      });
+
+      if (!product) {
+        return new ProductNotFound({
+          id: productDto.id,
         });
-
-        if (!product) {
-          return new ProductNotFound({
-            id: productDto.id,
-          });
-        }
-
-        const updatedProduct = await this.repo.updateProduct(
-          productDto,
-          entityManager,
-        );
-        return updatedProduct;
-      } catch (error) {
-        console.log(error);
-        if (
-          error instanceof ProductNotFound ||
-          error instanceof ProductAlreadyExist
-        ) {
-          return error;
-        }
-
-        throw error;
       }
+
+      const updatedProduct = await this.repo.updateProduct(
+        productDto,
+        entityManager,
+      );
+      return updatedProduct;
     });
   }
 

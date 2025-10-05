@@ -13,14 +13,17 @@ import {
   DeleteCustomerResponse,
   UpdateCustomerResponse,
 } from './responses/customer.response';
+import { ErrorResultType } from 'src/common/decorators/meta/error-result-type.decorator';
+import { GetByIdArgs } from 'src/common/args/get-by-id.args';
 
 @Resolver(() => Customer)
 export class CustomerResolver {
   constructor(private readonly customerService: CustomerService) {}
 
+  @ErrorResultType(CustomerQueryResponse)
   @Query(() => CustomerQueryResponse, { name: 'customerResponse' })
   async getCustomer(
-    @Args('id', { type: () => ID }) id: string,
+    @Args() { id }: GetByIdArgs,
   ): Promise<CustomerQueryResponse> {
     const queryResult = await this.customerService.getCustomerOrFail(id);
     return new CustomerQueryResponse(queryResult);
@@ -40,6 +43,7 @@ export class CustomerResolver {
     });
   }
 
+  @ErrorResultType(CreateCustomerResponse)
   @Mutation(() => CreateCustomerResponse, { name: 'createCustomerResponse' })
   async createCustomer(
     @Args('input', { type: () => CreateCustomerInput, nullable: false })
@@ -49,6 +53,7 @@ export class CustomerResolver {
     return new CreateCustomerResponse(createResult);
   }
 
+  @ErrorResultType(UpdateCustomerResponse)
   @Mutation(() => UpdateCustomerResponse, { name: 'updateCustomerResponse' })
   async updateCustomer(
     @Args('input', { type: () => UpdateCustomerInput, nullable: false })
@@ -58,9 +63,10 @@ export class CustomerResolver {
     return new UpdateCustomerResponse(updateResult);
   }
 
+  @ErrorResultType(DeleteCustomerResponse)
   @Mutation(() => DeleteCustomerResponse, { name: 'deleteCustomerResponse' })
   async deleteCustomer(
-    @Args('id', { type: () => ID }) id: string,
+    @Args() { id }: GetByIdArgs,
   ): Promise<DeleteCustomerResponse> {
     const deleteResult = await this.customerService.deleteCustomer(id);
     return new DeleteCustomerResponse(deleteResult);

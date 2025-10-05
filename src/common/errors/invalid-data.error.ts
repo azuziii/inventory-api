@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { ObjectType } from '@nestjs/graphql';
 import { BaseError } from './error';
 
 export interface InvalidDataProps {
@@ -9,7 +9,7 @@ export interface InvalidDataProps {
 export class InvalidData extends BaseError implements InvalidDataProps {
   static readonly __typename: string = 'InvalidData';
 
-  constructor(props: InvalidDataProps) {
+  constructor(props?: InvalidDataProps) {
     super({
       code: 'INVALID_DATA',
       message: `Invlaid data`,
