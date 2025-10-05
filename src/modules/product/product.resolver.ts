@@ -24,6 +24,7 @@ import {
   UpdateProductResponse,
 } from './responses/product.response';
 import { ErrorResultType } from 'src/common/decorators/meta/error-result-type.decorator';
+import { GetByIdArgs } from 'src/common/args/get-by-id.args';
 
 @Resolver(() => Product)
 export class ProductResolver {
@@ -31,9 +32,7 @@ export class ProductResolver {
 
   @ErrorResultType(ProductQueryResponse)
   @Query(() => ProductQueryResponse, { name: 'productResponse' })
-  async getProduct(
-    @Args('id', { type: () => ID }) id: string,
-  ): Promise<ProductQueryResponse> {
+  async getProduct(@Args() { id }: GetByIdArgs): Promise<ProductQueryResponse> {
     const queryResult = await this.productService.getProductOrFail(id);
     return new ProductQueryResponse(queryResult);
   }
