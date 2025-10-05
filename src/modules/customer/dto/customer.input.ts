@@ -2,7 +2,7 @@ import { InputType, Field, ID, PartialType, ArgsType } from '@nestjs/graphql';
 import { FindManyOptions, ILike } from 'typeorm';
 import { Customer } from '../entities/customer.entity';
 import { PaginationInput } from 'src/common/dto/pagination.dto';
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 import { CreateCustomerDto, UpdateCustomerDto } from './customer.dto';
 
 @InputType()
@@ -47,6 +47,7 @@ export class UpdateCustomerInput
 {
   @Field(() => ID, { nullable: false })
   @IsNotEmpty()
+  @IsUUID()
   id!: string;
 }
 
@@ -54,6 +55,7 @@ export class UpdateCustomerInput
 export class CustomerArguments extends PaginationInput {
   @Field(() => ID, { nullable: true })
   @IsOptional()
+  @IsUUID()
   id?: string;
 
   @Field({ nullable: true })
