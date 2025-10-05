@@ -7,13 +7,12 @@ import {
   PartialType,
 } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
+import { PaginationInput } from 'src/common/dto/pagination.dto';
+import { UpdateCustomerDto } from 'src/modules/customer/dto/customer.dto';
+import { Customer } from 'src/modules/customer/entities/customer.entity';
 import { FindManyOptions, ILike } from 'typeorm';
 import { Product } from '../entities/product.entity';
-import { PaginationInput } from 'src/common/dto/pagination.dto';
 import { CreateProductDto } from './product.dto';
-import { Customer } from 'src/modules/customer/entities/customer.entity';
-import { CustomerNotFound } from 'src/modules/customer/errors/customer.error';
-import { UpdateCustomerDto } from 'src/modules/customer/dto/customer.dto';
 
 @InputType()
 export class CreateProductInput implements CreateProductDto {
@@ -38,7 +37,7 @@ export class CreateProductInput implements CreateProductDto {
   @IsUUID()
   customer_id!: string;
 
-  customer!: Customer | CustomerNotFound;
+  customer!: Customer;
 }
 
 @InputType()
