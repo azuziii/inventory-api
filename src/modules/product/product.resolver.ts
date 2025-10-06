@@ -23,20 +23,20 @@ import {
   ProductsQueryResponse,
   UpdateProductResponse,
 } from './responses/product.response';
-import { ErrorResultType } from 'src/common/decorators/meta/error-response-type.decorator';
+import { ErrorResponseType } from 'src/common/decorators/meta/error-response-type.decorator';
 
 @Resolver(() => Product)
 export class ProductResolver {
   constructor(private readonly productService: ProductService) {}
 
-  @ErrorResultType(ProductQueryResponse)
+  @ErrorResponseType(ProductQueryResponse)
   @Query(() => ProductQueryResponse, { name: 'productResponse' })
   async getProduct(@Args() { id }: GetByIdArgs): Promise<ProductQueryResponse> {
     const queryResult = await this.productService.getProductOrFail(id);
     return new ProductQueryResponse(queryResult);
   }
 
-  @ErrorResultType(CreateProductResponse)
+  @ErrorResponseType(CreateProductResponse)
   @Mutation(() => CreateProductResponse, { name: 'createProductResponse' })
   @UsePipes(GetCustomerPipe)
   async createProduct(
@@ -47,7 +47,7 @@ export class ProductResolver {
     return new CreateProductResponse(createResult);
   }
 
-  @ErrorResultType(UpdateProductResponse)
+  @ErrorResponseType(UpdateProductResponse)
   @Mutation(() => UpdateProductResponse, { name: 'updateProductResponse' })
   @UsePipes(GetCustomerPipe)
   async updateProduct(

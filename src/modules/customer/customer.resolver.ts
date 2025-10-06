@@ -14,13 +14,13 @@ import {
   DeleteCustomerResponse,
   UpdateCustomerResponse,
 } from './responses/customer.response';
-import { ErrorResultType } from 'src/common/decorators/meta/error-response-type.decorator';
+import { ErrorResponseType } from 'src/common/decorators/meta/error-response-type.decorator';
 
 @Resolver(() => Customer)
 export class CustomerResolver {
   constructor(private readonly customerService: CustomerService) {}
 
-  @ErrorResultType(CustomerQueryResponse)
+  @ErrorResponseType(CustomerQueryResponse)
   @Query(() => CustomerQueryResponse, { name: 'customerResponse' })
   async getCustomer(
     @Args() { id }: GetByIdArgs,
@@ -43,7 +43,7 @@ export class CustomerResolver {
     });
   }
 
-  @ErrorResultType(CreateCustomerResponse)
+  @ErrorResponseType(CreateCustomerResponse)
   @Mutation(() => CreateCustomerResponse, { name: 'createCustomerResponse' })
   async createCustomer(
     @Args('input', { type: () => CreateCustomerInput, nullable: false })
@@ -53,7 +53,7 @@ export class CustomerResolver {
     return new CreateCustomerResponse(createResult);
   }
 
-  @ErrorResultType(UpdateCustomerResponse)
+  @ErrorResponseType(UpdateCustomerResponse)
   @Mutation(() => UpdateCustomerResponse, { name: 'updateCustomerResponse' })
   async updateCustomer(
     @Args('input', { type: () => UpdateCustomerInput, nullable: false })
@@ -63,7 +63,7 @@ export class CustomerResolver {
     return new UpdateCustomerResponse(updateResult);
   }
 
-  @ErrorResultType(DeleteCustomerResponse)
+  @ErrorResponseType(DeleteCustomerResponse)
   @Mutation(() => DeleteCustomerResponse, { name: 'deleteCustomerResponse' })
   async deleteCustomer(
     @Args() { id }: GetByIdArgs,
