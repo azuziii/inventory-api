@@ -36,6 +36,21 @@ export class ProductResolver {
     return new ProductQueryResponse(queryResult);
   }
 
+  @Query(() => ProductsQueryResponse, { name: 'productsResponse' })
+  async listProduct(
+    @Args()
+    args: ProductArguments,
+  ): Promise<ProductsQueryResponse> {
+    const [products, count] = await this.productService.listProducts(
+      args.toManyOptions(),
+    );
+
+    return new ProductsQueryResponse(products, {
+      ...args,
+      total: count,
+    });
+  }
+
   @ErrorResponseType(CreateProductResponse)
   @Mutation(() => CreateProductResponse, { name: 'createProductResponse' })
   @UsePipes(GetCustomerPipe)
@@ -56,21 +71,6 @@ export class ProductResolver {
   ): Promise<UpdateProductResponse> {
     const updateResult = await this.productService.updateProduct(input);
     return new UpdateProductResponse(updateResult);
-  }
-
-  @Query(() => ProductsQueryResponse, { name: 'productsResponse' })
-  async listProduct(
-    @Args()
-    args: ProductArguments,
-  ): Promise<ProductsQueryResponse> {
-    const [products, count] = await this.productService.listProducts(
-      args.toManyOptions(),
-    );
-
-    return new ProductsQueryResponse(products, {
-      ...args,
-      total: count,
-    });
   }
 
   @ResolveField(() => Customer)
