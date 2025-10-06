@@ -50,15 +50,9 @@ export class CustomerRepository extends Repository<Customer> {
     }
   }
 
-  async deleteCustomer(id: string): Promise<boolean> {
+  async deleteCustomer(id: string): Promise<void> {
     try {
       const deleteResult = await this.delete(id);
-
-      if (typeof deleteResult.affected != 'number') {
-        return false;
-      }
-
-      return true;
     } catch (error) {
       throw this.handleDatabaseError(error);
     }
