@@ -1,20 +1,20 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { BaseErrorWithEntityType } from './error';
+import { BaseErrorWithEntityName } from './error';
 
 export interface NotFoundProps {
   id: string;
   message?: string;
 }
 
-export function NotFound(entityType: string) {
-  const name = `${entityType}NotFound`;
+export function NotFound(entityName: string) {
+  const name = `${entityName}NotFound`;
   @ObjectType(name)
-  class NotFound extends BaseErrorWithEntityType implements NotFoundProps {
+  class NotFound extends BaseErrorWithEntityName implements NotFoundProps {
     constructor(props: NotFoundProps) {
       super({
         code: 'NOT_FOUND',
-        entityType,
-        message: `${entityType} not found.`,
+        entityName,
+        message: `${entityName} not found.`,
       });
 
       Object.assign(this, props);

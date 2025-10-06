@@ -1,23 +1,23 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { BaseErrorWithEntityType } from './error';
+import { BaseErrorWithEntityName } from './error';
 
 export interface AlreadyExistProps {
   field: string;
   message?: string;
 }
 
-export function AlreadyExist(entityType: string) {
-  const name = `${entityType}AlreadyExist`;
+export function AlreadyExist(entityName: string) {
+  const name = `${entityName}AlreadyExist`;
 
   @ObjectType(name)
   class AlreadyExist
-    extends BaseErrorWithEntityType
+    extends BaseErrorWithEntityName
     implements AlreadyExistProps
   {
     constructor(props: AlreadyExistProps) {
       super({
         code: 'ALREADY_EXISTS',
-        entityType,
+        entityName,
         message: `${props.field} already exists`,
       });
 
