@@ -19,6 +19,7 @@ import { Product } from './entities/product.entity';
 import { ProductService } from './product.service';
 import {
   CreateProductResponse,
+  DeleteProductResponse,
   ProductQueryResponse,
   ProductsQueryResponse,
   UpdateProductResponse,
@@ -71,6 +72,15 @@ export class ProductResolver {
   ): Promise<UpdateProductResponse> {
     const updateResult = await this.productService.updateProduct(input);
     return new UpdateProductResponse(updateResult);
+  }
+
+  @ErrorResponseType(DeleteProductResponse)
+  @Mutation(() => DeleteProductResponse, { name: 'deleteProductResponse' })
+  async deleteProduct(
+    @Args() { id }: GetByIdArgs,
+  ): Promise<DeleteProductResponse> {
+    const deleteResult = await this.productService.deleteProduct(id);
+    return new DeleteProductResponse(deleteResult);
   }
 
   @ResolveField(() => Customer)
