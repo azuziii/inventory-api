@@ -83,7 +83,7 @@ export class CustomerService {
     return this.repo.findAndCount(options);
   }
 
-  async deleteCustomer(id: string): Promise<typeof DeleteCustomerResult> {
+  async deleteCustomer(id: string): Promise<DeleteResponse> {
     await this.repo.deleteCustomer(id);
     return new DeleteResponse(id);
   }
