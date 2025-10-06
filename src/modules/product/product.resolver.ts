@@ -23,7 +23,7 @@ import {
   ProductsQueryResponse,
   UpdateProductResponse,
 } from './responses/product.response';
-import { ErrorResultType } from 'src/common/decorators/meta/error-result-type.decorator';
+import { ErrorResultType } from 'src/common/decorators/meta/error-response-type.decorator';
 
 @Resolver(() => Product)
 export class ProductResolver {

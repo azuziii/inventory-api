@@ -8,7 +8,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { catchError, Observable, of } from 'rxjs';
-import { ERROR_RESPONSE_TYPE_META } from 'src/common/decorators/meta/error-result-type.decorator';
+import { ERROR_RESPONSE_TYPE_META } from 'src/common/decorators/meta/error-response-type.decorator';
 import { InvalidData } from 'src/common/errors/invalid-data.error';
 
 @Injectable()

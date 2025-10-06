@@ -14,7 +14,7 @@ import {
   DeleteCustomerResponse,
   UpdateCustomerResponse,
 } from './responses/customer.response';
-import { ErrorResultType } from 'src/common/decorators/meta/error-result-type.decorator';
+import { ErrorResultType } from 'src/common/decorators/meta/error-response-type.decorator';
 
 @Resolver(() => Customer)
 export class CustomerResolver {
