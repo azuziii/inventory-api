@@ -2,7 +2,7 @@ import { ObjectType } from '@nestjs/graphql';
 import { BaseErrorWithEntityName } from './error';
 
 export interface InUseProps {
-  resourceType: string;
+  resourceName: string;
   message?: string;
 }
 
@@ -15,13 +15,13 @@ export function InUse(entityName: string) {
       super({
         code: 'IN_USE',
         entityName,
-        message: `${entityName} can't be deleted because it's used in other ${props.resourceType} records.`,
+        message: `${entityName} can't be deleted because it's used in other ${props.resourceName} records.`,
       });
 
       Object.assign(this, props);
     }
 
-    resourceType!: string;
+    resourceName!: string;
   }
 
   return InUse;

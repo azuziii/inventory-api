@@ -76,7 +76,7 @@ export class CustomerRepository extends Repository<Customer> {
         });
       case 'FK_product_customer':
         throw new CustomerInUse({
-          resourceType: 'Product',
+          resourceName: 'Product',
         });
       default:
         throw new InternalServerErrorException();
