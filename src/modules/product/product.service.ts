@@ -7,6 +7,7 @@ import { ProductRepository } from './product.repository';
 import { CreateProductResult } from './results/create-product.result';
 import { ProductQueryResult } from './results/query-product.result';
 import { UpdateProductResult } from './results/update-product.result';
+import { DeleteResponse } from 'src/common/responses/delete.response';
 
 @Injectable()
 export class ProductService {
@@ -69,7 +70,8 @@ export class ProductService {
     return this.repo.findAndCount(options);
   }
 
-  deleteProduct(id: string): Promise<boolean> {
-    return this.repo.deleteProduct(id);
+  async deleteProduct(id: string): Promise<DeleteResponse> {
+    await this.repo.deleteProduct(id);
+    return new DeleteResponse(id);
   }
 }
