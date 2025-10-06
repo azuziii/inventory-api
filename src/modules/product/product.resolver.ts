@@ -8,7 +8,6 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { GetByIdArgs } from 'src/common/args/get-by-id.args';
-import { ErrorResultType } from 'src/common/decorators/meta/error-result-type.decorator';
 import { Customer } from '../customer/entities/customer.entity';
 import { GetCustomerPipe } from '../customer/pipes/get-customer/get-customer.pipe';
 import {
@@ -24,6 +23,7 @@ import {
   ProductsQueryResponse,
   UpdateProductResponse,
 } from './responses/product.response';
+import { ErrorResultType } from 'src/common/decorators/meta/error-result-type.decorator';
 
 @Resolver(() => Product)
 export class ProductResolver {

@@ -1,6 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { GetByIdArgs } from 'src/common/args/get-by-id.args';
-import { ErrorResultType } from 'src/common/decorators/meta/error-result-type.decorator';
 import { CustomerService } from './customer.service';
 import {
   CreateCustomerInput,
@@ -15,6 +14,7 @@ import {
   DeleteCustomerResponse,
   UpdateCustomerResponse,
 } from './responses/customer.response';
+import { ErrorResultType } from 'src/common/decorators/meta/error-result-type.decorator';
 
 @Resolver(() => Customer)
 export class CustomerResolver {

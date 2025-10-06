@@ -8,7 +8,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { catchError, Observable, of } from 'rxjs';
-import { ERROR_RESULT_TYPE_META } from 'src/common/decorators/meta/error-result-type.decorator';
+import { ERROR_RESPONSE_TYPE_META } from 'src/common/decorators/meta/error-result-type.decorator';
 import { InvalidData } from 'src/common/errors/invalid-data.error';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class GqlExceptionToDataInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const gqlCtx = GqlExecutionContext.create(context);
     const ResponseWrapperClass = this.reflector.get(
-      ERROR_RESULT_TYPE_META,
+      ERROR_RESPONSE_TYPE_META,
       context.getHandler(),
     );
 
@@ -27,7 +27,7 @@ export class GqlExceptionToDataInterceptor implements NestInterceptor {
         if (err instanceof BadRequestException) {
           if (!ResponseWrapperClass) {
             console.error(
-              `Metedata with key:'${ERROR_RESULT_TYPE_META}' was not set for '${gqlCtx.getHandler().name}'`,
+              `Metedata with key:'${ERROR_RESPONSE_TYPE_META}' was not set for '${gqlCtx.getHandler().name}'`,
             );
             throw err;
           }
