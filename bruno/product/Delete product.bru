@@ -12,7 +12,20 @@ post {
 
 body:graphql {
   mutation {
-   
+    deleteProductResponse(id: "622e44f4-91e4-495d-965f-5318e2d21cc4") {
+      product {
+        __typename
+        ... on DeleteResponse {
+          id
+        }
+        ... on ProductInUse {
+          message
+        }
+        ... on InvalidData {
+          message
+        }
+      }
+    }
   }
   
 }
