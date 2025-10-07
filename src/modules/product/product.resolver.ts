@@ -15,13 +15,11 @@ import { ProductArguments } from './args/product.args';
 import { Product } from './entities/product.entity';
 import { CreateProductInput, UpdateProductInput } from './inputs/product.input';
 import { ProductService } from './product.service';
-import {
-  CreateProductResponse,
-  DeleteProductResponse,
-  ProductQueryResponse,
-  ProductsQueryResponse,
-  UpdateProductResponse,
-} from './responses/product.response';
+import { CreateProductResponse } from './responses/create-product.response';
+import { DeleteProductResponse } from './responses/delete-product.response';
+import { ProductQueryResponse } from './responses/query-product.response';
+import { ProductsQueryResponse } from './responses/query-products.response';
+import { UpdateProductResponse } from './responses/update-product.response';
 
 @Resolver(() => Product)
 export class ProductResolver {

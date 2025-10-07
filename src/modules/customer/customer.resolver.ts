@@ -8,13 +8,11 @@ import {
   CreateCustomerInput,
   UpdateCustomerInput,
 } from './inputs/customer.input';
-import {
-  CreateCustomerResponse,
-  CustomerQueryResponse,
-  CustomersQueryResponse,
-  DeleteCustomerResponse,
-  UpdateCustomerResponse,
-} from './responses/customer.response';
+import { CreateCustomerResponse } from './responses/create-customer.response';
+import { DeleteCustomerResponse } from './responses/delete-customer.response';
+import { CustomerQueryResponse } from './responses/query-customer.response';
+import { CustomersQueryResponse } from './responses/query-customers.response';
+import { UpdateCustomerResponse } from './responses/update-customer.response';
 
 @Resolver(() => Customer)
 export class CustomerResolver {
