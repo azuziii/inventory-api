@@ -3,7 +3,7 @@ import { InvalidData } from 'src/common/errors/invalid-data.error';
 import { Customer } from '../entities/customer.entity';
 import { CustomerNotFound } from '../errors/customer.error';
 
-export const CustomerQueryResult = createUnionType({
-  name: 'CustomerQueryResult',
+export const CustomerQueryUnion = createUnionType({
+  name: 'CustomerQueryUnion',
   types: () => [Customer, CustomerNotFound, InvalidData],
 });

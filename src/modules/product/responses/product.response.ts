@@ -1,19 +1,19 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { PaginationDto, PaginationProps } from 'src/common/dto/pagination.dto';
 import { Product } from '../entities/product.entity';
-import { CreateProductResult } from '../results/create-product.result';
-import { ProductQueryResult } from '../results/query-product.result';
-import { UpdateProductResult } from '../results/update-product.result';
-import { DeleteProductResult } from '../results/delete-product.result';
+import { CreateProductUnion } from '../unions/create-product.union';
+import { DeleteProductUnion } from '../unions/delete-product.union';
+import { ProductQueryUnion } from '../unions/query-product.union';
+import { UpdateProductUnion } from '../unions/update-product.union';
 
 @ObjectType()
 export class ProductQueryResponse {
-  constructor(queryResult: typeof ProductQueryResult) {
+  constructor(queryResult: typeof ProductQueryUnion) {
     this.product = queryResult;
   }
 
-  @Field(() => ProductQueryResult)
-  product!: typeof ProductQueryResult;
+  @Field(() => ProductQueryUnion)
+  product!: typeof ProductQueryUnion;
 }
 
 @ObjectType()
@@ -32,30 +32,30 @@ export class ProductsQueryResponse {
 
 @ObjectType()
 export class CreateProductResponse {
-  constructor(createResult: typeof CreateProductResult) {
+  constructor(createResult: typeof CreateProductUnion) {
     this.product = createResult;
   }
 
-  @Field(() => CreateProductResult)
-  product!: typeof CreateProductResult;
+  @Field(() => CreateProductUnion)
+  product!: typeof CreateProductUnion;
 }
 
 @ObjectType()
 export class UpdateProductResponse {
-  constructor(updateResult: typeof UpdateProductResult) {
+  constructor(updateResult: typeof UpdateProductUnion) {
     this.product = updateResult;
   }
 
-  @Field(() => UpdateProductResult)
-  product!: typeof UpdateProductResult;
+  @Field(() => UpdateProductUnion)
+  product!: typeof UpdateProductUnion;
 }
 
 @ObjectType()
 export class DeleteProductResponse {
-  constructor(deleteResult: typeof DeleteProductResult) {
+  constructor(deleteResult: typeof DeleteProductUnion) {
     this.product = deleteResult;
   }
 
-  @Field(() => DeleteProductResult)
-  product!: typeof DeleteProductResult;
+  @Field(() => DeleteProductUnion)
+  product!: typeof DeleteProductUnion;
 }

@@ -6,7 +6,7 @@ import {
   CustomerNotFound,
 } from '../errors/customer.error';
 
-export const UpdateCustomerResult = createUnionType({
-  name: 'UpdateCustomerResult',
+export const UpdateCustomerUnion = createUnionType({
+  name: 'UpdateCustomerUnion',
   types: () => [Customer, CustomerNotFound, CustomerAlreadyExist, InvalidData],
 });

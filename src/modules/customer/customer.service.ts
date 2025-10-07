@@ -10,10 +10,9 @@ import { CustomerRepository } from './customer.repository';
 import { CreateCustomerDto, UpdateCustomerDto } from './dto/customer.dto';
 import { Customer } from './entities/customer.entity';
 import { CustomerNotFound } from './errors/customer.error';
-import { CreateCustomerResult } from './results/create-customer.result';
-import { DeleteCustomerResult } from './results/delete-customer.result';
-import { CustomerQueryResult } from './results/query-customer.result';
-import { UpdateCustomerResult } from './results/update-customer.result';
+import { CreateCustomerUnion } from './unions/create-customer.union';
+import { CustomerQueryUnion } from './unions/query-customer.union';
+import { UpdateCustomerUnion } from './unions/update-customer.union';
 
 @Injectable()
 export class CustomerService {
@@ -24,7 +23,7 @@ export class CustomerService {
 
   async createCustomer(
     customerDto: CreateCustomerDto,
-  ): Promise<typeof CreateCustomerResult> {
+  ): Promise<typeof CreateCustomerUnion> {
     return this.datasource.transaction(async (entityManager: EntityManager) => {
       const customer = await this.repo.createCustomer(
         customerDto,
@@ -37,7 +36,7 @@ export class CustomerService {
 
   async updateCustomer(
     customerDto: UpdateCustomerDto,
-  ): Promise<typeof UpdateCustomerResult> {
+  ): Promise<typeof UpdateCustomerUnion> {
     return this.datasource.transaction(async (entityManager: EntityManager) => {
       const customer = await entityManager.findOne(Customer, {
         where: { id: customerDto.id },
@@ -61,7 +60,7 @@ export class CustomerService {
     return this.repo.findOne(options);
   }
 
-  async getCustomerOrFail(id: string): Promise<typeof CustomerQueryResult> {
+  async getCustomerOrFail(id: string): Promise<typeof CustomerQueryUnion> {
     const customer = await this.repo.findOne({
       where: {
         id,

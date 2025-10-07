@@ -1,19 +1,19 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { PaginationDto, PaginationProps } from 'src/common/dto/pagination.dto';
 import { Customer } from '../entities/customer.entity';
-import { CreateCustomerResult } from '../results/create-customer.result';
-import { DeleteCustomerResult } from '../results/delete-customer.result';
-import { CustomerQueryResult } from '../results/query-customer.result';
-import { UpdateCustomerResult } from '../results/update-customer.result';
+import { CreateCustomerUnion } from '../unions/create-customer.union';
+import { DeleteCustomerUnion } from '../unions/delete-customer.union';
+import { CustomerQueryUnion } from '../unions/query-customer.union';
+import { UpdateCustomerUnion } from '../unions/update-customer.union';
 
 @ObjectType()
 export class CustomerQueryResponse {
-  constructor(queryResult: typeof CustomerQueryResult) {
+  constructor(queryResult: typeof CustomerQueryUnion) {
     this.customer = queryResult;
   }
 
-  @Field(() => CustomerQueryResult)
-  customer!: typeof CustomerQueryResult;
+  @Field(() => CustomerQueryUnion)
+  customer!: typeof CustomerQueryUnion;
 }
 
 @ObjectType()
@@ -32,30 +32,30 @@ export class CustomersQueryResponse {
 
 @ObjectType()
 export class CreateCustomerResponse {
-  constructor(createResult: typeof CreateCustomerResult) {
+  constructor(createResult: typeof CreateCustomerUnion) {
     this.customer = createResult;
   }
 
-  @Field(() => CreateCustomerResult)
-  customer!: typeof CreateCustomerResult;
+  @Field(() => CreateCustomerUnion)
+  customer!: typeof CreateCustomerUnion;
 }
 
 @ObjectType()
 export class UpdateCustomerResponse {
-  constructor(updateResult: typeof UpdateCustomerResult) {
+  constructor(updateResult: typeof UpdateCustomerUnion) {
     this.customer = updateResult;
   }
 
-  @Field(() => UpdateCustomerResult)
-  customer!: typeof UpdateCustomerResult;
+  @Field(() => UpdateCustomerUnion)
+  customer!: typeof UpdateCustomerUnion;
 }
 
 @ObjectType()
 export class DeleteCustomerResponse {
-  constructor(deleteResult: typeof DeleteCustomerResult) {
+  constructor(deleteResult: typeof DeleteCustomerUnion) {
     this.customer = deleteResult;
   }
 
-  @Field(() => DeleteCustomerResult)
-  customer!: typeof DeleteCustomerResult;
+  @Field(() => DeleteCustomerUnion)
+  customer!: typeof DeleteCustomerUnion;
 }
