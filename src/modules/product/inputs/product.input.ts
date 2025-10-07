@@ -1,0 +1,42 @@
+import { Field, Float, ID, InputType, PartialType } from '@nestjs/graphql';
+import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
+import { UpdateCustomerDto } from 'src/modules/customer/dto/customer.dto';
+import { Customer } from 'src/modules/customer/entities/customer.entity';
+import { CreateProductDto } from '../dto/product.dto';
+
+@InputType()
+export class CreateProductInput implements CreateProductDto {
+  @Field({ nullable: false })
+  @IsNotEmpty()
+  name!: string;
+
+  @Field({ nullable: false })
+  @IsNotEmpty()
+  code!: string;
+
+  @Field(() => Float, { nullable: false })
+  @IsNotEmpty()
+  price!: number;
+
+  @Field({ nullable: true, defaultValue: false })
+  @IsOptional()
+  isSample: boolean = false;
+
+  @Field()
+  @IsNotEmpty()
+  @IsUUID()
+  customer_id!: string;
+
+  customer!: Customer;
+}
+
+@InputType()
+export class UpdateProductInput
+  extends PartialType(CreateProductInput)
+  implements UpdateCustomerDto
+{
+  @Field(() => ID, { nullable: false })
+  @IsNotEmpty()
+  @IsUUID()
+  id!: string;
+}

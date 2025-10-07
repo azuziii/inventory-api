@@ -8,14 +8,12 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { GetByIdArgs } from 'src/common/args/get-by-id.args';
+import { ErrorResponseType } from 'src/common/decorators/meta/error-response-type.decorator';
 import { Customer } from '../customer/entities/customer.entity';
 import { GetCustomerPipe } from '../customer/pipes/get-customer/get-customer.pipe';
-import {
-  CreateProductInput,
-  ProductArguments,
-  UpdateProductInput,
-} from './dto/product.input';
+import { ProductArguments } from './args/product.args';
 import { Product } from './entities/product.entity';
+import { CreateProductInput, UpdateProductInput } from './inputs/product.input';
 import { ProductService } from './product.service';
 import {
   CreateProductResponse,
@@ -24,7 +22,6 @@ import {
   ProductsQueryResponse,
   UpdateProductResponse,
 } from './responses/product.response';
-import { ErrorResponseType } from 'src/common/decorators/meta/error-response-type.decorator';
 
 @Resolver(() => Product)
 export class ProductResolver {
