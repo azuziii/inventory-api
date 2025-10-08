@@ -7,11 +7,11 @@ export function BaseResponse(name: string, union: Union<any>): Type<any> {
   @ObjectType(responseName)
   class BaseResponse {
     constructor(response: typeof union) {
-      this.response = response;
+      this.result = response;
     }
 
     @Field(() => union)
-    response!: typeof union;
+    result!: typeof union;
   }
 
   return BaseResponse;
