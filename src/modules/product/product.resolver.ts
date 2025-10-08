@@ -14,7 +14,7 @@ import { GetCustomerPipe } from '../customer/pipes/get-customer/get-customer.pip
 import { ProductArguments } from './args/product.args';
 import { Product } from './entities/product.entity';
 import { CreateProductInput, UpdateProductInput } from './inputs/product.input';
-import { ProductList } from './outputs/query-products.output';
+import { ProductList } from './outputs/product-list.output';
 import { ProductService } from './product.service';
 import { CreateProductResponse } from './responses/create-product.response';
 import { DeleteProductResponse } from './responses/delete-product.response';
