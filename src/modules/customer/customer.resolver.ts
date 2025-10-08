@@ -8,7 +8,7 @@ import {
   CreateCustomerInput,
   UpdateCustomerInput,
 } from './inputs/customer.input';
-import { CustomerList } from './outputs/query-customers.output';
+import { CustomerList } from './outputs/customer-list.output';
 import { CreateCustomerResponse } from './responses/create-customer.response';
 import { DeleteCustomerResponse } from './responses/delete-customer.response';
 import { CustomerQueryResponse } from './responses/query-customer.response';

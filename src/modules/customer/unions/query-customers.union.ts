@@ -1,6 +1,6 @@
 import { createUnionType } from '@nestjs/graphql';
 import { InvalidData } from 'src/common/errors/invalid-data.error';
-import { CustomerList } from '../outputs/query-customers.output';
+import { CustomerList } from '../outputs/customer-list.output';
 
 export type CustomersQueryUnion = typeof CustomersQueryUnion;
 export const CustomersQueryUnion = createUnionType({
