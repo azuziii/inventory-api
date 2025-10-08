@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { HeaderResolver, I18nModule } from 'nestjs-i18n';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -35,6 +36,15 @@ import { ProductModule } from './modules/product/product.module';
         logging: 'all',
         logger: 'debug',
       }),
+    }),
+    I18nModule.forRoot({
+      fallbackLanguage: 'en',
+      loaderOptions: {
+        path: join(__dirname, '/i18n/'),
+        watch: true,
+      },
+      typesOutputPath: join(__dirname, '../src/generated/i18n.generated.ts'),
+      resolvers: [new HeaderResolver(['x-lang'])],
     }),
     CustomerModule,
     ProductModule,
