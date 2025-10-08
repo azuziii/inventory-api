@@ -12,14 +12,14 @@ post {
 
 body:graphql {
   mutation {
-    updateProductResponse(
+    updateProduct(
       input: {
         id: "a1eb1aac-0fc3-4446-8f0a-a89852b52a2c"
         name: "d"
         customer_id: "568c1d4a-426b-4222-9da8-1f3bed6d40dc"
       }
     ) {
-      response {
+      result {
         __typename
         ... on Product {
           name

@@ -12,7 +12,7 @@ post {
 
 body:graphql {
   mutation {
-    createProductResponse(
+    createProduct(
       input: {
         name: "adddv"
         code: "asd"
@@ -21,7 +21,7 @@ body:graphql {
         customer_id: "dd5fe7d0-185f-479a-b17f-d7f8f960db4f"
       }
     ) {
-      response {
+      result {
         __typename
         ... on Product {
           id

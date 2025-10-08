@@ -12,11 +12,11 @@ post {
 
 body:graphql {
   query {
-    customersResponse {
-      response {
+    customers {
+      result {
         __typename
         ... on CustomerList {
-          customers {
+          items {
             id
             ice
           }

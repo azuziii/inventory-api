@@ -12,11 +12,11 @@ post {
 
 body:graphql {
   query {
-    productsResponse {
-      response {
+    products {
+      result {
         __typename
-        ... on ProductList {
-          products {
+        ... on  ProductList{
+          items {
             id
             name
           }
