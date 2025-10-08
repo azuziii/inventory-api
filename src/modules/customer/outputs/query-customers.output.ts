@@ -5,12 +5,12 @@ import { Customer } from '../entities/customer.entity';
 @ObjectType()
 export class CustomerList {
   constructor(customers: Customer[], paginationProps: PaginationProps) {
-    this.customers = customers;
+    this.items = customers;
     this.pagination = new PaginationDto(paginationProps);
   }
 
   @Field(() => [Customer!]!)
-  customers!: Customer[];
+  items!: Customer[];
 
   @Field(() => PaginationDto)
   pagination!: PaginationDto;
