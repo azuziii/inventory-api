@@ -5,12 +5,12 @@ import { Product } from '../entities/product.entity';
 @ObjectType()
 export class ProductList {
   constructor(products: Product[], paginationProps: PaginationProps) {
-    this.response = products;
+    this.products = products;
     this.pagination = new PaginationDto(paginationProps);
   }
 
   @Field(() => [Product!]!)
-  response!: Product[];
+  products!: Product[];
 
   @Field(() => PaginationDto)
   pagination!: PaginationDto;
