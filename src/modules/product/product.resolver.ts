@@ -48,10 +48,7 @@ export class ProductResolver {
       total: count,
     });
 
-    return new ProductsQueryResponse(products, {
-      ...args,
-      total: count,
-    });
+    return new ProductsQueryResponse(productList);
   }
 
   @ErrorResponseType(CreateProductResponse)
