@@ -23,7 +23,7 @@ export class CustomerService {
 
   async createCustomer(
     customerDto: CreateCustomerDto,
-  ): Promise<typeof CreateCustomerUnion> {
+  ): Promise<CreateCustomerUnion> {
     return this.datasource.transaction(async (entityManager: EntityManager) => {
       const customer = await this.repo.createCustomer(
         customerDto,
@@ -36,7 +36,7 @@ export class CustomerService {
 
   async updateCustomer(
     customerDto: UpdateCustomerDto,
-  ): Promise<typeof UpdateCustomerUnion> {
+  ): Promise<UpdateCustomerUnion> {
     return this.datasource.transaction(async (entityManager: EntityManager) => {
       const customer = await entityManager.findOne(Customer, {
         where: { id: customerDto.id },
@@ -60,7 +60,7 @@ export class CustomerService {
     return this.repo.findOne(options);
   }
 
-  async getCustomerOrFail(id: string): Promise<typeof CustomerQueryUnion> {
+  async getCustomerOrFail(id: string): Promise<CustomerQueryUnion> {
     const customer = await this.repo.findOne({
       where: {
         id,

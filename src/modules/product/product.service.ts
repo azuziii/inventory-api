@@ -18,7 +18,7 @@ export class ProductService {
 
   async createProduct(
     productDto: CreateProductDto,
-  ): Promise<typeof CreateProductUnion> {
+  ): Promise<CreateProductUnion> {
     return this.datasource.transaction(async (entityManager: EntityManager) => {
       const product = await this.repo.createProduct(productDto, entityManager);
 
@@ -28,7 +28,7 @@ export class ProductService {
 
   async updateProduct(
     productDto: UpdateProductDto,
-  ): Promise<typeof UpdateProductUnion> {
+  ): Promise<UpdateProductUnion> {
     return this.datasource.transaction(async (entityManager: EntityManager) => {
       const product = await entityManager.findOne(Product, {
         where: { id: productDto.id },
@@ -48,7 +48,7 @@ export class ProductService {
     });
   }
 
-  async getProductOrFail(id: string): Promise<typeof ProductQueryUnion> {
+  async getProductOrFail(id: string): Promise<ProductQueryUnion> {
     const product = await this.repo.findOne({
       where: {
         id,
