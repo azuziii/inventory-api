@@ -14,6 +14,7 @@ import { GetCustomerPipe } from '../customer/pipes/get-customer/get-customer.pip
 import { ProductArguments } from './args/product.args';
 import { Product } from './entities/product.entity';
 import { CreateProductInput, UpdateProductInput } from './inputs/product.input';
+import { ProductList } from './outputs/query-products.output';
 import { ProductService } from './product.service';
 import { CreateProductResponse } from './responses/create-product.response';
 import { DeleteProductResponse } from './responses/delete-product.response';
@@ -32,6 +33,7 @@ export class ProductResolver {
     return new ProductQueryResponse(queryResult);
   }
 
+  @ErrorResponseType(ProductsQueryResponse)
   @Query(() => ProductsQueryResponse, { name: 'productsResponse' })
   async listProduct(
     @Args()
@@ -40,6 +42,11 @@ export class ProductResolver {
     const [products, count] = await this.productService.listProducts(
       args.toManyOptions(),
     );
+
+    const productList = new ProductList(products, {
+      ...args,
+      total: count,
+    });
 
     return new ProductsQueryResponse(products, {
       ...args,

@@ -8,6 +8,7 @@ import {
   CreateCustomerInput,
   UpdateCustomerInput,
 } from './inputs/customer.input';
+import { CustomerList } from './outputs/query-customers.output';
 import { CreateCustomerResponse } from './responses/create-customer.response';
 import { DeleteCustomerResponse } from './responses/delete-customer.response';
 import { CustomerQueryResponse } from './responses/query-customer.response';
@@ -27,6 +28,7 @@ export class CustomerResolver {
     return new CustomerQueryResponse(queryResult);
   }
 
+  @ErrorResponseType(CustomersQueryResponse)
   @Query(() => CustomersQueryResponse, { name: 'customersResponse' })
   async listCustomer(
     @Args()
@@ -35,10 +37,13 @@ export class CustomerResolver {
     const [customers, count] = await this.customerService.listCustomers(
       args.toManyOptions(),
     );
-    return new CustomersQueryResponse(customers, {
+
+    const customerList = new CustomerList(customers, {
       ...args,
       total: count,
     });
+
+    return new CustomersQueryResponse(customerList);
   }
 
   @ErrorResponseType(CreateCustomerResponse)
