@@ -20,7 +20,7 @@ export class CustomerResolver {
   constructor(private readonly customerService: CustomerService) {}
 
   @ErrorResponseType(CustomerQueryResponse)
-  @Query(() => CustomerQueryResponse, { name: 'customerResponse' })
+  @Query(() => CustomerQueryResponse, { name: 'customer' })
   async getCustomer(
     @Args() { id }: GetByIdArgs,
   ): Promise<CustomerQueryResponse> {
@@ -29,7 +29,7 @@ export class CustomerResolver {
   }
 
   @ErrorResponseType(CustomersQueryResponse)
-  @Query(() => CustomersQueryResponse, { name: 'customersResponse' })
+  @Query(() => CustomersQueryResponse, { name: 'customers' })
   async listCustomer(
     @Args()
     args: CustomerArguments,
@@ -47,7 +47,7 @@ export class CustomerResolver {
   }
 
   @ErrorResponseType(CreateCustomerResponse)
-  @Mutation(() => CreateCustomerResponse, { name: 'createCustomerResponse' })
+  @Mutation(() => CreateCustomerResponse, { name: 'createCustomer' })
   async createCustomer(
     @Args('input', { type: () => CreateCustomerInput, nullable: false })
     input: CreateCustomerInput,
@@ -57,7 +57,7 @@ export class CustomerResolver {
   }
 
   @ErrorResponseType(UpdateCustomerResponse)
-  @Mutation(() => UpdateCustomerResponse, { name: 'updateCustomerResponse' })
+  @Mutation(() => UpdateCustomerResponse, { name: 'updateCustomer' })
   async updateCustomer(
     @Args('input', { type: () => UpdateCustomerInput, nullable: false })
     input: UpdateCustomerInput,
@@ -67,7 +67,7 @@ export class CustomerResolver {
   }
 
   @ErrorResponseType(DeleteCustomerResponse)
-  @Mutation(() => DeleteCustomerResponse, { name: 'deleteCustomerResponse' })
+  @Mutation(() => DeleteCustomerResponse, { name: 'deleteCustomer' })
   async deleteCustomer(
     @Args() { id }: GetByIdArgs,
   ): Promise<DeleteCustomerResponse> {

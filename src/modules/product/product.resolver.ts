@@ -27,14 +27,14 @@ export class ProductResolver {
   constructor(private readonly productService: ProductService) {}
 
   @ErrorResponseType(ProductQueryResponse)
-  @Query(() => ProductQueryResponse, { name: 'productResponse' })
+  @Query(() => ProductQueryResponse, { name: 'product' })
   async getProduct(@Args() { id }: GetByIdArgs): Promise<ProductQueryResponse> {
     const queryResult = await this.productService.getProductOrFail(id);
     return new ProductQueryResponse(queryResult);
   }
 
   @ErrorResponseType(ProductsQueryResponse)
-  @Query(() => ProductsQueryResponse, { name: 'productsResponse' })
+  @Query(() => ProductsQueryResponse, { name: 'products' })
   async listProduct(
     @Args()
     args: ProductArguments,
@@ -52,7 +52,7 @@ export class ProductResolver {
   }
 
   @ErrorResponseType(CreateProductResponse)
-  @Mutation(() => CreateProductResponse, { name: 'createProductResponse' })
+  @Mutation(() => CreateProductResponse, { name: 'createProduct' })
   @UsePipes(GetCustomerPipe)
   async createProduct(
     @Args('input', { type: () => CreateProductInput, nullable: false })
@@ -63,7 +63,7 @@ export class ProductResolver {
   }
 
   @ErrorResponseType(UpdateProductResponse)
-  @Mutation(() => UpdateProductResponse, { name: 'updateProductResponse' })
+  @Mutation(() => UpdateProductResponse, { name: 'updateProduct' })
   @UsePipes(GetCustomerPipe)
   async updateProduct(
     @Args('input', { type: () => UpdateProductInput, nullable: false })
@@ -74,7 +74,7 @@ export class ProductResolver {
   }
 
   @ErrorResponseType(DeleteProductResponse)
-  @Mutation(() => DeleteProductResponse, { name: 'deleteProductResponse' })
+  @Mutation(() => DeleteProductResponse, { name: 'deleteProduct' })
   async deleteProduct(
     @Args() { id }: GetByIdArgs,
   ): Promise<DeleteProductResponse> {
