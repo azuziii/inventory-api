@@ -1,12 +1,8 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { BaseResponse } from 'src/common/responses/base.response';
 import { ProductQueryUnion } from '../unions/query-product.union';
 
-@ObjectType()
-export class ProductQueryResponse {
-  constructor(queryResult: typeof ProductQueryUnion) {
-    this.product = queryResult;
-  }
-
-  @Field(() => ProductQueryUnion)
-  product!: typeof ProductQueryUnion;
-}
+export type ProductQueryResponse = typeof ProductQueryResponse;
+export const ProductQueryResponse = BaseResponse(
+  'ProductQueryResponse',
+  ProductQueryUnion,
+);

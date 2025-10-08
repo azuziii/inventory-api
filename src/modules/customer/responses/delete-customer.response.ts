@@ -1,12 +1,8 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { BaseResponse } from 'src/common/responses/base.response';
 import { DeleteCustomerUnion } from '../unions/delete-customer.union';
 
-@ObjectType()
-export class DeleteCustomerResponse {
-  constructor(deleteResult: typeof DeleteCustomerUnion) {
-    this.customer = deleteResult;
-  }
-
-  @Field(() => DeleteCustomerUnion)
-  customer!: typeof DeleteCustomerUnion;
-}
+export type DeleteCustomerResponse = typeof DeleteCustomerResponse;
+export const DeleteCustomerResponse = BaseResponse(
+  'DeleteCustomerResponse',
+  DeleteCustomerUnion,
+);

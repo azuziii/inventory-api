@@ -1,12 +1,8 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { BaseResponse } from 'src/common/responses/base.response';
 import { CreateCustomerUnion } from '../unions/create-customer.union';
 
-@ObjectType()
-export class CreateCustomerResponse {
-  constructor(createResult: typeof CreateCustomerUnion) {
-    this.customer = createResult;
-  }
-
-  @Field(() => CreateCustomerUnion)
-  customer!: typeof CreateCustomerUnion;
-}
+export type CreateCustomerResponse = typeof CreateCustomerResponse;
+export const CreateCustomerResponse = BaseResponse(
+  'CreateCustomerResponse',
+  CreateCustomerUnion,
+);

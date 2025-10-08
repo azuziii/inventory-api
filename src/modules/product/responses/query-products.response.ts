@@ -1,17 +1,8 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { PaginationDto, PaginationProps } from 'src/common/dto/pagination.dto';
-import { Product } from '../entities/product.entity';
+import { BaseResponse } from 'src/common/responses/base.response';
+import { ProductsQueryUnion } from '../unions/query-customers.union';
 
-@ObjectType()
-export class ProductsQueryResponse {
-  constructor(products: Product[], paginationProps: PaginationProps) {
-    this.products = products;
-    this.pagination = new PaginationDto(paginationProps);
-  }
-
-  @Field(() => [Product!]!)
-  products!: Product[];
-
-  @Field(() => PaginationDto)
-  pagination!: PaginationDto;
-}
+export type ProductsQueryResponse = typeof ProductsQueryResponse;
+export const ProductsQueryResponse = BaseResponse(
+  'ProductsQueryResponse',
+  ProductsQueryUnion,
+);
