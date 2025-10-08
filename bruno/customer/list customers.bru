@@ -13,10 +13,25 @@ post {
 body:graphql {
   query {
     customersResponse {
-      customers {
-        id
-        name
-        ice
+      response {
+        __typename
+        ... on CustomerList {
+          customers {
+            id
+            ice
+          }
+          pagination {
+            total
+            page
+            limit
+            totalPages
+            hasNextPage
+            hasPrevPage
+          }
+        }
+        ... on InvalidData {
+          message
+        }
       }
     }
   }

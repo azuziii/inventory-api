@@ -14,16 +14,17 @@ body:graphql {
   mutation {
     createProductResponse(
       input: {
-        name: "av"
+        name: "adddv"
         code: "asd"
         price: 55.2
         isSample: true
-        customer_id: "568c1d4a-426b-4222-9da8-1f3bed6d40dc"
+        customer_id: "dd5fe7d0-185f-479a-b17f-d7f8f960db4f"
       }
     ) {
-      product {
+      response {
         __typename
         ... on Product {
+          id
           name
         }
         ... on ProductAlreadyExist {

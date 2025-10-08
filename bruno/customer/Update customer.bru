@@ -13,9 +13,9 @@ post {
 body:graphql {
   mutation {
     updateCustomerResponse(
-      input: { id: "9324daf8-16d13-4f03-86fc-96e105797d84", name: "ttttest" }
+      input: { id: "8a2edfa9-350c-4c3d-b3e3-2878b229c3e8", name: "ttttest", ice:"111" }
     ) {
-      customer {
+      response {
         __typename
         ... on Customer {
           name

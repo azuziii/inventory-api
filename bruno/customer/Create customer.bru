@@ -17,13 +17,14 @@ body:graphql {
         name: "111"
         address: "address"
         city: "city"
-        ice: "45646546aaa5"
+        ice: "adsdasdfad"
         country: "45fff6465465"
       }
     ) {
-      customer {
+      response {
         __typename
         ... on Customer {
+          id
           name
         }
         ... on  CustomerAlreadyExist{

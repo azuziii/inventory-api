@@ -13,25 +13,25 @@ post {
 body:graphql {
   query {
     productsResponse {
-      products {
-        id
-        name
-        isSample
-        price
-        customer {
-          ... on Customer {
+      response {
+        __typename
+        ... on ProductList {
+          products {
             id
             name
           }
+          pagination {
+            total
+            page
+            limit
+            totalPages
+            hasNextPage
+            hasPrevPage
+          }
         }
-      }
-      pagination {
-        total
-        page
-        limit
-        totalPages
-        hasNextPage
-        hasPrevPage
+        ... on InvalidData {
+          message
+        }
       }
     }
   }
