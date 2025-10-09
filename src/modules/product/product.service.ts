@@ -35,7 +35,7 @@ export class ProductService {
       });
 
       if (!product) {
-        return new ProductNotFound({
+        throw new ProductNotFound({
           id: productDto.id,
         });
       }
@@ -56,7 +56,7 @@ export class ProductService {
     });
 
     if (!product) {
-      return new ProductNotFound({
+      throw new ProductNotFound({
         id,
       });
     }
