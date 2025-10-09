@@ -1,4 +1,4 @@
-import { BaseResponse } from 'src/common/responses/base.response';
+import { BaseResponse } from 'src/shared/responses/base.response';
 import { DeleteCustomerUnion } from '../unions/delete-customer.union';
 
 export type DeleteCustomerResponse = typeof DeleteCustomerResponse;

@@ -1,7 +1,7 @@
 import { Field, Float, ObjectType } from '@nestjs/graphql';
-import { BaseUUIDEntity } from 'src/common/base/base.entity';
-import { ColumnNumericTransformer } from 'src/common/db-transformers/numeric.transformer';
 import { Customer } from 'src/modules/customer/entities/customer.entity';
+import { BaseUUIDEntity } from 'src/shared/base/base.entity';
+import { ColumnNumericTransformer } from 'src/shared/db-transformers/numeric.transformer';
 import { Column, Entity, JoinColumn, ManyToOne, Unique } from 'typeorm';
 
 @ObjectType()

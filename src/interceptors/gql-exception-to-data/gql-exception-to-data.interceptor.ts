@@ -10,9 +10,9 @@ import { ValidationError } from 'class-validator';
 import iterate from 'iterare';
 import { I18nValidationException } from 'nestjs-i18n';
 import { catchError, Observable, of } from 'rxjs';
-import { ERROR_RESPONSE_TYPE_META } from 'src/common/decorators/meta/error-response-type.decorator';
-import { BaseError } from 'src/common/errors/error';
-import { InvalidData } from 'src/common/errors/invalid-data.error';
+import { ERROR_RESPONSE_TYPE_META } from 'src/shared/decorators/meta/error-response-type.decorator';
+import { BaseError } from 'src/shared/errors/error';
+import { InvalidData } from 'src/shared/errors/invalid-data.error';
 @Injectable()
 export class GqlExceptionToDataInterceptor implements NestInterceptor {
   constructor(private readonly reflector: Reflector) {}

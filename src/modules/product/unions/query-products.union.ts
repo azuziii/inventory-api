@@ -1,5 +1,5 @@
 import { createUnionType } from '@nestjs/graphql';
-import { InvalidData } from 'src/common/errors/invalid-data.error';
+import { InvalidData } from 'src/shared/errors/invalid-data.error';
 import { ProductList } from '../outputs/product-list.output';
 
 export type ProductsQueryUnion = typeof ProductsQueryUnion;

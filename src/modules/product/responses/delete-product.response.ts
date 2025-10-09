@@ -1,4 +1,4 @@
-import { BaseResponse } from 'src/common/responses/base.response';
+import { BaseResponse } from 'src/shared/responses/base.response';
 import { DeleteProductUnion } from '../unions/delete-product.union';
 
 export type DeleteProductResponse = typeof DeleteProductResponse;

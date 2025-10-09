@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DeleteResponse } from 'src/common/responses/delete.response';
+import { DeleteResponse } from 'src/shared/responses/delete.response';
 import { DataSource, EntityManager, FindManyOptions } from 'typeorm';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import { Product } from './entities/product.entity';

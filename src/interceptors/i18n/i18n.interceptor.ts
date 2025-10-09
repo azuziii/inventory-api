@@ -7,7 +7,7 @@ import {
 import { I18nContext, I18nValidationException } from 'nestjs-i18n';
 import { formatI18nErrors } from 'nestjs-i18n/dist/utils';
 import { catchError, Observable } from 'rxjs';
-import { BaseError } from 'src/common/errors/error';
+import { BaseError } from 'src/shared/errors/error';
 
 @Injectable()
 export class I18nInterceptor implements NestInterceptor {

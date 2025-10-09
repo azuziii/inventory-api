@@ -1,4 +1,4 @@
-import { BaseResponse } from 'src/common/responses/base.response';
+import { BaseResponse } from 'src/shared/responses/base.response';
 import { CustomerQueryUnion } from '../unions/query-customer.union';
 
 export type CustomerQueryResponse = typeof CustomerQueryResponse;

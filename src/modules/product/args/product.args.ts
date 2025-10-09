@@ -1,6 +1,6 @@
 import { ArgsType, Field, Float, ID } from '@nestjs/graphql';
 import { IsOptional, IsUUID } from 'class-validator';
-import { PaginationInput } from 'src/common/dto/pagination.dto';
+import { PaginationInput } from 'src/shared/dto/pagination.dto';
 import { FindManyOptions, ILike } from 'typeorm';
 import { Product } from '../entities/product.entity';
 

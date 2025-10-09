@@ -1,6 +1,6 @@
 import { createUnionType } from '@nestjs/graphql';
-import { InvalidData } from 'src/common/errors/invalid-data.error';
-import { DeleteResponse } from 'src/common/responses/delete.response';
+import { InvalidData } from 'src/shared/errors/invalid-data.error';
+import { DeleteResponse } from 'src/shared/responses/delete.response';
 import { ProductInUse } from '../errors/product.error';
 
 export type DeleteProductUnion = typeof DeleteProductUnion;

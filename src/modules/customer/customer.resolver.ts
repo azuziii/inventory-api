@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { GetByIdArgs } from 'src/common/args/get-by-id.args';
-import { ErrorResponseType } from 'src/common/decorators/meta/error-response-type.decorator';
+import { GetByIdArgs } from 'src/shared/args/get-by-id.args';
+import { ErrorResponseType } from 'src/shared/decorators/meta/error-response-type.decorator';
 import { CustomerArguments } from './args/customer.args';
 import { CustomerService } from './customer.service';
 import { Customer } from './entities/customer.entity';

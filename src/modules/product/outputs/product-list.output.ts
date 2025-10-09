@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { PaginationDto, PaginationProps } from 'src/common/dto/pagination.dto';
+import { PaginationDto, PaginationProps } from 'src/shared/dto/pagination.dto';
 import { Product } from '../entities/product.entity';
 
 @ObjectType()

@@ -1,6 +1,6 @@
-import { AlreadyExist } from 'src/common/errors/already-exist.error';
-import { InUse } from 'src/common/errors/in-use.error';
-import { NotFound } from 'src/common/errors/not-found.error';
+import { AlreadyExist } from 'src/shared/errors/already-exist.error';
+import { InUse } from 'src/shared/errors/in-use.error';
+import { NotFound } from 'src/shared/errors/not-found.error';
 
 const ENTITY_NAME = 'Customer';
 
