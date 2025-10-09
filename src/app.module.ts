@@ -9,6 +9,7 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GqlExceptionToDataInterceptor } from './common/interceptors/gql-exception-to-data/gql-exception-to-data.interceptor';
+import { I18nInterceptor } from './common/interceptors/i18n/i18n.interceptor';
 import { CustomerModule } from './modules/customer/customer.module';
 import { ProductModule } from './modules/product/product.module';
 
@@ -55,6 +56,10 @@ import { ProductModule } from './modules/product/product.module';
     {
       provide: APP_INTERCEPTOR,
       useClass: GqlExceptionToDataInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: I18nInterceptor,
     },
   ],
 })
