@@ -1,7 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { DatabaseError } from 'pg';
 import { BaseRepositoty } from 'src/shared/base/repository';
-import { EntityManager, QueryFailedError } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { CreateCustomerDto, UpdateCustomerDto } from './dto/customer.dto';
 import { Customer } from './entities/customer.entity';
 import { CustomerAlreadyExist, CustomerInUse } from './errors/customer.error';
@@ -55,17 +54,10 @@ export class CustomerRepository extends BaseRepositoty<Customer> {
     }
   }
 
-  private handleDatabaseError(
+  protected translateDatabaseError(
     error: any,
-    customer?: CreateCustomerDto | UpdateCustomerDto,
-  ) {
-    if (!(error instanceof QueryFailedError)) throw error;
-
-    if (!(error.driverError instanceof DatabaseError)) {
-      console.error('Invalid database driver');
-      throw new InternalServerErrorException();
-    }
-
+    entity?: Partial<Customer> | undefined,
+  ): void {
     switch (error.driverError.constraint) {
       case 'UQ_customer_ice':
         throw new CustomerAlreadyExist({

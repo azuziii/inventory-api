@@ -1,7 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { DatabaseError } from 'pg';
 import { BaseRepositoty } from 'src/shared/base/repository';
-import { EntityManager, QueryFailedError } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import { Product } from './entities/product.entity';
 import { ProductAlreadyExist } from './errors/product.error';
@@ -56,17 +55,10 @@ export class ProductRepository extends BaseRepositoty<Product> {
     }
   }
 
-  private handleDatabaseError(
+  protected translateDatabaseError(
     error: any,
-    product?: CreateProductDto | UpdateProductDto,
-  ) {
-    if (!(error instanceof QueryFailedError)) throw error;
-
-    if (!(error.driverError instanceof DatabaseError)) {
-      console.error('Invalid database driver');
-      throw new InternalServerErrorException();
-    }
-
+    entity?: Partial<Product> | undefined,
+  ): void {
     switch (error.driverError.constraint) {
       case 'UQ_product_customer_name':
         throw new ProductAlreadyExist({
