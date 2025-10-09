@@ -16,7 +16,6 @@ export class I18nInterceptor implements NestInterceptor {
       catchError((err) => {
         const i18n = I18nContext.current()!;
         if (err instanceof I18nValidationException) {
-          console.log(err.errors);
           const errors = formatI18nErrors(err.errors ?? [], i18n.service, {
             lang: i18n.lang,
           });
