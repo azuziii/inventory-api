@@ -1,18 +1,15 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { DatabaseError } from 'pg';
-import { EntityManager, QueryFailedError, Repository } from 'typeorm';
+import { BaseRepositoty } from 'src/shared/base/repository';
+import { EntityManager, QueryFailedError } from 'typeorm';
 import { CreateCustomerDto, UpdateCustomerDto } from './dto/customer.dto';
 import { Customer } from './entities/customer.entity';
 import { CustomerAlreadyExist, CustomerInUse } from './errors/customer.error';
 
 @Injectable()
-export class CustomerRepository extends Repository<Customer> {
-  constructor(private readonly entityManager: EntityManager) {
+export class CustomerRepository extends BaseRepositoty<Customer> {
+  constructor(protected readonly entityManager: EntityManager) {
     super(Customer, entityManager);
-  }
-
-  private getManager(externalManagr?: EntityManager): EntityManager {
-    return externalManagr || this.entityManager;
   }
 
   async createCustomer(

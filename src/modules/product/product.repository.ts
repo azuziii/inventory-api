@@ -1,18 +1,15 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { DatabaseError } from 'pg';
-import { EntityManager, QueryFailedError, Repository } from 'typeorm';
+import { BaseRepositoty } from 'src/shared/base/repository';
+import { EntityManager, QueryFailedError } from 'typeorm';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import { Product } from './entities/product.entity';
 import { ProductAlreadyExist } from './errors/product.error';
 
 @Injectable()
-export class ProductRepository extends Repository<Product> {
-  constructor(private readonly entityManager: EntityManager) {
+export class ProductRepository extends BaseRepositoty<Product> {
+  constructor(protected readonly entityManager: EntityManager) {
     super(Product, entityManager);
-  }
-
-  private getManager(externalManagr?: EntityManager): EntityManager {
-    return externalManagr || this.entityManager;
   }
 
   async createProduct(
