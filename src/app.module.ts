@@ -8,8 +8,8 @@ import { HeaderResolver, I18nModule } from 'nestjs-i18n';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { GqlExceptionToDataInterceptor } from './common/interceptors/gql-exception-to-data/gql-exception-to-data.interceptor';
-import { I18nInterceptor } from './common/interceptors/i18n/i18n.interceptor';
+import { GqlExceptionToDataInterceptor } from './interceptors/gql-exception-to-data/gql-exception-to-data.interceptor';
+import { I18nInterceptor } from './interceptors/i18n/i18n.interceptor';
 import { CustomerModule } from './modules/customer/customer.module';
 import { ProductModule } from './modules/product/product.module';
 
