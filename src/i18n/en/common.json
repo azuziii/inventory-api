@@ -1,0 +1,47 @@
+{
+  "errors": {
+    "AlreadyExist": "$t(common.{field}.displayName) already exists",
+    "NotFound": "$t(common.{entityName}.displayName) not found.",
+    "InUse": "$t(common.{entityName}.displayName) can't be deleted because it's used in other '$t(common.{resourceName}.displayName)' records.",
+    "InvalidData": "Invalid data"
+  },
+  "customer": {
+    "displayName": "Customer"
+  },
+  "product": {
+    "displayName": "Product"
+  },
+  "sample": {
+    "displayName": "Sample"
+  },
+  "name": {
+    "displayName": "Name"
+  },
+  "code": {
+    "displayName": "Code"
+  },
+  "price": {
+    "displayName": "Price"
+  },
+  "address": {
+    "displayName": "Address"
+  },
+  "city": {
+    "displayName": "City"
+  },
+  "country": {
+    "displayName": "Country"
+  },
+  "ice": {
+    "displayName": "Ice"
+  },
+  "contact_name": {
+    "displayName": "Contact name"
+  },
+  "contact_phone": {
+    "displayName": "Contact phone"
+  },
+  "contact_email": {
+    "displayName": "Contact email"
+  }
+}

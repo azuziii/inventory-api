@@ -1,0 +1,47 @@
+{
+  "errors": {
+    "AlreadyExist": "$t(common.{field}.displayName) existe déjà",
+    "NotFound": "$t(common.{entityName}.displayName) introuvable.",
+    "InUse": "$t(common.{entityName}.displayName) ne peut pas être supprimé car il est utilisé dans d'autres '$t(common.{resourceName}.displayName).",
+    "InvalidData": "Données non valides"
+  },
+  "customer": {
+    "displayName": "Client"
+  },
+  "product": {
+    "displayName": "Produit"
+  },
+  "sample": {
+    "displayName": "Échantillon"
+  },
+  "name": {
+    "displayName": "Nom"
+  },
+  "code": {
+    "displayName": "Code"
+  },
+  "price": {
+    "displayName": "Prix"
+  },
+  "address": {
+    "displayName": "Adresse"
+  },
+  "city": {
+    "displayName": "Ville"
+  },
+  "country": {
+    "displayName": "Pays"
+  },
+  "ice": {
+    "displayName": "Ice"
+  },
+  "contact_name": {
+    "displayName": "Nom de la personne-ressource"
+  },
+  "contact_phone": {
+    "displayName": "Téléphone de contact"
+  },
+  "contact_email": {
+    "displayName": "Courriel de contact"
+  }
+}
