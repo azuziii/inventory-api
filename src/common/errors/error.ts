@@ -1,8 +1,8 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { LocalizedError, LocalizedErrorProps } from './localized.error';
 
-export interface ErrorProps {
+export interface ErrorProps extends LocalizedErrorProps {
   code: string;
-  message: string;
 }
 
 export interface ErrorPropsWithEntityName extends ErrorProps {
@@ -10,9 +10,12 @@ export interface ErrorPropsWithEntityName extends ErrorProps {
 }
 
 @ObjectType({ isAbstract: true })
-export abstract class BaseError {
+export abstract class BaseError extends LocalizedError {
   constructor(props: ErrorProps) {
+    super();
     Object.assign(this, props);
+    this.lowerCaseArgs();
+    this.message = props.i18nKey;
   }
 
   readonly __isError = true;
