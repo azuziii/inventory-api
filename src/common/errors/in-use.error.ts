@@ -15,7 +15,11 @@ export function InUse(entityName: string) {
       super({
         code: 'IN_USE',
         entityName,
-        message: `${entityName} can't be deleted because it's used in other ${props.resourceName} records.`,
+        i18nKey: 'common.errors.InUse',
+        i18nArgs: {
+          entityName: entityName,
+          resourceName: props.resourceName,
+        },
       });
 
       Object.assign(this, props);

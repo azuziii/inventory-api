@@ -12,7 +12,7 @@ export class InvalidData extends BaseError implements InvalidDataProps {
   constructor(props?: InvalidDataProps) {
     super({
       code: 'INVALID_DATA',
-      message: `Invlaid data`,
+      i18nKey: 'common.errors.InvalidData',
     });
 
     Object.assign(this, props);

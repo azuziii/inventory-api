@@ -14,7 +14,10 @@ export function NotFound(entityName: string) {
       super({
         code: 'NOT_FOUND',
         entityName,
-        message: `${entityName} not found.`,
+        i18nKey: 'common.errors.NotFound',
+        i18nArgs: {
+          entityName,
+        },
       });
 
       Object.assign(this, props);

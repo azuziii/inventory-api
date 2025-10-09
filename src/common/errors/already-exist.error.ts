@@ -18,7 +18,10 @@ export function AlreadyExist(entityName: string) {
       super({
         code: 'ALREADY_EXISTS',
         entityName,
-        message: `${props.field} already exists`,
+        i18nKey: 'common.errors.AlreadyExist',
+        i18nArgs: {
+          field: props.field,
+        },
       });
 
       Object.assign(this, props);
