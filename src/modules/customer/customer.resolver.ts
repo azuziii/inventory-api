@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { GetByIdArgs } from 'src/shared/args/get-by-id.args';
+import { GetByIdArgs } from 'src/shared/args/get-by-id/get-by-id.args';
 import { ErrorResponseType } from 'src/shared/decorators/meta/error-response-type.decorator';
 import { CustomerArguments } from './args/customer.args';
 import { CustomerService } from './customer.service';

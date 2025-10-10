@@ -7,7 +7,7 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { GetByIdArgs } from 'src/shared/args/get-by-id.args';
+import { GetByIdArgs } from 'src/shared/args/get-by-id/get-by-id.args';
 import { ErrorResponseType } from 'src/shared/decorators/meta/error-response-type.decorator';
 import { Customer } from '../customer/entities/customer.entity';
 import { GetCustomerPipe } from '../customer/pipes/get-customer/get-customer.pipe';
