@@ -2,6 +2,7 @@ import { Field, Float, ID, InputType, PartialType } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 import { UpdateCustomerDto } from 'src/modules/customer/dto/customer.dto';
 import { Customer } from 'src/modules/customer/entities/customer.entity';
+import { WithUuidInputMixin } from 'src/shared/inputs/get-by-id/get-by-id.mixin';
 import { CreateProductDto } from '../dto/product.dto';
 
 @InputType()
@@ -30,9 +31,13 @@ export class CreateProductInput implements CreateProductDto {
   customer!: Customer;
 }
 
+const UpdateProductInputBase = WithUuidInputMixin(
+  PartialType(CreateProductInput),
+);
+
 @InputType()
 export class UpdateProductInput
-  extends PartialType(CreateProductInput)
+  extends UpdateProductInputBase
   implements UpdateCustomerDto
 {
   @Field(() => ID, { nullable: false })
