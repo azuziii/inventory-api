@@ -1,5 +1,6 @@
-import { Field, ID, InputType, PartialType } from '@nestjs/graphql';
-import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
+import { Field, InputType, PartialType } from '@nestjs/graphql';
+import { IsNotEmpty, IsOptional } from 'class-validator';
+import { WithUuidInputMixin } from 'src/shared/inputs/get-by-id/get-by-id.mixin';
 import { CreateCustomerDto, UpdateCustomerDto } from '../dto/customer.dto';
 
 @InputType()
@@ -37,13 +38,11 @@ export class CreateCustomerInput implements CreateCustomerDto {
   contact_email?: string;
 }
 
+const UpdateCustomerInputBase = WithUuidInputMixin(
+  PartialType(CreateCustomerInput),
+);
+
 @InputType()
 export class UpdateCustomerInput
-  extends PartialType(CreateCustomerInput)
-  implements UpdateCustomerDto
-{
-  @Field(() => ID, { nullable: false })
-  @IsNotEmpty()
-  @IsUUID()
-  id!: string;
-}
+  extends UpdateCustomerInputBase
+  implements UpdateCustomerDto {}
