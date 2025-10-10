@@ -1,4 +1,4 @@
-import { Field, Float, ID, InputType, PartialType } from '@nestjs/graphql';
+import { Field, Float, InputType, PartialType } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 import { i18nValidationMessage } from 'nestjs-i18n';
 import { UpdateCustomerDto } from 'src/modules/customer/dto/customer.dto';
@@ -41,10 +41,4 @@ const UpdateProductInputBase = WithUuidInputMixin(
 @InputType()
 export class UpdateProductInput
   extends UpdateProductInputBase
-  implements UpdateCustomerDto
-{
-  @Field(() => ID, { nullable: false })
-  @IsNotEmpty()
-  @IsUUID()
-  id!: string;
-}
+  implements UpdateCustomerDto {}
