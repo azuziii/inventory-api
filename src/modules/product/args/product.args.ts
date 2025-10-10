@@ -1,16 +1,16 @@
-import { ArgsType, Field, Float, ID } from '@nestjs/graphql';
-import { IsOptional, IsUUID } from 'class-validator';
+import { ArgsType, Field, Float } from '@nestjs/graphql';
+import { IsOptional } from 'class-validator';
+import { WithUuidArgMixin } from 'src/shared/args/get-by-id/get-by-id.mixin';
 import { PaginationInput } from 'src/shared/dto/pagination.dto';
 import { FindManyOptions, ILike } from 'typeorm';
 import { Product } from '../entities/product.entity';
 
-@ArgsType()
-export class ProductArguments extends PaginationInput {
-  @Field(() => ID, { nullable: true })
-  @IsOptional()
-  @IsUUID()
-  id?: string;
+const ProductArgumentsBase = WithUuidArgMixin(PaginationInput, {
+  required: false,
+});
 
+@ArgsType()
+export class ProductArguments extends ProductArgumentsBase {
   @Field({ nullable: true })
   @IsOptional()
   name?: string;
