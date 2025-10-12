@@ -1,8 +1,12 @@
-import { BaseResponse } from 'src/shared/responses/base.response';
+import {
+  BaseResponse,
+  InstanceOfBaseResponse,
+} from 'src/shared/responses/base.response';
 import { CustomersQueryUnion } from '../unions/query-customers.union';
 
-export type CustomersQueryResponse = typeof CustomersQueryResponse;
-export const CustomersQueryResponse = BaseResponse(
+export type CustomersQueryResponse =
+  InstanceOfBaseResponse<CustomersQueryUnion>;
+export const CustomersQueryResponse = BaseResponse<CustomersQueryUnion>(
   'CustomersQueryResponse',
   CustomersQueryUnion,
 );

@@ -1,8 +1,11 @@
-import { BaseResponse } from 'src/shared/responses/base.response';
+import {
+  BaseResponse,
+  InstanceOfBaseResponse,
+} from 'src/shared/responses/base.response';
 import { DeleteProductUnion } from '../unions/delete-product.union';
 
-export type DeleteProductResponse = typeof DeleteProductResponse;
-export const DeleteProductResponse = BaseResponse(
+export type DeleteProductResponse = InstanceOfBaseResponse<DeleteProductUnion>;
+export const DeleteProductResponse = BaseResponse<DeleteProductUnion>(
   'DeleteProductResponse',
   DeleteProductUnion,
 );
