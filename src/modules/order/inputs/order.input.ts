@@ -1,7 +1,8 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field, InputType, Int, PartialType } from '@nestjs/graphql';
 import { IsDate, IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
 import { Customer } from 'src/modules/customer/entities/customer.entity';
-import { CreateOrderDto } from '../dto/order.dto';
+import { WithUuidInputMixin } from 'src/shared/inputs/get-by-id/get-by-id.mixin';
+import { CreateOrderDto, UpdateOrderDto } from '../dto/order.dto';
 
 @InputType()
 export class CreateOrderInput implements CreateOrderDto {
@@ -22,3 +23,10 @@ export class CreateOrderInput implements CreateOrderDto {
 
   customer!: Customer;
 }
+
+const UpdateOrderInputBase = WithUuidInputMixin(PartialType(CreateOrderInput));
+
+@InputType()
+export class UpdateOrderInput
+  extends UpdateOrderInputBase
+  implements UpdateOrderDto {}
