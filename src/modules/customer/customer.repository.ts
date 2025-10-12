@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { DatabaseError } from 'pg';
 import { BaseRepositoty } from 'src/shared/base/repository';
-import { EntityManager } from 'typeorm';
+import { EntityManager, QueryFailedError } from 'typeorm';
 import { CreateCustomerDto, UpdateCustomerDto } from './dto/customer.dto';
 import { Customer } from './entities/customer.entity';
 import { CustomerAlreadyExist, CustomerInUse } from './errors/customer.error';
@@ -55,7 +56,7 @@ export class CustomerRepository extends BaseRepositoty<Customer> {
   }
 
   protected translateDatabaseError(
-    error: any,
+    error: QueryFailedError<DatabaseError>,
     entity?: Partial<Customer> | undefined,
   ): void {
     switch (error.driverError.constraint) {

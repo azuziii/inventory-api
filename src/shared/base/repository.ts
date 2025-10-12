@@ -33,7 +33,7 @@ export abstract class BaseRepositoty<
   }
 
   protected abstract translateDatabaseError(
-    error: any,
+    error: QueryFailedError<DatabaseError>,
     entity?: Partial<Entity>,
   ): void;
 }
