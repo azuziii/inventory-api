@@ -5,3 +5,7 @@ export interface CreateOrderDto {
   order_date: Date;
   customer: Customer;
 }
+
+export interface UpdateOrderDto extends Partial<CreateOrderDto> {
+  id: string;
+}
