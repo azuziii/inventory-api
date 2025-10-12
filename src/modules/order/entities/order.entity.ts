@@ -4,7 +4,7 @@ import { BaseUUIDEntity } from 'src/shared/base/base.entity';
 import { BeforeInsert, Column, Entity, Index, ManyToOne } from 'typeorm';
 
 @Entity('order')
-@Index('UQ_ORDER_NUMBER_YEAR', ['order_year', 'order_number'])
+@Index('UQ_ORDER_NUMBER_YEAR', ['order_year', 'order_number'], { unique: true })
 @ObjectType()
 export class Order extends BaseUUIDEntity {
   @Field(() => Int, { nullable: false })
