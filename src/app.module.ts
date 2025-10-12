@@ -12,6 +12,7 @@ import { GqlExceptionToDataInterceptor } from './interceptors/gql-exception-to-d
 import { I18nInterceptor } from './interceptors/i18n/i18n.interceptor';
 import { CustomerModule } from './modules/customer/customer.module';
 import { ProductModule } from './modules/product/product.module';
+import { OrderModule } from './modules/order/order.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { ProductModule } from './modules/product/product.module';
     }),
     CustomerModule,
     ProductModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [
