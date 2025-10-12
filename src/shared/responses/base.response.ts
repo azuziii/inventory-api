@@ -1,18 +1,21 @@
-import { Type } from '@nestjs/common';
 import { Field, ObjectType, Union } from '@nestjs/graphql';
 
-export function BaseResponse(name: string, union: Union<any>): Type<any> {
+export function BaseResponse<TUnion>(name: string, union: Union<any>) {
   const responseName = name;
 
   @ObjectType(responseName)
   class BaseResponse {
-    constructor(response: typeof union) {
+    constructor(response: TUnion) {
       this.result = response;
     }
 
     @Field(() => union)
-    result!: typeof union;
+    result!: TUnion;
   }
 
   return BaseResponse;
 }
+
+export type InstanceOfBaseResponse<TUnion> = InstanceType<
+  ReturnType<typeof BaseResponse<TUnion>>
+>;
