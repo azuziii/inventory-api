@@ -8,6 +8,7 @@ import { CreateOrderInput, UpdateOrderInput } from './inputs/order.input';
 import { OrderService } from './order.service';
 import { OrderList } from './outputs/order-list.output';
 import { CreateOrderResponse } from './responses/create-order.response';
+import { DeleteOrderResponse } from './responses/delete-order.response';
 import { OrderQueryResponse } from './responses/query-order.response';
 import { OrdersQueryResponse } from './responses/query-orders.response';
 import { UpdateOrderResponse } from './responses/update-order.response';
@@ -48,6 +49,7 @@ export class OrderResolver {
     @Args('input') input: CreateOrderInput,
   ): Promise<CreateOrderResponse> {
     const order = await this.orderService.createOrder(input);
+    console.log(input);
     return new CreateOrderResponse(order);
   }
 
@@ -59,5 +61,12 @@ export class OrderResolver {
   ): Promise<UpdateOrderResponse> {
     const updateResult = await this.orderService.updateOrder(input);
     return new UpdateOrderResponse(updateResult);
+  }
+
+  @ErrorResponseType(DeleteOrderResponse)
+  @Mutation(() => DeleteOrderResponse, { name: 'deleteOrder' })
+  async deleteOrder(@Args() { id }: GetByIdArgs): Promise<DeleteOrderResponse> {
+    const deleteResult = await this.orderService.deleteOrder(id);
+    return new DeleteOrderResponse(deleteResult);
   }
 }

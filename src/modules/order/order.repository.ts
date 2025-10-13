@@ -47,6 +47,14 @@ export class OrderRepository extends BaseRepositoty<Order> {
     }
   }
 
+  async deleteOrder(id: string): Promise<void> {
+    try {
+      const deleteResult = await this.delete(id);
+    } catch (error) {
+      throw this.handleDatabaseError(error);
+    }
+  }
+
   protected translateDatabaseError(
     error: QueryFailedError<DatabaseError>,
     entity?: Partial<Order> | undefined,
