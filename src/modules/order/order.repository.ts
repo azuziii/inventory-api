@@ -43,7 +43,7 @@ export class OrderRepository extends BaseRepositoty<Order> {
         where: { id: order.id },
       }) as Promise<Order>;
     } catch (error) {
-      throw this.handleDatabaseError(error, order);
+      throw this.handleDatabaseError(error);
     }
   }
 
