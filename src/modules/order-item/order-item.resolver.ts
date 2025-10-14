@@ -9,6 +9,7 @@ import {
 } from './inputs/order-item.input';
 import { OrderItemService } from './order-item.service';
 import { CreateOrderItemResponse } from './responses/create-order-item.response';
+import { DeleteOrderItemResponse } from './responses/delete-order-item.response';
 import { OrderItemQueryResponse } from './responses/query-order-item.response';
 import { UpdateOrderItemResponse } from './responses/update-order-item.response';
 
@@ -46,5 +47,14 @@ export class OrderItemResolver {
   ): Promise<UpdateOrderItemResponse> {
     const updateResult = await this.orderItemService.updateOrderItem(input);
     return new UpdateOrderItemResponse(updateResult);
+  }
+
+  @ErrorResponseType(DeleteOrderItemResponse)
+  @Mutation(() => DeleteOrderItemResponse, { name: 'deleteOrderItem' })
+  async deleteOrderItem(
+    @Args() { id }: GetByIdArgs,
+  ): Promise<DeleteOrderItemResponse> {
+    const deleteResult = await this.orderItemService.deleteOrderItem(id);
+    return new DeleteOrderItemResponse(deleteResult);
   }
 }
