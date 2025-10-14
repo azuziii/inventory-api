@@ -1,4 +1,5 @@
 import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
+import { Order } from 'src/modules/order/entities/order.entity';
 import { Product } from 'src/modules/product/entities/product.entity';
 import { BaseUUIDEntity } from 'src/shared/base/base.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
@@ -21,4 +22,7 @@ export class OrderItem extends BaseUUIDEntity {
   @Field(() => Product)
   @ManyToOne(() => Product, { lazy: true })
   product!: Product;
+
+  @ManyToOne(() => Order, (order) => order.items)
+  order!: Order;
 }

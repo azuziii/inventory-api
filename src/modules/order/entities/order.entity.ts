@@ -1,7 +1,15 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Customer } from 'src/modules/customer/entities/customer.entity';
+import { OrderItem } from 'src/modules/order-item/entities/order-item.entity';
 import { BaseUUIDEntity } from 'src/shared/base/base.entity';
-import { BeforeInsert, Column, Entity, Index, ManyToOne } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  Index,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 
 @Entity('order')
 @Index('UQ_ORDER_NUMBER_YEAR', ['order_year', 'order_number'], { unique: true })
@@ -22,6 +30,10 @@ export class Order extends BaseUUIDEntity {
   @Field(() => Customer, { nullable: false })
   @ManyToOne(() => Customer, { lazy: true })
   customer!: Customer;
+
+  @Field(() => [OrderItem], { nullable: false })
+  @OneToMany(() => OrderItem, (item) => item.order, { lazy: true })
+  items!: OrderItem[];
 
   @BeforeInsert()
   setOrderYear() {
