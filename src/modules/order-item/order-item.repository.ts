@@ -53,6 +53,14 @@ export class OrderItemRepository extends BaseRepositoty<OrderItem> {
     }
   }
 
+  async deleteOrderItem(id: string): Promise<void> {
+    try {
+      const deleteResult = await this.delete(id);
+    } catch (error) {
+      throw this.handleDatabaseError(error);
+    }
+  }
+
   protected translateDatabaseError(
     error: QueryFailedError<DatabaseError>,
     entity?: Partial<OrderItem> | undefined,
