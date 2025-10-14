@@ -1,16 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { DeleteResponse } from 'src/shared/responses/delete.response';
-import { DataSource, EntityManager, FindManyOptions } from 'typeorm';
+import {
+  DataSource,
+  EntityManager,
+  FindManyOptions,
+  FindOneOptions,
+} from 'typeorm';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import { Product } from './entities/product.entity';
 import { ProductNotFound } from './errors/product.error';
+import { IProduct } from './interfaces/product.interface';
 import { ProductRepository } from './product.repository';
 import { CreateProductUnion } from './unions/create-product.union';
 import { ProductQueryUnion } from './unions/query-product.union';
 import { UpdateProductUnion } from './unions/update-product.union';
 
 @Injectable()
-export class ProductService {
+export class ProductService implements IProduct {
   constructor(
     private readonly repo: ProductRepository,
     private readonly datasource: DataSource,
@@ -46,6 +52,10 @@ export class ProductService {
       );
       return updatedProduct;
     });
+  }
+
+  getProduct(options: FindOneOptions<Product>): Promise<Product | null> {
+    return this.repo.findOne(options);
   }
 
   async getProductOrFail(id: string): Promise<ProductQueryUnion> {
