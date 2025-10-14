@@ -1,9 +1,11 @@
+import { Injectable } from '@nestjs/common';
 import { DatabaseError } from 'pg';
 import { BaseRepositoty } from 'src/shared/base/repository';
 import { EntityManager, QueryFailedError } from 'typeorm';
 import { CreateOrderItemDto, UpdateOrderItemDto } from './dto/order-item.dto';
 import { OrderItem } from './entities/order-item.entity';
 
+@Injectable()
 export class OrderItemRepository extends BaseRepositoty<OrderItem> {
   constructor(readonly entityManager: EntityManager) {
     super(OrderItem, entityManager);
