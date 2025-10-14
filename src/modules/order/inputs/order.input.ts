@@ -1,12 +1,12 @@
 import { Field, InputType, Int, PartialType } from '@nestjs/graphql';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
+  ArrayMinSize,
   IsArray,
   IsDate,
   IsNotEmpty,
   IsNumber,
   IsUUID,
-  MinLength,
   ValidateNested,
 } from 'class-validator';
 import { Customer } from 'src/modules/customer/entities/customer.entity';
@@ -32,8 +32,12 @@ export class CreateOrderInput implements CreateOrderDto {
   customer_id!: string;
 
   @Field(() => [CreateOrderItemInput], { nullable: false })
+  @Transform(({ key, value }) => {
+    console.log(value);
+    return value;
+  })
   @IsArray()
-  @MinLength(1)
+  @ArrayMinSize(1)
   @Type(() => CreateOrderItemInput)
   @ValidateNested({ each: true })
   items!: CreateOrderItemInput[];
