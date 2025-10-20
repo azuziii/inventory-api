@@ -11,7 +11,7 @@ export class ProductRepository extends BaseRepositoty<Product> {
     super(Product, entityManager);
   }
 
-  async createProduct(
+  async insertProduct(
     product: CreateProductDto,
     entityManager?: EntityManager,
   ): Promise<Product> {

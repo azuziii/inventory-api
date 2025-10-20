@@ -11,7 +11,7 @@ export class CustomerRepository extends BaseRepositoty<Customer> {
     super(Customer, entityManager);
   }
 
-  async createCustomer(
+  async insertCustomer(
     customer: CreateCustomerDto,
     entityManager?: EntityManager,
   ): Promise<Customer> {

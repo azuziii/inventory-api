@@ -20,7 +20,7 @@ export class CustomerService {
 
   async createCustomer(customerDto: CreateCustomerDto): Promise<Customer> {
     return this.datasource.transaction(async (entityManager: EntityManager) => {
-      const customer = await this.repo.createCustomer(
+      const customer = await this.repo.insertCustomer(
         customerDto,
         entityManager,
       );

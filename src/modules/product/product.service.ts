@@ -15,7 +15,7 @@ export class ProductService {
 
   async createProduct(productDto: CreateProductDto): Promise<Product> {
     return this.datasource.transaction(async (entityManager: EntityManager) => {
-      const product = await this.repo.createProduct(productDto, entityManager);
+      const product = await this.repo.insertProduct(productDto, entityManager);
 
       return product;
     });
