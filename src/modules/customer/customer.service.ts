@@ -10,9 +10,6 @@ import { CustomerRepository } from './customer.repository';
 import { CreateCustomerDto, UpdateCustomerDto } from './dto/customer.dto';
 import { Customer } from './entities/customer.entity';
 import { CustomerNotFound } from './errors/customer.error';
-import { CreateCustomerUnion } from './unions/create-customer.union';
-import { CustomerQueryUnion } from './unions/query-customer.union';
-import { UpdateCustomerUnion } from './unions/update-customer.union';
 
 @Injectable()
 export class CustomerService {
@@ -21,9 +18,7 @@ export class CustomerService {
     private readonly datasource: DataSource,
   ) {}
 
-  async createCustomer(
-    customerDto: CreateCustomerDto,
-  ): Promise<CreateCustomerUnion> {
+  async createCustomer(customerDto: CreateCustomerDto): Promise<Customer> {
     return this.datasource.transaction(async (entityManager: EntityManager) => {
       const customer = await this.repo.createCustomer(
         customerDto,
@@ -34,9 +29,7 @@ export class CustomerService {
     });
   }
 
-  async updateCustomer(
-    customerDto: UpdateCustomerDto,
-  ): Promise<UpdateCustomerUnion> {
+  async updateCustomer(customerDto: UpdateCustomerDto): Promise<Customer> {
     return this.datasource.transaction(async (entityManager: EntityManager) => {
       const customer = await entityManager.findOne(Customer, {
         where: { id: customerDto.id },
@@ -60,7 +53,7 @@ export class CustomerService {
     return this.repo.findOne(options);
   }
 
-  async getCustomerOrFail(id: string): Promise<CustomerQueryUnion> {
+  async getCustomerOrFail(id: string): Promise<Customer> {
     const customer = await this.repo.findOne({
       where: {
         id,

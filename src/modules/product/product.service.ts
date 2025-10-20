@@ -5,9 +5,6 @@ import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import { Product } from './entities/product.entity';
 import { ProductNotFound } from './errors/product.error';
 import { ProductRepository } from './product.repository';
-import { CreateProductUnion } from './unions/create-product.union';
-import { ProductQueryUnion } from './unions/query-product.union';
-import { UpdateProductUnion } from './unions/update-product.union';
 
 @Injectable()
 export class ProductService {
@@ -16,9 +13,7 @@ export class ProductService {
     private readonly datasource: DataSource,
   ) {}
 
-  async createProduct(
-    productDto: CreateProductDto,
-  ): Promise<CreateProductUnion> {
+  async createProduct(productDto: CreateProductDto): Promise<Product> {
     return this.datasource.transaction(async (entityManager: EntityManager) => {
       const product = await this.repo.createProduct(productDto, entityManager);
 
@@ -26,9 +21,7 @@ export class ProductService {
     });
   }
 
-  async updateProduct(
-    productDto: UpdateProductDto,
-  ): Promise<UpdateProductUnion> {
+  async updateProduct(productDto: UpdateProductDto): Promise<Product> {
     return this.datasource.transaction(async (entityManager: EntityManager) => {
       const product = await entityManager.findOne(Product, {
         where: { id: productDto.id },
@@ -48,7 +41,7 @@ export class ProductService {
     });
   }
 
-  async getProductOrFail(id: string): Promise<ProductQueryUnion> {
+  async getProductOrFail(id: string): Promise<Product> {
     const product = await this.repo.findOne({
       where: {
         id,
