@@ -12,16 +12,11 @@ export class OrderRepository extends BaseRepositoty<Order> {
   }
 
   async insertOrder(
-    { customer_id, ...order }: CreateOrderDto,
+    order: CreateOrderDto,
     entityManager?: EntityManager,
   ): Promise<Order> {
     const manager = this.getManager(entityManager);
-    const newOrder = this.create({
-      ...order,
-      customer: {
-        id: customer_id,
-      },
-    });
+    const newOrder = this.create(order);
 
     try {
       const {
