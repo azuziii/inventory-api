@@ -1,4 +1,3 @@
-import { UsePipes } from '@nestjs/common';
 import {
   Args,
   Mutation,
@@ -10,7 +9,6 @@ import {
 import { GetByIdArgs } from 'src/shared/args/get-by-id/get-by-id.args';
 import { ErrorResponseType } from 'src/shared/decorators/meta/error-response-type.decorator';
 import { Customer } from '../customer/entities/customer.entity';
-import { GetCustomerPipe } from '../customer/pipes/get-customer/get-customer.pipe';
 import { ProductArguments } from './args/product.args';
 import { Product } from './entities/product.entity';
 import { CreateProductInput, UpdateProductInput } from './inputs/product.input';
@@ -53,7 +51,6 @@ export class ProductResolver {
 
   @ErrorResponseType(CreateProductResponse)
   @Mutation(() => CreateProductResponse, { name: 'createProduct' })
-  @UsePipes(GetCustomerPipe)
   async createProduct(
     @Args('input', { type: () => CreateProductInput, nullable: false })
     input: CreateProductInput,
@@ -64,7 +61,6 @@ export class ProductResolver {
 
   @ErrorResponseType(UpdateProductResponse)
   @Mutation(() => UpdateProductResponse, { name: 'updateProduct' })
-  @UsePipes(GetCustomerPipe)
   async updateProduct(
     @Args('input', { type: () => UpdateProductInput, nullable: false })
     input: UpdateProductInput,

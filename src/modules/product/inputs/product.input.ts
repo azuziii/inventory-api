@@ -2,7 +2,6 @@ import { Field, Float, InputType, PartialType } from '@nestjs/graphql';
 import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 import { i18nValidationMessage } from 'nestjs-i18n';
 import { UpdateCustomerDto } from 'src/modules/customer/dto/customer.dto';
-import { Customer } from 'src/modules/customer/entities/customer.entity';
 import { WithUuidInputMixin } from 'src/shared/inputs/get-by-id/get-by-id.mixin';
 import { CreateProductDto } from '../dto/product.dto';
 
@@ -30,8 +29,6 @@ export class CreateProductInput implements CreateProductDto {
     message: i18nValidationMessage('validation.invalid_uuid'),
   })
   customer_id!: string;
-
-  customer!: Customer;
 }
 
 const UpdateProductInputBase = WithUuidInputMixin(
