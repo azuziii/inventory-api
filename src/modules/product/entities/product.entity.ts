@@ -35,4 +35,7 @@ export class Product extends BaseUUIDEntity {
     foreignKeyConstraintName: 'FK_product_customer',
   })
   customer!: Customer;
+
+  @Column({ type: 'uuid' })
+  customer_id!: string;
 }
