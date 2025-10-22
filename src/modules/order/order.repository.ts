@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { BaseRepositoty } from 'src/shared/base/repository';
 import { EntityManager } from 'typeorm';
-import { CreateOrderDto } from './dto/order.dto';
+import { CreateOrderDto, UpdateOrderDto } from './dto/order.dto';
 import { Order } from './entities/order.entity';
 import { OrderAlreadyExist } from './errors/order.error';
 
@@ -26,6 +26,22 @@ export class OrderRepository extends BaseRepositoty<Order> {
         where: {
           id,
         },
+      }) as Promise<Order>;
+    } catch (error) {
+      throw this.handleDatabaseError(error);
+    }
+  }
+
+  async updateOrder(
+    { id, ...order }: UpdateOrderDto,
+    entityManager?: EntityManager,
+  ): Promise<Order> {
+    try {
+      const manager = this.getManager(entityManager);
+
+      await manager.update(Order, id, order);
+      return manager.findOne(Order, {
+        where: { id },
       }) as Promise<Order>;
     } catch (error) {
       throw this.handleDatabaseError(error);
