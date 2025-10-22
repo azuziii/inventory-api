@@ -1,7 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { BaseRepositoty } from 'src/shared/base/repository';
 import { EntityManager } from 'typeorm';
-import { Customer } from '../customer/entities/customer.entity';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import { Product } from './entities/product.entity';
 import { ProductAlreadyExist } from './errors/product.error';
@@ -13,20 +12,13 @@ export class ProductRepository extends BaseRepositoty<Product> {
   }
 
   async insertProduct(
-    { customer_id, ...product }: CreateProductDto,
+    product: CreateProductDto,
     entityManager?: EntityManager,
   ): Promise<Product> {
     const manager = this.getManager(entityManager);
 
-    const newProduct = manager.create(Product, {
-      ...product,
-      customer: {
-        id: customer_id,
-      },
-    });
-
     try {
-      const insertResult = await manager.insert(Product, newProduct);
+      const insertResult = await manager.insert(Product, product);
       return manager.findOne(Product, {
         where: {
           id: insertResult.identifiers[0].id,
@@ -38,21 +30,13 @@ export class ProductRepository extends BaseRepositoty<Product> {
   }
 
   async updateProduct(
-    { customer_id, id, ...product }: UpdateProductDto,
+    { id, ...product }: UpdateProductDto,
     entityManager?: EntityManager,
   ): Promise<Product> {
     try {
       const manager = this.getManager(entityManager);
 
-      const productPayload: Partial<Product> = product;
-
-      if (customer_id) {
-        productPayload.customer = {
-          id: customer_id,
-        } as Customer;
-      }
-
-      await manager.update(Product, id, productPayload);
+      await manager.update(Product, id, product);
       return manager.findOne(Product, {
         where: { id },
       }) as Promise<Product>;
