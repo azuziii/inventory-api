@@ -2,7 +2,7 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { BaseErrorWithEntityName } from './error';
 
 export interface NotFoundProps {
-  id: string;
+  id?: string;
   message?: string;
 }
 
