@@ -1,13 +1,34 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { ErrorResponseType } from 'src/shared/decorators/meta/error-response-type.decorator';
+import { OrderArguments } from './args/order.args';
 import { CreateOrderInput, UpdateOrderInput } from './inputs/order.input';
 import { OrderService } from './order.service';
+import { OrderList } from './outputs/order-list.output';
 import { CreateOrderResponse } from './responses/create-order.response';
+import { OrdersQueryResponse } from './responses/list-orders.response';
 import { UpdateOrderResponse } from './responses/update-order.response';
 
 @Resolver()
 export class OrderResolver {
   constructor(private readonly orderService: OrderService) {}
+
+  @ErrorResponseType(OrdersQueryResponse)
+  @Query(() => OrdersQueryResponse, { name: 'orders' })
+  async listOrder(
+    @Args()
+    args: OrderArguments,
+  ): Promise<OrdersQueryResponse> {
+    const [orders, count] = await this.orderService.listOrders(
+      args.toManyOptions(),
+    );
+
+    const orderList = new OrderList(orders, {
+      ...args,
+      total: count,
+    });
+
+    return new OrdersQueryResponse(orderList);
+  }
 
   @ErrorResponseType(CreateOrderResponse)
   @Mutation(() => CreateOrderResponse, { name: 'createOrder' })
