@@ -1,5 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { BaseRepositoty } from 'src/shared/base/repository';
+import { CustomerNotFound } from 'src/shared/domain-errors';
 import { EntityManager } from 'typeorm';
 import { CreateOrderDto, UpdateOrderDto } from './dto/order.dto';
 import { Order } from './entities/order.entity';
@@ -53,6 +54,10 @@ export class OrderRepository extends BaseRepositoty<Order> {
       case 'UQ_ORDER_NUMBER_YEAR':
         throw new OrderAlreadyExist({
           field: 'order_number',
+        });
+      case 'FK_CUSTOMER':
+        throw new CustomerNotFound({
+          id: entity!.customer_id,
         });
       default:
         console.error(error);
