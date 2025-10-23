@@ -30,7 +30,7 @@ export class OrderService {
         });
       }
 
-      return this.repo.updateOrder(orderDto, entityManager);
+      return this.repo.updateOrder(orderDto, order, entityManager);
     });
   }
 }
