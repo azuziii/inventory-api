@@ -32,9 +32,9 @@ export class OrderItemSubscriber implements EntitySubscriberInterface {
   }
 
   async setProductProps(event: InsertEvent<OrderItem> | UpdateEvent<any>) {
-    if (event.entity && event.entity.product) {
+    if (event.entity && event.entity.product_id) {
       const product = await this.productService.getProductOrFail(
-        event.entity.product.id,
+        event.entity.product_id,
       );
 
       event.entity.product_name = product.name;
