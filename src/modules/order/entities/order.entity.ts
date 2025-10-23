@@ -3,6 +3,7 @@ import { Customer } from 'src/modules/customer/entities/customer.entity';
 import { BaseUUIDEntity } from 'src/shared/base/base.entity';
 import {
   BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   Index,
@@ -38,6 +39,7 @@ export class Order extends BaseUUIDEntity {
   customer_id!: string;
 
   @BeforeInsert()
+  @BeforeUpdate()
   setOrderYear() {
     this.order_year = new Date(this.order_date).getFullYear().toString();
   }
