@@ -35,12 +35,15 @@ export class OrderRepository extends BaseRepositoty<Order> {
 
   async updateOrder(
     { id, ...updateOrderDto }: UpdateOrderDto,
+    order: Order,
     entityManager?: EntityManager,
   ): Promise<Order> {
     try {
       const manager = this.getManager(entityManager);
 
-      await manager.update(Order, id, updateOrderDto);
+      Object.assign(order, updateOrderDto);
+
+      await manager.update(Order, id, order);
       return manager.findOne(Order, {
         where: { id },
       }) as Promise<Order>;
