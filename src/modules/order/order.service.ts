@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource } from 'typeorm';
+import { DataSource, FindManyOptions } from 'typeorm';
 import { CreateOrderDto, UpdateOrderDto } from './dto/order.dto';
 import { Order } from './entities/order.entity';
 import { OrderNotFound } from './errors/order.error';
@@ -32,5 +32,9 @@ export class OrderService {
 
       return this.repo.updateOrder(orderDto, order, entityManager);
     });
+  }
+
+  listOrders(options: FindManyOptions<Order>): Promise<[Order[], number]> {
+    return this.repo.findAndCount(options);
   }
 }
