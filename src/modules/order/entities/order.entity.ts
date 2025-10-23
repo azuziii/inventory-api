@@ -30,6 +30,7 @@ export class Order extends BaseUUIDEntity {
   @ManyToOne(() => Customer, { lazy: true })
   @JoinColumn({
     name: 'customer_id',
+    foreignKeyConstraintName: 'FK_CUSTOMER',
   })
   customer!: Customer;
 
