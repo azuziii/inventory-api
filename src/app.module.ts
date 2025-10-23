@@ -13,6 +13,7 @@ import { I18nInterceptor } from './interceptors/i18n/i18n.interceptor';
 import { CustomerModule } from './modules/customer/customer.module';
 import { ProductModule } from './modules/product/product.module';
 import { OrderModule } from './modules/order/order.module';
+import { OrderItemModule } from './modules/order-item/order-item.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { OrderModule } from './modules/order/order.module';
     CustomerModule,
     ProductModule,
     OrderModule,
+    OrderItemModule,
   ],
   controllers: [AppController],
   providers: [
