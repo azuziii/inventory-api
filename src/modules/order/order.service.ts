@@ -34,6 +34,22 @@ export class OrderService {
     });
   }
 
+  async getOrderOrFail(id: string): Promise<Order> {
+    const order = await this.repo.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (!order) {
+      throw new OrderNotFound({
+        id,
+      });
+    }
+
+    return order;
+  }
+
   listOrders(options: FindManyOptions<Order>): Promise<[Order[], number]> {
     return this.repo.findAndCount(options);
   }
