@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { BaseRepositoty } from 'src/shared/base/repository';
 import { ProductNotFound } from 'src/shared/domain-errors';
 import { EntityManager } from 'typeorm';
-import { CreateOrderItemDto } from './dto/order-item.dto';
+import { CreateOrderItemDto, UpdateOrderItemDto } from './dto/order-item.dto';
 import { OrderItem } from './entities/order-item.entity';
 
 @Injectable()
@@ -29,6 +29,26 @@ export class OrderItemRepository extends BaseRepositoty<OrderItem> {
       }) as Promise<OrderItem>;
     } catch (error) {
       throw this.handleDatabaseError(error);
+    }
+  }
+
+  async updateOrderItem(
+    { id, ...updateOrderItemDto }: UpdateOrderItemDto,
+    orderItem: OrderItem,
+    entityManager?: EntityManager,
+  ): Promise<OrderItem> {
+    try {
+      const manager = this.getManager(entityManager);
+      console.log(updateOrderItemDto);
+      console.log(orderItem);
+      Object.assign(orderItem, updateOrderItemDto);
+
+      await manager.update(OrderItem, id, orderItem);
+      return manager.findOne(OrderItem, {
+        where: { id },
+      }) as Promise<OrderItem>;
+    } catch (error) {
+      throw this.handleDatabaseError(error, orderItem);
     }
   }
 
