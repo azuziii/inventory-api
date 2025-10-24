@@ -40,6 +40,7 @@ export class Order extends BaseUUIDEntity {
   @Column({ type: 'uuid' })
   customer_id!: string;
 
+  @Field(() => [OrderItem!], { nullable: false })
   @OneToMany(() => OrderItem, (item) => item.order, { lazy: true })
   items!: OrderItem[];
 
