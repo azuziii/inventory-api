@@ -49,4 +49,20 @@ export class OrderItemService {
       return updatedOrderItem;
     });
   }
+
+  async getOrderItemOrFail(id: string): Promise<OrderItem> {
+    const orderItem = await this.repo.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (!orderItem) {
+      throw new OrderItemNotFound({
+        id,
+      });
+    }
+
+    return orderItem;
+  }
 }
