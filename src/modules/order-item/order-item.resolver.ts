@@ -1,9 +1,13 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { ErrorResponseType } from 'src/shared/decorators/meta/error-response-type.decorator';
 import { OrderItem } from './entities/order-item.entity';
-import { CreateOrderItemInput } from './inputs/order-item.input';
+import {
+  CreateOrderItemInput,
+  UpdateOrderItemInput,
+} from './inputs/order-item.input';
 import { OrderItemService } from './order-item.service';
 import { CreateOrderItemResponse } from './responses/create-order-item.response';
+import { UpdateOrderItemResponse } from './responses/update-order-item.response';
 
 @Resolver(() => OrderItem)
 export class OrderItemResolver {
@@ -18,5 +22,15 @@ export class OrderItemResolver {
     const createResult = await this.orderItemService.createOrderItem(input);
     console.log(createResult);
     return new CreateOrderItemResponse(createResult);
+  }
+
+  @ErrorResponseType(UpdateOrderItemResponse)
+  @Mutation(() => UpdateOrderItemResponse, { name: 'updateorderItem' })
+  async updateorderItem(
+    @Args('input', { type: () => UpdateOrderItemInput, nullable: false })
+    input: UpdateOrderItemInput,
+  ): Promise<UpdateOrderItemResponse> {
+    const updateResult = await this.orderItemService.updateOrderItem(input);
+    return new UpdateOrderItemResponse(updateResult);
   }
 }
