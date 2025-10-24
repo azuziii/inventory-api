@@ -1,4 +1,5 @@
 import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
+import { Order } from 'src/modules/order/entities/order.entity';
 import { Product } from 'src/modules/product/entities/product.entity';
 import { BaseUUIDEntity } from 'src/shared/base/base.entity';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
@@ -25,6 +26,13 @@ export class OrderItem extends BaseUUIDEntity {
     foreignKeyConstraintName: 'FK_PRODUCT',
   })
   product!: Product;
+
+  @ManyToOne(() => Order, (order) => order.items)
+  @JoinColumn({
+    name: 'order_id',
+    foreignKeyConstraintName: 'FK_ORDER',
+  })
+  order!: Order;
 
   @Column({ type: 'uuid' })
   product_id!: string;
