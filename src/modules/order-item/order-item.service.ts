@@ -27,6 +27,13 @@ export class OrderItemService {
     });
   }
 
+  createOrderItemWithTransaction(
+    orderItemDto: CreateOrderItemDto,
+    entityManager: EntityManager,
+  ): Promise<OrderItem> {
+    return this.repo.insertOrderItem(orderItemDto, entityManager);
+  }
+
   async updateOrderItem(
     orderItemDto: UpdateOrderItemDto,
   ): Promise<UpdateOrderItemUnion> {
