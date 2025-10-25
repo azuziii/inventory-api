@@ -45,7 +45,6 @@ export class OrderResolver {
     @Args('input') input: CreateOrderInput,
   ): Promise<CreateOrderResponse> {
     const order = await this.orderService.createOrder(input);
-    console.log(input);
     return new CreateOrderResponse(order);
   }
 

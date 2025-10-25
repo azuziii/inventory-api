@@ -31,7 +31,6 @@ export class OrderItemResolver {
     input: CreateOrderItemInput,
   ): Promise<CreateOrderItemResponse> {
     const createResult = await this.orderItemService.createOrderItem(input);
-    console.log(createResult);
     return new CreateOrderItemResponse(createResult);
   }
 
