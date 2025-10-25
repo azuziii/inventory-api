@@ -1,4 +1,11 @@
-import { Field, ID, InputType, Int, PartialType } from '@nestjs/graphql';
+import {
+  Field,
+  ID,
+  InputType,
+  Int,
+  OmitType,
+  PartialType,
+} from '@nestjs/graphql';
 import { IsNotEmpty, IsNumber, IsUUID, Min } from 'class-validator';
 import { WithUuidInputMixin } from 'src/shared/inputs/get-by-id/get-by-id.mixin';
 import { CreateOrderItemDto, UpdateOrderItemDto } from '../dto/order-item.dto';
@@ -21,6 +28,12 @@ export class CreateOrderItemInput implements CreateOrderItemDto {
   @IsUUID()
   order_id!: string;
 }
+
+@InputType()
+export class CreateOrderItemForOrderInput extends OmitType(
+  CreateOrderItemInput,
+  ['order_id'],
+) {}
 
 const UpdateOrderItemInputBase = WithUuidInputMixin(
   PartialType(CreateOrderItemInput),
