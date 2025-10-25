@@ -27,6 +27,9 @@ export class OrderItem extends BaseUUIDEntity {
   })
   product!: Product;
 
+  @Column({ type: 'uuid' })
+  product_id!: string;
+
   @ManyToOne(() => Order, (order) => order.items)
   @JoinColumn({
     name: 'order_id',
@@ -35,5 +38,5 @@ export class OrderItem extends BaseUUIDEntity {
   order!: Order;
 
   @Column({ type: 'uuid' })
-  product_id!: string;
+  order_id!: string;
 }
