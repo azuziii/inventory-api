@@ -1,4 +1,4 @@
-import { Field, InputType, Int, PartialType } from '@nestjs/graphql';
+import { Field, InputType, Int, OmitType, PartialType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import {
   ArrayMinSize,
@@ -42,7 +42,9 @@ export class CreateOrderInput implements CreateOrderDto {
   items!: CreateOrderItemForOrderInput[];
 }
 
-const UpdateOrderInputBase = WithUuidInputMixin(PartialType(CreateOrderInput));
+const UpdateOrderInputBase = WithUuidInputMixin(
+  PartialType(OmitType(CreateOrderInput, ['items'])),
+);
 
 @InputType()
 export class UpdateOrderInput
