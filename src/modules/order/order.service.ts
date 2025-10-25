@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { DataSource, FindManyOptions } from 'typeorm';
+import { IOrderItem } from '../order-item/interfaces/order-item.interface';
 import { CreateOrderDto, UpdateOrderDto } from './dto/order.dto';
 import { Order } from './entities/order.entity';
 import { OrderNotFound } from './errors/order.error';
@@ -10,11 +11,26 @@ export class OrderService {
   constructor(
     private readonly repo: OrderRepository,
     private readonly datasource: DataSource,
+    @Inject(IOrderItem) private readonly orderItemService: IOrderItem,
   ) {}
 
   createOrder(createOrderDto: CreateOrderDto): Promise<Order> {
-    return this.datasource.transaction((entityManager) => {
-      return this.repo.insertOrder(createOrderDto, entityManager);
+    return this.datasource.transaction(async (entityManager) => {
+      const order = await this.repo.insertOrder(createOrderDto, entityManager);
+
+      const itemsPormises = createOrderDto.items.map((item) => {
+        Object.assign(item, {
+          order_id: order.id,
+        });
+        return this.orderItemService.createOrderItemWithTransaction(
+          item,
+          entityManager,
+        );
+      });
+
+      await Promise.all(itemsPormises);
+
+      return order;
     });
   }
 
