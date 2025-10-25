@@ -8,8 +8,10 @@ async function bootstrap() {
     new I18nValidationPipe({
       transform: true,
       whitelist: true,
+      validateCustomDecorators: true,
     }),
   );
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
