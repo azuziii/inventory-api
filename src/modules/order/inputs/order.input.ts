@@ -10,7 +10,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { i18nValidationMessage } from 'nestjs-i18n';
-import { CreateOrderItemInput } from 'src/modules/order-item/inputs/order-item.input';
+import { CreateOrderItemForOrderInput } from 'src/modules/order-item/inputs/order-item.input';
 import { WithUuidInputMixin } from 'src/shared/inputs/get-by-id/get-by-id.mixin';
 import { CreateOrderDto, UpdateOrderDto } from '../dto/order.dto';
 
@@ -33,13 +33,13 @@ export class CreateOrderInput implements CreateOrderDto {
   })
   customer_id!: string;
 
-  @Field(() => [CreateOrderItemInput], { nullable: false })
+  @Field(() => [CreateOrderItemForOrderInput], { nullable: false })
   @IsNotEmpty()
   @IsArray()
   @ArrayMinSize(1)
-  @Type(() => CreateOrderItemInput)
+  @Type(() => CreateOrderItemForOrderInput)
   @ValidateNested({ each: true })
-  items!: CreateOrderItemInput[];
+  items!: CreateOrderItemForOrderInput[];
 }
 
 const UpdateOrderInputBase = WithUuidInputMixin(PartialType(CreateOrderInput));
