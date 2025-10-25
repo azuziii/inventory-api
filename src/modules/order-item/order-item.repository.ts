@@ -17,7 +17,6 @@ export class OrderItemRepository extends BaseRepositoty<OrderItem> {
   ): Promise<OrderItem> {
     const manager = this.getManager(entityManager);
     const orderItem = this.create(orderItemDto);
-
     try {
       const {
         identifiers: [{ id }],
@@ -28,7 +27,7 @@ export class OrderItemRepository extends BaseRepositoty<OrderItem> {
         },
       }) as Promise<OrderItem>;
     } catch (error) {
-      throw this.handleDatabaseError(error);
+      throw this.handleDatabaseError(error, orderItemDto);
     }
   }
 
@@ -39,8 +38,6 @@ export class OrderItemRepository extends BaseRepositoty<OrderItem> {
   ): Promise<OrderItem> {
     try {
       const manager = this.getManager(entityManager);
-      console.log(updateOrderItemDto);
-      console.log(orderItem);
       Object.assign(orderItem, updateOrderItemDto);
 
       await manager.update(OrderItem, id, orderItem);
