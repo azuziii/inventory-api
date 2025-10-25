@@ -15,6 +15,9 @@ export class InvalidData extends BaseError implements InvalidDataProps {
       i18nKey: 'common.errors.InvalidData',
     });
 
-    Object.assign(this, props);
+    Object.assign(this, {
+      ...props,
+      message: props?.message || 'Invalid data',
+    });
   }
 }
