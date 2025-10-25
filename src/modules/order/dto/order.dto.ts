@@ -7,6 +7,6 @@ export interface CreateOrderDto {
   items: CreateOrderItemDto[];
 }
 
-export interface UpdateOrderDto extends Partial<CreateOrderDto> {
+export interface UpdateOrderDto extends Partial<Omit<CreateOrderDto, 'items'>> {
   id: string;
 }
