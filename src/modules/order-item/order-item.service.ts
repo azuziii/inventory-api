@@ -14,7 +14,7 @@ export class OrderItemService {
     private readonly datasource: DataSource,
   ) {}
 
-  async createOrderItem(
+  createOrderItem(
     orderItemDto: CreateOrderItemDto,
   ): Promise<CreateOrderItemUnion> {
     return this.datasource.transaction(async (entityManager: EntityManager) => {
@@ -34,7 +34,7 @@ export class OrderItemService {
     return this.repo.insertOrderItem(orderItemDto, entityManager);
   }
 
-  async updateOrderItem(
+  updateOrderItem(
     orderItemDto: UpdateOrderItemDto,
   ): Promise<UpdateOrderItemUnion> {
     return this.datasource.transaction(async (entityManager: EntityManager) => {
