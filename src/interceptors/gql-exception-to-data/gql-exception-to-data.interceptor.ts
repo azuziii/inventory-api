@@ -9,6 +9,7 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 import { ValidationError } from 'class-validator';
 import iterate from 'iterare';
 import { I18nValidationException } from 'nestjs-i18n';
+import { mapChildrenToValidationErrors } from 'nestjs-i18n/dist/utils';
 import { catchError, Observable, of } from 'rxjs';
 import { ERROR_RESPONSE_TYPE_META } from 'src/shared/decorators/meta/error-response-type.decorator';
 import { BaseError } from 'src/shared/errors/error';
@@ -57,6 +58,8 @@ export class GqlExceptionToDataInterceptor implements NestInterceptor {
 
   flattenValidationErrors(validationErrors: ValidationError[]) {
     return iterate(validationErrors)
+      .map((error) => mapChildrenToValidationErrors(error))
+      .flatten()
       .filter((error) => !!error.constraints)
       .map((error) => Object.values(error.constraints!))
       .flatten()
