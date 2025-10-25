@@ -15,6 +15,11 @@ export class CreateOrderItemInput implements CreateOrderItemDto {
   @IsNotEmpty()
   @IsUUID()
   product_id!: string;
+
+  @Field(() => ID)
+  @IsNotEmpty()
+  @IsUUID()
+  order_id!: string;
 }
 
 const UpdateOrderItemInputBase = WithUuidInputMixin(
