@@ -1,6 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { BaseRepositoty } from 'src/shared/base/repository';
-import { ProductNotFound } from 'src/shared/domain-errors';
+import { OrderNotFound, ProductNotFound } from 'src/shared/domain-errors';
 import { EntityManager } from 'typeorm';
 import { CreateOrderItemDto, UpdateOrderItemDto } from './dto/order-item.dto';
 import { OrderItem } from './entities/order-item.entity';
@@ -56,6 +56,10 @@ export class OrderItemRepository extends BaseRepositoty<OrderItem> {
     switch (error.driverError.constraint) {
       case 'FK_PRODUCT':
         throw new ProductNotFound({
+          id: entity!.product_id,
+        });
+      case 'FK_ORDER':
+        throw new OrderNotFound({
           id: entity!.product_id,
         });
       default:
