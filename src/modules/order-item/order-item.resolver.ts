@@ -35,8 +35,8 @@ export class OrderItemResolver {
   }
 
   @ErrorResponseType(UpdateOrderItemResponse)
-  @Mutation(() => UpdateOrderItemResponse, { name: 'updateorderItem' })
-  async updateorderItem(
+  @Mutation(() => UpdateOrderItemResponse, { name: 'updateOrderItem' })
+  async updateOrderItem(
     @Args('input', { type: () => UpdateOrderItemInput, nullable: false })
     input: UpdateOrderItemInput,
   ): Promise<UpdateOrderItemResponse> {
