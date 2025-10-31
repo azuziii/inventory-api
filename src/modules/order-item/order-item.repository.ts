@@ -54,7 +54,7 @@ export class OrderItemRepository extends BaseRepositoty<OrderItem> {
     entity?: Partial<OrderItem>,
   ): void {
     switch (error.driverError.constraint) {
-      case 'FK_PRODUCT':
+      case 'FK_PRODUCT_ORDER_ITEM':
         throw new ProductNotFound({
           id: entity!.product_id,
         });

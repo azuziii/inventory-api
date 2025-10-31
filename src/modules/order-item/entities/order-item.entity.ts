@@ -23,7 +23,7 @@ export class OrderItem extends BaseUUIDEntity {
   @ManyToOne(() => Product, { lazy: true })
   @JoinColumn({
     name: 'product_id',
-    foreignKeyConstraintName: 'FK_PRODUCT',
+    foreignKeyConstraintName: 'FK_PRODUCT_ORDER_ITEM',
   })
   product!: Product;
 
