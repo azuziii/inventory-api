@@ -19,9 +19,9 @@ export class CreateProductInput implements CreateProductDto {
   @IsNotEmpty()
   price!: number;
 
-  @Field({ nullable: true, defaultValue: false })
+  @Field({ nullable: true })
   @IsOptional()
-  isSample: boolean = false;
+  isSample!: boolean;
 
   @Field()
   @IsNotEmpty()
