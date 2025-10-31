@@ -34,5 +34,8 @@ export class Product extends BaseUUIDEntity {
     name: 'customer_id',
     foreignKeyConstraintName: 'FK_product_customer',
   })
-  customer!: Customer;
+  customer!: Promise<Customer>;
+
+  @Column({ type: 'uuid' })
+  customer_id!: string;
 }
