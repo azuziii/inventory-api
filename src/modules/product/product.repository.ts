@@ -3,7 +3,7 @@ import { BaseRepositoty } from 'src/shared/base/repository';
 import { EntityManager } from 'typeorm';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import { Product } from './entities/product.entity';
-import { ProductAlreadyExist } from './errors/product.error';
+import { ProductAlreadyExist, ProductInUse } from './errors/product.error';
 
 @Injectable()
 export class ProductRepository extends BaseRepositoty<Product> {
@@ -65,6 +65,10 @@ export class ProductRepository extends BaseRepositoty<Product> {
       case 'UQ_product_customer_name':
         throw new ProductAlreadyExist({
           field: 'name',
+        });
+      case 'FK_PRODUCT_ORDER_ITEM':
+        throw new ProductInUse({
+          resourceName: 'order-item',
         });
       default:
         throw new InternalServerErrorException();
