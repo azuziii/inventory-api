@@ -80,6 +80,6 @@ export class ProductResolver {
 
   @ResolveField(() => Customer)
   customer(@Parent() product: Product): Promise<Customer> {
-    return product.customer as unknown as Promise<Customer>;
+    return product.customer;
   }
 }
