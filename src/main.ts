@@ -8,7 +8,7 @@ async function bootstrap() {
     new I18nValidationPipe({
       transform: true,
       whitelist: true,
-      validateCustomDecorators: true,
+      // validateCustomDecorators: true,
     }),
   );
 
