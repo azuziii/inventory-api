@@ -1,5 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { Product } from 'src/modules/product/entities/product.entity';
 import { IProduct } from 'src/modules/product/interfaces/product.interface';
+import { ProductForbiddenRelation } from 'src/shared/domain-errors';
 import {
   DataSource,
   EntitySubscriberInterface,
@@ -25,10 +27,12 @@ export class OrderItemSubscriber implements EntitySubscriberInterface {
 
   async beforeInsert(event: InsertEvent<OrderItem>): Promise<void> {
     await this.setProductProps(event);
+    await this.checkProductCustomerRelation(event);
   }
 
   async beforeUpdate(event: UpdateEvent<any>): Promise<void> {
     await this.setProductProps(event);
+    await this.checkProductCustomerRelation(event);
   }
 
   async setProductProps(event: InsertEvent<OrderItem> | UpdateEvent<any>) {
@@ -39,6 +43,32 @@ export class OrderItemSubscriber implements EntitySubscriberInterface {
 
       event.entity.product_name = product.name;
       event.entity.product_price = product.price;
+    }
+  }
+
+  async checkProductCustomerRelation(
+    event: InsertEvent<OrderItem> | UpdateEvent<OrderItem>,
+  ) {
+    if (!event.entity) return;
+
+    let order_id = event.entity.order_id;
+    let product_id = event.entity.product_id;
+
+    const isMatch = await event.manager
+      .getRepository(Product)
+      .createQueryBuilder('product')
+      .innerJoin('product.customer', 'p_customer')
+      .innerJoin('order', 'o', 'o.customer_id = p_customer.id')
+      .where('product.id = :product_id', { product_id })
+      .andWhere('o.id = :order_id', { order_id })
+      .getExists();
+
+    console.log(isMatch);
+
+    if (!isMatch) {
+      throw new ProductForbiddenRelation({
+        resourceName: 'customer',
+      });
     }
   }
 }
