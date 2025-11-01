@@ -3,7 +3,8 @@
     "AlreadyExist": "$t(common.{field}.displayName) already exists",
     "NotFound": "$t(common.{entityName}.displayName) not found.",
     "InUse": "$t(common.{entityName}.displayName) can't be deleted because it's used in other '$t(common.{resourceName}.displayName)' records.",
-    "InvalidData": "Invalid data"
+    "InvalidData": "Invalid data",
+    "ForbiddenRelation": "$t(common.{entityName}.displayName) is not authorized for the current $t(common.{resourceName}.displayName)."
   },
   "customer": {
     "displayName": "Customer"
