@@ -1,11 +1,11 @@
-import { Field, InputType, Int, OmitType, PartialType } from '@nestjs/graphql';
+import { Field, InputType, OmitType, PartialType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import {
   ArrayMinSize,
   IsArray,
   IsDate,
   IsNotEmpty,
-  IsNumber,
+  IsString,
   IsUUID,
   ValidateNested,
 } from 'class-validator';
@@ -16,10 +16,10 @@ import { CreateOrderDto, UpdateOrderDto } from '../dto/order.dto';
 
 @InputType()
 export class CreateOrderInput implements CreateOrderDto {
-  @Field(() => Int)
+  @Field()
   @IsNotEmpty()
-  @IsNumber()
-  order_number!: number;
+  @IsString()
+  order_number!: string;
 
   @Field(() => Date)
   @IsNotEmpty()

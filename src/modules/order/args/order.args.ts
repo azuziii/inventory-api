@@ -1,5 +1,5 @@
 import { ArgsType, Field, Int } from '@nestjs/graphql';
-import { IsDate, IsNumber, IsOptional } from 'class-validator';
+import { IsDate, IsOptional, IsString } from 'class-validator';
 import { WithUuidArgMixin } from 'src/shared/args/get-by-id/get-by-id.mixin';
 import { PaginationInput } from 'src/shared/dto/pagination.dto';
 import { FindManyOptions } from 'typeorm';
@@ -13,8 +13,8 @@ const OrderArgumentsBase = WithUuidArgMixin(PaginationInput, {
 export class OrderArguments extends OrderArgumentsBase {
   @Field(() => Int, { nullable: true })
   @IsOptional()
-  @IsNumber()
-  order_number?: number;
+  @IsString()
+  order_number?: string;
 
   @Field(() => Date, { nullable: true })
   @IsOptional()
