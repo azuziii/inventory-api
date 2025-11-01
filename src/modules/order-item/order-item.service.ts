@@ -28,7 +28,7 @@ export class OrderItemService {
   }
 
   createOrderItemWithTransaction(
-    orderItemDto: CreateOrderItemDto,
+    orderItemDto: CreateOrderItemDto & { order_id: string },
     entityManager: EntityManager,
   ): Promise<OrderItem> {
     return this.repo.insertOrderItem(orderItemDto, entityManager);
