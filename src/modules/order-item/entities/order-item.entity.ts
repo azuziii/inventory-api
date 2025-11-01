@@ -25,17 +25,17 @@ export class OrderItem extends BaseUUIDEntity {
     name: 'product_id',
     foreignKeyConstraintName: 'FK_PRODUCT_ORDER_ITEM',
   })
-  product!: Product;
+  product!: Promise<Order>;
 
   @Column({ type: 'uuid' })
   product_id!: string;
 
-  @ManyToOne(() => Order, (order) => order.items)
+  @ManyToOne(() => Order, (order) => order.items, { lazy: true })
   @JoinColumn({
     name: 'order_id',
     foreignKeyConstraintName: 'FK_ORDER',
   })
-  order!: Order;
+  order!: Promise<Order>;
 
   @Column({ type: 'uuid' })
   order_id!: string;
