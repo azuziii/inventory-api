@@ -1,5 +1,5 @@
 import { createUnionType } from '@nestjs/graphql';
-import { InvalidData } from 'src/shared/errors/invalid-data.error';
+import { InvalidDataException } from 'src/shared/errors/invalid-data.error';
 import { Customer } from '../entities/customer.entity';
 import {
   CustomerAlreadyExist,
@@ -9,5 +9,10 @@ import {
 export type UpdateCustomerUnion = typeof UpdateCustomerUnion;
 export const UpdateCustomerUnion = createUnionType({
   name: 'UpdateCustomerUnion',
-  types: () => [Customer, CustomerNotFound, CustomerAlreadyExist, InvalidData],
+  types: () => [
+    Customer,
+    CustomerNotFound,
+    CustomerAlreadyExist,
+    InvalidDataException,
+  ],
 });
