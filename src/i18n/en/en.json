@@ -1,1 +1,7 @@
-{}
+{
+  "order-item": {
+    "errors": {
+      "quantityExceeded": "The total quantity entered ({currentQuantity}) exceeds the ordered limit of {orderQuantity}."
+    }
+  }
+}
