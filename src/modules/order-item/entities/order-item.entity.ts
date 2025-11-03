@@ -2,6 +2,7 @@ import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
 import { Order } from 'src/modules/order/entities/order.entity';
 import { Product } from 'src/modules/product/entities/product.entity';
 import { BaseUUIDEntity } from 'src/shared/base/base.entity';
+import { InvalidDataException } from 'src/shared/errors/invalid-data.error';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 @Entity('order_item')
@@ -18,6 +19,10 @@ export class OrderItem extends BaseUUIDEntity {
   @Field(() => Int, { defaultValue: 0 })
   @Column({ type: 'int', nullable: false, default: 0 })
   quantity!: number;
+
+  @Field(() => Int, { defaultValue: 0 })
+  @Column({ type: 'int', nullable: false, default: 0 })
+  total_shipped!: number;
 
   @Field(() => Product)
   @ManyToOne(() => Product, { lazy: true })
@@ -39,4 +44,21 @@ export class OrderItem extends BaseUUIDEntity {
 
   @Column({ type: 'uuid' })
   order_id!: string;
+
+  updateTotalShipped(quantity: number) {
+    const newQuantity = this.total_shipped + quantity;
+
+    if (newQuantity > this.quantity) {
+      // TODO: Temporarely use InvalidDataException
+      throw new InvalidDataException({
+        i18nKey: 'en.order-item.errors.quantityExceeded',
+        i18nArgs: {
+          currentQuantity: newQuantity,
+          orderQuantity: this.quantity,
+        },
+      });
+    }
+
+    this.total_shipped = newQuantity;
+  }
 }
