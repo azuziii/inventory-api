@@ -20,7 +20,7 @@ export class ProductRepository extends BaseRepositoty<Product> {
     const newProduct = manager.create(Product, product);
 
     try {
-      const insertResult = await manager.insert(Product, newProduct);
+      const insertResult = await manager.insert(Product, product);
       return manager.findOne(Product, {
         where: {
           id: insertResult.identifiers[0].id,

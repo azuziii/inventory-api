@@ -13,7 +13,7 @@ import { mapChildrenToValidationErrors } from 'nestjs-i18n/dist/utils';
 import { catchError, Observable, of } from 'rxjs';
 import { ERROR_RESPONSE_TYPE_META } from 'src/shared/decorators/meta/error-response-type.decorator';
 import { BaseError } from 'src/shared/errors/error';
-import { InvalidData } from 'src/shared/errors/invalid-data.error';
+import { InvalidDataException } from 'src/shared/errors/invalid-data.error';
 @Injectable()
 export class GqlExceptionToDataInterceptor implements NestInterceptor {
   constructor(private readonly reflector: Reflector) {}
@@ -43,7 +43,7 @@ export class GqlExceptionToDataInterceptor implements NestInterceptor {
 
           return of(
             new ResponseWrapperClass(
-              new InvalidData({
+              new InvalidDataException({
                 message: flattenedErrors[0],
               }),
             ),

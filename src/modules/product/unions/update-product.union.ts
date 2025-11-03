@@ -1,6 +1,6 @@
 import { createUnionType } from '@nestjs/graphql';
 import { CustomerNotFound } from 'src/modules/customer/errors/customer.error';
-import { InvalidData } from 'src/shared/errors/invalid-data.error';
+import { InvalidDataException } from 'src/shared/errors/invalid-data.error';
 import { Product } from '../entities/product.entity';
 import { ProductAlreadyExist, ProductNotFound } from '../errors/product.error';
 
@@ -12,6 +12,6 @@ export const UpdateProductUnion = createUnionType({
     ProductNotFound,
     ProductAlreadyExist,
     CustomerNotFound,
-    InvalidData,
+    InvalidDataException,
   ],
 });
