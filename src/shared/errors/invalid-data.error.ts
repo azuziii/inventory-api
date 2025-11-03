@@ -1,7 +1,10 @@
+import { PathImpl2 } from '@nestjs/config';
 import { ObjectType } from '@nestjs/graphql';
+import { I18nTranslations } from 'src/generated/i18n.generated';
 import { BaseError } from './error';
 
 export interface InvalidDataProps {
+  i18nKey?: PathImpl2<I18nTranslations>;
   i18nArgs?: Record<string, any>;
   message?: string;
 }
