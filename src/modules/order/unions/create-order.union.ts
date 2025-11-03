@@ -4,7 +4,7 @@ import {
   ProductForbiddenRelation,
   ProductNotFound,
 } from 'src/shared/domain-errors';
-import { InvalidData } from 'src/shared/errors/invalid-data.error';
+import { InvalidDataException } from 'src/shared/errors/invalid-data.error';
 import { Order } from '../entities/order.entity';
 import { OrderAlreadyExist } from '../errors/order.error';
 
@@ -14,7 +14,7 @@ export const CreateOrderUnion = createUnionType({
   types: () => [
     Order,
     OrderAlreadyExist,
-    InvalidData,
+    InvalidDataException,
     CustomerNotFound,
     ProductNotFound,
     ProductForbiddenRelation,

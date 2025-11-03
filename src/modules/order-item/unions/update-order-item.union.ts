@@ -3,7 +3,7 @@ import {
   OrderNotFound,
   ProductForbiddenRelation,
 } from 'src/shared/domain-errors';
-import { InvalidData } from 'src/shared/errors/invalid-data.error';
+import { InvalidDataException } from 'src/shared/errors/invalid-data.error';
 import { OrderItem } from '../entities/order-item.entity';
 import { OrderItemNotFound } from '../errors/order-item.error';
 
@@ -13,7 +13,7 @@ export const UpdateOrderItemUnion = createUnionType({
   types: () => [
     OrderItem,
     OrderItemNotFound,
-    InvalidData,
+    InvalidDataException,
     OrderNotFound,
     ProductForbiddenRelation,
   ],
