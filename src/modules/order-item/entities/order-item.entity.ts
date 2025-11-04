@@ -46,19 +46,19 @@ export class OrderItem extends BaseUUIDEntity {
   order_id!: string;
 
   updateTotalShipped(quantity: number) {
-    const newQuantity = this.total_shipped + quantity;
+    const newTotalShippedQuantity = this.total_shipped + quantity;
 
-    if (newQuantity > this.quantity) {
+    if (newTotalShippedQuantity > this.quantity) {
       // TODO: Temporarely use InvalidDataException
       throw new InvalidDataException({
         i18nKey: 'en.order-item.errors.quantityExceeded',
         i18nArgs: {
-          currentQuantity: newQuantity,
+          currentQuantity: newTotalShippedQuantity,
           orderQuantity: this.quantity,
         },
       });
     }
 
-    this.total_shipped = newQuantity;
+    this.total_shipped = newTotalShippedQuantity;
   }
 }
