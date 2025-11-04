@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Product } from 'src/modules/product/entities/product.entity';
 import { IProduct } from 'src/modules/product/interfaces/product.interface';
 import { ProductForbiddenRelation } from 'src/shared/domain-errors';
+import { InvalidDataException } from 'src/shared/errors/invalid-data.error';
 import {
   DataSource,
   EntitySubscriberInterface,
@@ -33,6 +34,7 @@ export class OrderItemSubscriber implements EntitySubscriberInterface {
   async beforeUpdate(event: UpdateEvent<any>): Promise<void> {
     await this.setProductProps(event);
     await this.checkProductCustomerRelation(event);
+    this.checkQuantity(event);
   }
 
   async setProductProps(event: InsertEvent<OrderItem> | UpdateEvent<any>) {
@@ -63,12 +65,27 @@ export class OrderItemSubscriber implements EntitySubscriberInterface {
       .andWhere('o.id = :order_id', { order_id })
       .getExists();
 
-    console.log(isMatch);
-
     if (!isMatch) {
       throw new ProductForbiddenRelation({
         resourceName: 'customer',
       });
     }
+  }
+
+  checkQuantity(event: UpdateEvent<OrderItem>) {
+    if (!event.entity) return;
+
+    const { quantity, total_shipped } = event.entity as OrderItem;
+
+    if (!(quantity < total_shipped)) return;
+
+    // TODO: Temporarely use InvalidDataException
+    throw new InvalidDataException({
+      i18nKey: 'en.order-item.errors.quantityBelowShipped',
+      i18nArgs: {
+        quantity,
+        total_shipped,
+      },
+    });
   }
 }
