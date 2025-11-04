@@ -2,6 +2,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HeaderResolver, I18nModule } from 'nestjs-i18n';
@@ -11,9 +12,9 @@ import { AppService } from './app.service';
 import { GqlExceptionToDataInterceptor } from './interceptors/gql-exception-to-data/gql-exception-to-data.interceptor';
 import { I18nInterceptor } from './interceptors/i18n/i18n.interceptor';
 import { CustomerModule } from './modules/customer/customer.module';
-import { ProductModule } from './modules/product/product.module';
-import { OrderModule } from './modules/order/order.module';
 import { OrderItemModule } from './modules/order-item/order-item.module';
+import { OrderModule } from './modules/order/order.module';
+import { ProductModule } from './modules/product/product.module';
 
 @Module({
   imports: [
@@ -37,7 +38,7 @@ import { OrderItemModule } from './modules/order-item/order-item.module';
         entities: [__dirname + '/**/*.entity.js'],
         synchronize: true,
         logging: 'all',
-        logger: 'debug',
+        logger: 'advanced-console',
       }),
     }),
     I18nModule.forRoot({
@@ -48,6 +49,9 @@ import { OrderItemModule } from './modules/order-item/order-item.module';
       },
       typesOutputPath: join(__dirname, '../src/generated/i18n.generated.ts'),
       resolvers: [new HeaderResolver(['x-lang'])],
+    }),
+    EventEmitterModule.forRoot({
+      verboseMemoryLeak: true,
     }),
     CustomerModule,
     ProductModule,
