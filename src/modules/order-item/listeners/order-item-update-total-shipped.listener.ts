@@ -1,9 +1,11 @@
+import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { OrderItem } from '../entities/order-item.entity';
 import { OrderItemUpdateTotalShippedEvent } from '../events/order-item-update-total-shipped.event';
 import { OrderItemRepository } from '../order-item.repository';
 import { OrderItemService } from '../order-item.service';
 
+@Injectable()
 export class UpdateTotalShippedListener {
   constructor(
     private readonly repo: OrderItemRepository,
