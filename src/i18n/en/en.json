@@ -1,7 +1,8 @@
 {
   "order-item": {
     "errors": {
-      "quantityExceeded": "The total quantity entered ({currentQuantity}) exceeds the ordered limit of {orderQuantity}."
+      "quantityExceeded": "The total quantity entered ({currentQuantity}) exceeds the ordered limit of {orderQuantity}.",
+      "quantityBelowShipped": "The quantity entered ({quantity}) is less than the shipped quantity of {total_shipped}."
     }
   }
 }
