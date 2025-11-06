@@ -1,5 +1,5 @@
 import { ArgsType, Field, Int, ObjectType } from '@nestjs/graphql';
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { isNumber, IsOptional } from 'class-validator';
 
 export interface PaginationProps
@@ -15,24 +15,29 @@ const LIMIT_MAX = 100;
 
 @ArgsType()
 export class PaginationInput {
-  @Field(() => Int, { defaultValue: 1, nullable: true })
+  @Field(() => Int, { defaultValue: PAGE_DEFAULT, nullable: true })
   @IsOptional()
+  @Type(() => Number)
   @Transform(({ value }) => {
     const numValue = Number(value);
-    if (!isNumber(numValue) || numValue < PAGE_MIN) {
+    if (!value || !isNumber(numValue) || numValue < PAGE_MIN) {
       return PAGE_DEFAULT;
     }
     return numValue;
   })
   page!: number;
 
-  @Field(() => Int, { defaultValue: 10, nullable: true })
+  @Field(() => Int, { defaultValue: LIMIT_DEFAULT, nullable: true })
   @IsOptional()
+  @Type(() => Number)
   @Transform(({ value }) => {
     const numValue = Number(value);
-    if (!isNumber(numValue) || numValue < LIMIT_MIN || numValue > LIMIT_MAX) {
+    if (!isNumber(numValue) || numValue < LIMIT_MIN) {
       return LIMIT_DEFAULT;
+    } else if (numValue > LIMIT_MAX) {
+      return LIMIT_MAX;
     }
+
     return numValue;
   })
   limit!: number;
@@ -41,6 +46,9 @@ export class PaginationInput {
 @ObjectType('Pagination')
 export class PaginationDto {
   constructor(props: PaginationProps) {
+    console.log(1);
+    console.log(props);
+    console.log(1);
     const totalPages = Math.ceil(props.total / props.limit);
 
     this.total = props.total;
