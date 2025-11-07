@@ -1,7 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { Order } from 'src/modules/order/entities/order.entity';
 import { Product } from 'src/modules/product/entities/product.entity';
 import { IProduct } from 'src/modules/product/interfaces/product.interface';
-import { ProductForbiddenRelation } from 'src/shared/domain-errors';
+import {
+  OrderNotFound,
+  ProductForbiddenRelation,
+} from 'src/shared/domain-errors';
 import { InvalidDataException } from 'src/shared/errors/invalid-data.error';
 import {
   DataSource,
@@ -56,6 +60,8 @@ export class OrderItemSubscriber implements EntitySubscriberInterface {
     let order_id = event.entity.order_id;
     let product_id = event.entity.product_id;
 
+    await this.getOrder(event, order_id);
+
     const isMatch = await event.manager
       .getRepository(Product)
       .createQueryBuilder('product')
@@ -87,5 +93,22 @@ export class OrderItemSubscriber implements EntitySubscriberInterface {
         total_shipped,
       },
     });
+  }
+
+  async getOrder(
+    event: InsertEvent<OrderItem> | UpdateEvent<OrderItem>,
+    orderId: string,
+  ): Promise<Order> {
+    const order = await event.manager
+      .getRepository(Order)
+      .createQueryBuilder('o')
+      .where('o.id = :orderId', { orderId })
+      .getOne();
+
+    if (!order) {
+      throw new OrderNotFound({ id: orderId });
+    }
+
+    return order;
   }
 }
