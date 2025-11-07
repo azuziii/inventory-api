@@ -33,6 +33,7 @@ export class OrderItemSubscriber implements EntitySubscriberInterface {
   async beforeInsert(event: InsertEvent<OrderItem>): Promise<void> {
     await this.setProductProps(event);
     await this.checkProductCustomerRelation(event);
+    await this.mergeItems(event);
   }
 
   async beforeUpdate(event: UpdateEvent<any>): Promise<void> {
@@ -55,7 +56,7 @@ export class OrderItemSubscriber implements EntitySubscriberInterface {
   async checkProductCustomerRelation(
     event: InsertEvent<OrderItem> | UpdateEvent<OrderItem>,
   ) {
-    if (!event.entity) return;
+    if (!event.entity || !event.entity.order_id) return;
 
     let order_id = event.entity.order_id;
     let product_id = event.entity.product_id;
@@ -93,6 +94,24 @@ export class OrderItemSubscriber implements EntitySubscriberInterface {
         total_shipped,
       },
     });
+  }
+
+  async mergeItems(event: InsertEvent<OrderItem>) {
+    const existingItem = await event.manager.getRepository(OrderItem).findOne({
+      where: {
+        order_id: event.entity.order_id,
+        product_id: event.entity.product_id,
+      },
+    });
+
+    if (!existingItem) return;
+
+    Object.assign(event.entity, {
+      quantity: event.entity.quantity + existingItem.quantity,
+      total_shipped: existingItem.total_shipped,
+    } as OrderItem);
+
+    await event.manager.getRepository(OrderItem).delete(existingItem.id);
   }
 
   async getOrder(
