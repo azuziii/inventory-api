@@ -11,6 +11,7 @@ export type I18nTranslations = {
             "NotFound": string;
             "InUse": string;
             "InvalidData": string;
+            "ForbiddenRelation": string;
         };
         "customer": {
             "displayName": string;
@@ -50,6 +51,14 @@ export type I18nTranslations = {
         };
         "contact_email": {
             "displayName": string;
+        };
+    };
+    "en": {
+        "order-item": {
+            "errors": {
+                "quantityExceeded": string;
+                "quantityBelowShipped": string;
+            };
         };
     };
     "validation": {
