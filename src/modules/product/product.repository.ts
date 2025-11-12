@@ -1,5 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { BaseRepositoty } from 'src/shared/base/repository';
+import { CustomerNotFound } from 'src/shared/domain-errors';
 import { EntityManager } from 'typeorm';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import { Product } from './entities/product.entity';
@@ -69,6 +70,10 @@ export class ProductRepository extends BaseRepositoty<Product> {
       case 'FK_PRODUCT_ORDER_ITEM':
         throw new ProductInUse({
           resourceName: 'order-item',
+        });
+      case 'FK_product_customer':
+        throw new CustomerNotFound({
+          id: entity?.customer_id,
         });
       default:
         throw new InternalServerErrorException();
