@@ -1,0 +1,31 @@
+import { Field, Float, ID, ObjectType } from '@nestjs/graphql';
+import { Expose, Type } from 'class-transformer';
+import { CustomerOutput } from 'src/modules/customer/outputs/customer.output';
+
+@ObjectType('Product')
+export class ProductOutput {
+  @Field(() => ID)
+  @Expose()
+  id!: string;
+
+  @Field({ nullable: false })
+  @Expose()
+  name!: string;
+
+  @Field({ nullable: false })
+  @Expose()
+  code!: string;
+
+  @Field(() => Float, { nullable: false, defaultValue: 0 })
+  @Expose()
+  price!: number;
+
+  @Field({ nullable: false, defaultValue: false })
+  @Expose()
+  isSample!: boolean;
+
+  @Field(() => CustomerOutput, { nullable: false })
+  @Expose()
+  @Type(() => CustomerOutput)
+  customer!: Promise<CustomerOutput>;
+}
