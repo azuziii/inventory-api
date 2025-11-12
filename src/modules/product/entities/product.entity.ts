@@ -1,5 +1,6 @@
 import { Field, Float, ObjectType } from '@nestjs/graphql';
 import { Customer } from 'src/modules/customer/entities/customer.entity';
+import { CustomerOutput } from 'src/modules/customer/outputs/customer.output';
 import { BaseUUIDEntity } from 'src/shared/base/base.entity';
 import { ColumnNumericTransformer } from 'src/shared/db-transformers/numeric.transformer';
 import { Column, Entity, JoinColumn, ManyToOne, Unique } from 'typeorm';
@@ -28,7 +29,7 @@ export class Product extends BaseUUIDEntity {
   @Column({ type: 'boolean', default: false })
   isSample!: boolean;
 
-  @Field(() => Customer, { nullable: false })
+  @Field(() => CustomerOutput, { nullable: false })
   @ManyToOne(() => Customer, { lazy: true })
   @JoinColumn({
     name: 'customer_id',

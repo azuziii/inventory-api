@@ -1,5 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Customer } from 'src/modules/customer/entities/customer.entity';
+import { CustomerOutput } from 'src/modules/customer/outputs/customer.output';
 import { OrderItem } from 'src/modules/order-item/entities/order-item.entity';
 import { BaseUUIDEntity } from 'src/shared/base/base.entity';
 import {
@@ -29,7 +30,7 @@ export class Order extends BaseUUIDEntity {
   @Column({ type: 'text' })
   order_year!: string;
 
-  @Field(() => Customer, { nullable: false })
+  @Field(() => CustomerOutput, { nullable: false })
   @ManyToOne(() => Customer, { lazy: true })
   @JoinColumn({
     name: 'customer_id',

@@ -8,7 +8,8 @@ import {
 } from '@nestjs/graphql';
 import { GetByIdArgs } from 'src/shared/args/get-by-id/get-by-id.args';
 import { ErrorResponseType } from 'src/shared/decorators/meta/error-response-type.decorator';
-import { Customer } from '../customer/entities/customer.entity';
+import { mapToOutput } from 'src/utils/map-to-output.util';
+import { CustomerOutput } from '../customer/outputs/customer.output';
 import { ProductArguments } from './args/product.args';
 import { Product } from './entities/product.entity';
 import { CreateProductInput, UpdateProductInput } from './inputs/product.input';
@@ -78,8 +79,9 @@ export class ProductResolver {
     return new DeleteProductResponse(deleteResult);
   }
 
-  @ResolveField(() => Customer)
-  customer(@Parent() product: Product): Promise<Customer> {
-    return product.customer;
+  @ResolveField(() => CustomerOutput)
+  async customer(@Parent() product: Product): Promise<CustomerOutput> {
+    const customer = await product.customer;
+    return mapToOutput(CustomerOutput, customer);
   }
 }
