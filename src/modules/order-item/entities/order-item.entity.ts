@@ -1,6 +1,7 @@
 import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
 import { Order } from 'src/modules/order/entities/order.entity';
 import { Product } from 'src/modules/product/entities/product.entity';
+import { ProductOutput } from 'src/modules/product/outputs/product.output';
 import { BaseUUIDEntity } from 'src/shared/base/base.entity';
 import { InvalidDataException } from 'src/shared/errors/invalid-data.error';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
@@ -24,7 +25,7 @@ export class OrderItem extends BaseUUIDEntity {
   @Column({ type: 'int', nullable: false, default: 0 })
   total_shipped!: number;
 
-  @Field(() => Product)
+  @Field(() => ProductOutput)
   @ManyToOne(() => Product, { lazy: true })
   @JoinColumn({
     name: 'product_id',
