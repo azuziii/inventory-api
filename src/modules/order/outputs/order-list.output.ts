@@ -1,16 +1,16 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { PaginationDto, PaginationProps } from 'src/shared/dto/pagination.dto';
-import { Order } from '../entities/order.entity';
+import { OrderOutput } from './order.output';
 
 @ObjectType()
 export class OrderList {
-  constructor(orders: Order[], paginationProps: PaginationProps) {
+  constructor(orders: OrderOutput[], paginationProps: PaginationProps) {
     this.items = orders;
     this.pagination = new PaginationDto(paginationProps);
   }
 
-  @Field(() => [Order!]!)
-  items!: Order[];
+  @Field(() => [OrderOutput!]!)
+  items!: OrderOutput[];
 
   @Field(() => PaginationDto)
   pagination!: PaginationDto;

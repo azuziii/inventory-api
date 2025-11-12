@@ -5,14 +5,14 @@ import {
   ProductNotFound,
 } from 'src/shared/domain-errors';
 import { InvalidDataException } from 'src/shared/errors/invalid-data.error';
-import { Order } from '../entities/order.entity';
 import { OrderAlreadyExist } from '../errors/order.error';
+import { OrderOutput } from '../outputs/order.output';
 
 export type CreateOrderUnion = typeof CreateOrderUnion;
 export const CreateOrderUnion = createUnionType({
   name: 'CreateOrderUnion',
   types: () => [
-    Order,
+    OrderOutput,
     OrderAlreadyExist,
     InvalidDataException,
     CustomerNotFound,
