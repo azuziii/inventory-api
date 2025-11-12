@@ -1,9 +1,12 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { GetByIdArgs } from 'src/shared/args/get-by-id/get-by-id.args';
-import { ErrorResponseType } from 'src/shared/decorators/meta/error-response-type.decorator';
+import { AutoMap } from 'src/shared/decorators/meta/auto-map.decorator';
+import { ResponseType } from 'src/shared/decorators/meta/error-response-type.decorator';
+import { DeleteResponse } from 'src/shared/responses/delete.response';
 import { mapToOutput } from 'src/utils/map-to-output.util';
 import { CustomerArguments } from './args/customer.args';
 import { CustomerService } from './customer.service';
+import { Customer } from './entities/customer.entity';
 import {
   CreateCustomerInput,
   UpdateCustomerInput,
@@ -20,21 +23,19 @@ import { UpdateCustomerResponse } from './responses/update-customer.response';
 export class CustomerResolver {
   constructor(private readonly customerService: CustomerService) {}
 
-  @ErrorResponseType(CustomerQueryResponse)
+  @ResponseType(CustomerQueryResponse)
+  @AutoMap(CustomerOutput)
   @Query(() => CustomerQueryResponse, { name: 'customer' })
-  async getCustomer(
-    @Args() { id }: GetByIdArgs,
-  ): Promise<CustomerQueryResponse> {
-    const queryResult = await this.customerService.getCustomerOrFail(id);
-    return new CustomerQueryResponse(mapToOutput(CustomerOutput, queryResult));
+  async getCustomer(@Args() { id }: GetByIdArgs): Promise<Customer> {
+    return this.customerService.getCustomerOrFail(id);
   }
 
-  @ErrorResponseType(CustomersQueryResponse)
+  @ResponseType(CustomersQueryResponse)
   @Query(() => CustomersQueryResponse, { name: 'customers' })
   async listCustomer(
     @Args()
     args: CustomerArguments,
-  ): Promise<CustomersQueryResponse> {
+  ): Promise<CustomerList> {
     const [customers, count] = await this.customerService.listCustomers(
       args.toManyOptions(),
     );
@@ -46,43 +47,33 @@ export class CustomerResolver {
         total: count,
       },
     );
-    console.log(23423423434);
-    console.log(mapToOutput(CustomerOutput, customers));
-    console.log(23423423434);
 
-    return new CustomersQueryResponse(customerList);
+    return customerList;
   }
 
-  @ErrorResponseType(CreateCustomerResponse)
+  @ResponseType(CreateCustomerResponse)
+  @AutoMap(CustomerOutput)
   @Mutation(() => CreateCustomerResponse, { name: 'createCustomer' })
   async createCustomer(
     @Args('input', { type: () => CreateCustomerInput, nullable: false })
     input: CreateCustomerInput,
-  ): Promise<CreateCustomerResponse> {
-    const createResult = await this.customerService.createCustomer(input);
-    return new CreateCustomerResponse(
-      mapToOutput(CustomerOutput, createResult),
-    );
+  ): Promise<Customer> {
+    return this.customerService.createCustomer(input);
   }
 
-  @ErrorResponseType(UpdateCustomerResponse)
+  @ResponseType(UpdateCustomerResponse)
+  @AutoMap(CustomerOutput)
   @Mutation(() => UpdateCustomerResponse, { name: 'updateCustomer' })
   async updateCustomer(
     @Args('input', { type: () => UpdateCustomerInput, nullable: false })
     input: UpdateCustomerInput,
-  ): Promise<UpdateCustomerResponse> {
-    const updateResult = await this.customerService.updateCustomer(input);
-    return new UpdateCustomerResponse(
-      mapToOutput(CustomerOutput, updateResult),
-    );
+  ): Promise<Customer> {
+    return this.customerService.updateCustomer(input);
   }
 
-  @ErrorResponseType(DeleteCustomerResponse)
+  @ResponseType(DeleteCustomerResponse)
   @Mutation(() => DeleteCustomerResponse, { name: 'deleteCustomer' })
-  async deleteCustomer(
-    @Args() { id }: GetByIdArgs,
-  ): Promise<DeleteCustomerResponse> {
-    const deleteResult = await this.customerService.deleteCustomer(id);
-    return new DeleteCustomerResponse(deleteResult);
+  async deleteCustomer(@Args() { id }: GetByIdArgs): Promise<DeleteResponse> {
+    return this.customerService.deleteCustomer(id);
   }
 }
