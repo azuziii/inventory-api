@@ -10,22 +10,29 @@ import { ValidationError } from 'class-validator';
 import iterate from 'iterare';
 import { I18nValidationException } from 'nestjs-i18n';
 import { mapChildrenToValidationErrors } from 'nestjs-i18n/dist/utils';
-import { catchError, Observable, of } from 'rxjs';
-import { ERROR_RESPONSE_TYPE_META } from 'src/shared/decorators/meta/error-response-type.decorator';
+import { catchError, map, Observable, of } from 'rxjs';
+import { RESPONSE_TYPE_META } from 'src/shared/decorators/meta/error-response-type.decorator';
 import { BaseError } from 'src/shared/errors/error';
 import { InvalidDataException } from 'src/shared/errors/invalid-data.error';
 @Injectable()
-export class GqlExceptionToDataInterceptor implements NestInterceptor {
+export class GqlResponseWrapperInterceptor implements NestInterceptor {
   constructor(private readonly reflector: Reflector) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const gqlCtx = GqlExecutionContext.create(context);
     const ResponseWrapperClass = this.reflector.get(
-      ERROR_RESPONSE_TYPE_META,
+      RESPONSE_TYPE_META,
       context.getHandler(),
     );
 
     return next.handle().pipe(
+      map((value) => {
+        if (!ResponseWrapperClass) {
+          throw `Metedata with key:'${RESPONSE_TYPE_META}' was not set for '${gqlCtx.getHandler().name}'`;
+        }
+
+        return new ResponseWrapperClass(value);
+      }),
       catchError((err) => {
         if (
           (err instanceof I18nValidationException ||
@@ -33,7 +40,7 @@ export class GqlExceptionToDataInterceptor implements NestInterceptor {
           !ResponseWrapperClass
         ) {
           console.error(
-            `Metedata with key:'${ERROR_RESPONSE_TYPE_META}' was not set for '${gqlCtx.getHandler().name}'`,
+            `Metedata with key:'${RESPONSE_TYPE_META}' was not set for '${gqlCtx.getHandler().name}'`,
           );
           throw err;
         }
