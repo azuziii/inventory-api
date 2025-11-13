@@ -6,7 +6,10 @@ import { Customer } from './entities/customer.entity';
 import { CustomerAlreadyExist, CustomerInUse } from './errors/customer.error';
 
 @Injectable()
-export class CustomerRepository extends BaseRepositoty<Customer> {
+export class CustomerRepository extends BaseRepositoty<
+  Customer,
+  CreateCustomerDto | UpdateCustomerDto
+> {
   constructor(protected readonly entityManager: EntityManager) {
     super(Customer, entityManager);
   }
@@ -56,7 +59,7 @@ export class CustomerRepository extends BaseRepositoty<Customer> {
 
   protected translateDatabaseError(
     error: any,
-    entity?: Partial<Customer> | undefined,
+    entity?: CreateCustomerDto | UpdateCustomerDto | Partial<Customer>,
   ): void {
     switch (error.driverError.constraint) {
       case 'UQ_customer_ice':

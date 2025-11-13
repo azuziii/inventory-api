@@ -7,7 +7,10 @@ import { Product } from './entities/product.entity';
 import { ProductAlreadyExist, ProductInUse } from './errors/product.error';
 
 @Injectable()
-export class ProductRepository extends BaseRepositoty<Product> {
+export class ProductRepository extends BaseRepositoty<
+  Product,
+  CreateProductDto | UpdateProductDto
+> {
   constructor(protected readonly entityManager: EntityManager) {
     super(Product, entityManager);
   }
@@ -60,7 +63,7 @@ export class ProductRepository extends BaseRepositoty<Product> {
 
   protected translateDatabaseError(
     error: any,
-    entity?: Partial<Product> | undefined,
+    entity?: CreateProductDto | UpdateProductDto | Partial<Product>,
   ): void {
     switch (error.driverError.constraint) {
       case 'UQ_product_customer_name':
