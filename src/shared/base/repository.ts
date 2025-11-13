@@ -9,6 +9,7 @@ import {
 
 export abstract class BaseRepositoty<
   Entity extends ObjectLiteral,
+  DtoUnion,
 > extends Repository<Entity> {
   constructor(
     entity: new () => Entity,
@@ -21,7 +22,7 @@ export abstract class BaseRepositoty<
     return externalManagr || this.entityManager;
   }
 
-  handleDatabaseError(error: any, entity?: Partial<Entity>) {
+  handleDatabaseError(error: any, entity?: Partial<Entity> | DtoUnion) {
     if (!(error instanceof QueryFailedError)) throw error;
 
     if (!(error.driverError instanceof DatabaseError)) {
@@ -34,6 +35,6 @@ export abstract class BaseRepositoty<
 
   protected abstract translateDatabaseError(
     error: any,
-    entity?: Partial<Entity>,
+    entity?: Partial<Entity> | DtoUnion,
   ): void;
 }
