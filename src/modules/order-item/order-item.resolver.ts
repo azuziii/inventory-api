@@ -1,7 +1,17 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { GetByIdArgs } from 'src/shared/args/get-by-id/get-by-id.args';
 import { AutoMap } from 'src/shared/decorators/meta/auto-map.decorator';
 import { ResponseType } from 'src/shared/decorators/meta/error-response-type.decorator';
+import { mapToOutput } from 'src/utils/map-to-output.util';
+import { Product } from '../product/entities/product.entity';
+import { ProductOutput } from '../product/outputs/product.output';
 import { OrderItem } from './entities/order-item.entity';
 import {
   CreateOrderItemInput,
@@ -42,5 +52,11 @@ export class OrderItemResolver {
     input: UpdateOrderItemInput,
   ): Promise<OrderItem> {
     return this.orderItemService.updateOrderItem(input);
+  }
+
+  @ResolveField(() => Product)
+  async product(@Parent() orderItem: OrderItem): Promise<ProductOutput> {
+    const product = await orderItem.product;
+    return mapToOutput(ProductOutput, product);
   }
 }
