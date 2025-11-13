@@ -39,7 +39,6 @@ export class CustomerResolver {
     const [customers, count] = await this.customerService.listCustomers(
       args.toManyOptions(),
     );
-    console.log(customers);
     const customerList = new CustomerList(
       mapToOutput(CustomerOutput, customers),
       {
