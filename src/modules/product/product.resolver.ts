@@ -9,6 +9,7 @@ import {
 import { GetByIdArgs } from 'src/shared/args/get-by-id/get-by-id.args';
 import { AutoMap } from 'src/shared/decorators/meta/auto-map.decorator';
 import { ResponseType } from 'src/shared/decorators/meta/error-response-type.decorator';
+import { DeleteResponse } from 'src/shared/responses/delete.response';
 import { mapToOutput } from 'src/utils/map-to-output.util';
 import { CustomerOutput } from '../customer/outputs/customer.output';
 import { ProductArguments } from './args/product.args';
@@ -59,8 +60,7 @@ export class ProductResolver {
     @Args('input', { type: () => CreateProductInput, nullable: false })
     input: CreateProductInput,
   ): Promise<Product> {
-    const createResult = await this.productService.createProduct(input);
-    return createResult;
+    return this.productService.createProduct(input);
   }
 
   @ResponseType(UpdateProductResponse)
@@ -75,11 +75,8 @@ export class ProductResolver {
 
   @ResponseType(DeleteProductResponse)
   @Mutation(() => DeleteProductResponse, { name: 'deleteProduct' })
-  async deleteProduct(
-    @Args() { id }: GetByIdArgs,
-  ): Promise<DeleteProductResponse> {
-    const deleteResult = await this.productService.deleteProduct(id);
-    return new DeleteProductResponse(deleteResult);
+  async deleteProduct(@Args() { id }: GetByIdArgs): Promise<DeleteResponse> {
+    return this.productService.deleteProduct(id);
   }
 
   @ResolveField(() => CustomerOutput)
