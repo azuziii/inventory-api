@@ -1,11 +1,11 @@
 import { INestApplication } from '@nestjs/common';
 import { TestingModule } from '@nestjs/testing';
-import { CreateCustomerInput } from 'src/modules/customer/inputs/customer.input';
 import { CustomerOutput } from 'src/modules/customer/outputs/customer.output';
 import { CustomerAlreadyExist } from 'src/shared/domain-errors';
 import { InstanceOfBaseResponse } from 'src/shared/responses/base.response';
 import * as request from 'supertest';
 import { createE2ETestingModule } from 'test/e2e-testing-module';
+import { createRandomCustomerInput } from 'test/fake/customer/customer.fake';
 
 const CUSTOMER_QUERIES = {
   create: `
@@ -29,20 +29,11 @@ const CUSTOMER_QUERIES = {
   }`,
 };
 
-const customerDummyData: CreateCustomerInput = {
-  name: 'Test Customer 1',
-  address: '123 Main St',
-  city: 'Test City',
-  country: 'Test Country',
-  ice: 'ICE-9001',
-  contact_name: 'Contact 1',
-  contact_phone: '555-1234',
-  contact_email: 'test1@example.com',
-};
-
 describe('Customer E2E', () => {
   let app: INestApplication;
   let module: TestingModule;
+
+  let customerInputDummyData = createRandomCustomerInput();
 
   beforeAll(async () => {
     module = await createE2ETestingModule();
@@ -60,7 +51,7 @@ describe('Customer E2E', () => {
       .post('/graphql')
       .send({
         query: CUSTOMER_QUERIES.create,
-        variables: { input: customerDummyData },
+        variables: { input: customerInputDummyData },
       })
       .expect(200);
 
@@ -68,8 +59,8 @@ describe('Customer E2E', () => {
       .createCustomer as InstanceOfBaseResponse<CustomerOutput>;
 
     expect(result).toBeDefined();
-    expect(result.name).toBe(customerDummyData.name);
-    expect(result.ice).toBe(customerDummyData.ice);
+    expect(result.name).toBe(customerInputDummyData.name);
+    expect(result.ice).toBe(customerInputDummyData.ice);
     expect(result.id).toBeDefined();
   });
 
@@ -78,7 +69,7 @@ describe('Customer E2E', () => {
       .post('/graphql')
       .send({
         query: CUSTOMER_QUERIES.create,
-        variables: { input: customerDummyData },
+        variables: { input: customerInputDummyData },
       })
       .expect(200);
 
@@ -91,7 +82,8 @@ describe('Customer E2E', () => {
   });
 
   it('CREATE:CUSTOMER should fail to create a new customer because not all fields are present', async () => {
-    const customerDto: Partial<typeof customerDummyData> = customerDummyData;
+    const customerDto: Partial<typeof customerInputDummyData> =
+      customerInputDummyData;
     delete customerDto.name;
 
     const response = await request(app.getHttpServer())
