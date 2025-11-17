@@ -18,6 +18,7 @@ export abstract class BaseError extends LocalizedError {
     this.message = props.i18nKey;
   }
 
+  readonly __typename!: string;
   readonly __isError = true;
 
   @Field()
