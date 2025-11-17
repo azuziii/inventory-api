@@ -46,10 +46,10 @@ import { ProductModule } from './modules/product/product.module';
     I18nModule.forRoot({
       fallbackLanguage: 'en',
       loaderOptions: {
-        path: join(__dirname, '/i18n/'),
+        path: join(__dirname, '../i18n/'),
         watch: true,
       },
-      typesOutputPath: join(__dirname, '../src/generated/i18n.generated.ts'),
+      typesOutputPath: join(process.cwd(), 'src/generated/i18n.generated.ts'),
       resolvers: [new HeaderResolver(['x-lang'])],
     }),
     EventEmitterModule.forRoot({
