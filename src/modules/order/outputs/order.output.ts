@@ -2,9 +2,10 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Expose, Type } from 'class-transformer';
 import { CustomerOutput } from 'src/modules/customer/outputs/customer.output';
 import { OrderItemOutput } from 'src/modules/order-item/outputs/order-item.output';
+import { BaseOutput } from 'src/shared/base/output';
 
 @ObjectType('Order')
-export class OrderOutput {
+export class OrderOutput extends BaseOutput {
   @Field(() => ID)
   @Expose()
   id!: string;
