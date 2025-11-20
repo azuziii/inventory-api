@@ -48,6 +48,9 @@ describe('Product E2E', () => {
 
     await deleteCustomer(app, customer1.id);
     await deleteCustomer(app, customer2.id);
+    await deleteProduct(app, product1.id);
+    await deleteProduct(app, product2.id);
+    await deleteProduct(app, product3.id);
   });
 
   it('CREATE:PRODUCT should create a new product', async () => {
