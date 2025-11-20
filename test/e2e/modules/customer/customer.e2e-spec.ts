@@ -8,89 +8,23 @@ import {
 } from 'src/shared/domain-errors';
 import { InstanceOfBaseResponse } from 'src/shared/responses/base.response';
 import { DeleteResponse } from 'src/shared/responses/delete.response';
-import * as request from 'supertest';
 import { createE2ETestingModule } from 'test/e2e-testing-module';
+import {
+  createCustomer,
+  deleteCustomer,
+  getCustomer,
+  updateCustomer,
+} from 'test/e2e/modules/customer/customer.helper';
 import {
   createRandomCustomerInput,
   createRandomCustomerUpdate,
 } from 'test/fake/customer/customer.fake';
 
-const CUSTOMER_QUERIES = {
-  get: `
-  query GetCustomer($id: ID!){
-    customer(id: $id) {
-      result {
-        __typename
-        ... on Customer {
-          id
-          name
-          address
-          city
-          country
-          ice
-          contact_name
-          contact_phone
-          contact_email
-        }
-      }
-    }
-  }`,
-  create: `
-  mutation CreateCustomer($input: CreateCustomerInput!){
-    createCustomer(input: $input) {
-      result {
-        __typename
-        ... on Customer {
-          id
-          name
-          address
-          city
-          country
-          ice
-          contact_name
-          contact_phone
-          contact_email
-        }
-      }
-    }
-  }`,
-  update: `
-  mutation UpdateCustomer($input: UpdateCustomerInput!){
-    updateCustomer(input: $input) {
-      result {
-        __typename
-        ... on Customer {
-          id
-          name
-          address
-          city
-          country
-          ice
-          contact_name
-          contact_phone
-          contact_email
-        }
-      }
-    }
-  }`,
-  delete: `
-  mutation DeleteCustomer($id: ID!){
-    deleteCustomer(id: $id) {
-      result {
-        __typename
-        ... on DeleteResponse {
-          id
-        }
-      }
-    }
-  }`,
-};
-
 describe('Customer E2E', () => {
   let app: INestApplication;
   let module: TestingModule;
   let customerInputDummyData = createRandomCustomerInput();
-  let customers: CustomerOutput[] = [];
+  let customer: CustomerOutput;
 
   beforeAll(async () => {
     module = await createE2ETestingModule();
@@ -104,13 +38,9 @@ describe('Customer E2E', () => {
   });
 
   it('CREATE:CUSTOMER should create a new customer', async () => {
-    const response = await request(app.getHttpServer())
-      .post('/graphql')
-      .send({
-        query: CUSTOMER_QUERIES.create,
-        variables: { input: customerInputDummyData },
-      })
-      .expect(200);
+    const response = await createCustomer(app, customerInputDummyData).expect(
+      200,
+    );
 
     const { result } = response.body.data
       .createCustomer as InstanceOfBaseResponse<CustomerOutput>;
@@ -121,21 +51,13 @@ describe('Customer E2E', () => {
     expect(result.ice).toBe(customerInputDummyData.ice);
     expect(result.id).toBeDefined();
 
-    customers.push(result);
+    customer = result;
   });
 
   it('GET:CUSTOMER should get customer', async () => {
-    const targetCustomerId = customers[0].id;
+    const targetCustomerId = customer.id;
 
-    const response = await request(app.getHttpServer())
-      .post('/graphql')
-      .send({
-        query: CUSTOMER_QUERIES.get,
-        variables: {
-          id: targetCustomerId,
-        },
-      })
-      .expect(200);
+    const response = await getCustomer(app, targetCustomerId).expect(200);
 
     const { result } = response.body.data
       .customer as InstanceOfBaseResponse<CustomerOutput>;
@@ -148,13 +70,7 @@ describe('Customer E2E', () => {
     const customerInput = createRandomCustomerInput();
     customerInput.ice = customerInputDummyData.ice;
 
-    const response = await request(app.getHttpServer())
-      .post('/graphql')
-      .send({
-        query: CUSTOMER_QUERIES.create,
-        variables: { input: customerInput },
-      })
-      .expect(200);
+    const response = await createCustomer(app, customerInput).expect(200);
 
     const { result } = response.body.data
       .createCustomer as InstanceOfBaseResponse<
@@ -169,13 +85,7 @@ describe('Customer E2E', () => {
       createRandomCustomerInput();
     delete customerDto.name;
 
-    const response = await request(app.getHttpServer())
-      .post('/graphql')
-      .send({
-        query: CUSTOMER_QUERIES.create,
-        variables: { input: customerDto },
-      })
-      .expect(200);
+    const response = await createCustomer(app, customerDto).expect(200);
 
     expect(response.body.errors).toBeDefined();
     expect(response.body.errors.length).toBeGreaterThan(0);
@@ -184,18 +94,10 @@ describe('Customer E2E', () => {
   it('UPDATE:CUSTOMER should update customer', async () => {
     const newCustomerName = createRandomCustomerUpdate().name;
 
-    const response = await request(app.getHttpServer())
-      .post('/graphql')
-      .send({
-        query: CUSTOMER_QUERIES.update,
-        variables: {
-          input: {
-            id: customers[0].id,
-            name: newCustomerName,
-          },
-        },
-      })
-      .expect(200);
+    const response = await updateCustomer(app, {
+      id: customer.id,
+      name: newCustomerName,
+    }).expect(200);
 
     const { result } = response.body.data
       .updateCustomer as InstanceOfBaseResponse<CustomerOutput>;
@@ -203,20 +105,14 @@ describe('Customer E2E', () => {
     expect(result).toBeDefined();
     expect(result.__typename).toBe('Customer');
     expect(result.name).toBe(newCustomerName);
+
+    customer = result;
   });
 
   it('DELETE:CUSTOMER should delete customer', async () => {
-    const targetCustomerId = customers[0].id;
+    const targetCustomerId = customer.id;
 
-    const response = await request(app.getHttpServer())
-      .post('/graphql')
-      .send({
-        query: CUSTOMER_QUERIES.delete,
-        variables: {
-          id: targetCustomerId,
-        },
-      })
-      .expect(200);
+    const response = await deleteCustomer(app, targetCustomerId).expect(200);
 
     const { result } = response.body.data
       .deleteCustomer as InstanceOfBaseResponse<DeleteResponse>;
@@ -227,17 +123,9 @@ describe('Customer E2E', () => {
   });
 
   it('GET:CUSTOMER should fail to get customer because it does not exist', async () => {
-    const targetCustomerId = customers[0].id;
+    const targetCustomerId = customer.id;
 
-    const response = await request(app.getHttpServer())
-      .post('/graphql')
-      .send({
-        query: CUSTOMER_QUERIES.get,
-        variables: {
-          id: targetCustomerId,
-        },
-      })
-      .expect(200);
+    const response = await getCustomer(app, targetCustomerId).expect(200);
 
     const { result } = response.body.data.customer as InstanceOfBaseResponse<
       InstanceType<typeof CustomerNotFound>
@@ -245,4 +133,6 @@ describe('Customer E2E', () => {
 
     expect(result.__typename).toBe('CustomerNotFound');
   });
+
+  // Add more test cases for CustomerInUse
 });
