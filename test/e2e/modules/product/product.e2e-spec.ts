@@ -2,7 +2,11 @@ import { INestApplication } from '@nestjs/common';
 import { TestingModule } from '@nestjs/testing';
 import { CustomerOutput } from 'src/modules/customer/outputs/customer.output';
 import { ProductOutput } from 'src/modules/product/outputs/product.output';
-import { ProductAlreadyExist, ProductNotFound } from 'src/shared/domain-errors';
+import {
+  CustomerNotFound,
+  ProductAlreadyExist,
+  ProductNotFound,
+} from 'src/shared/domain-errors';
 import { InstanceOfBaseResponse } from 'src/shared/responses/base.response';
 import { DeleteResponse } from 'src/shared/responses/delete.response';
 import { createE2ETestingModule } from 'test/e2e-testing-module';
@@ -122,6 +126,21 @@ describe('Product E2E', () => {
     expect(result.id).toBeDefined();
 
     product3 = result;
+  });
+
+  it('CREATE:PRODUCT should fail to create a product if customer does not exist', async () => {
+    const productInput = createRandomProductInput();
+    const response = await createProduct(app, {
+      ...productInput,
+    }).expect(200);
+
+    const { result } = response.body.data
+      .createProduct as InstanceOfBaseResponse<
+      InstanceType<typeof CustomerNotFound>
+    >;
+
+    expect(result).toBeDefined();
+    expect(result.__typename).toBe('CustomerNotFound');
   });
 
   it('GET:PRODUCT should get product', async () => {
