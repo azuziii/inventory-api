@@ -33,10 +33,10 @@ describe('Customer E2E', () => {
   });
 
   afterAll(async () => {
+    await deleteCustomer(app, customer.id);
+
     if (app) await app.close();
     if (module) await module.close();
-
-    await deleteCustomer(app, customer.id);
   });
 
   it('CREATE:CUSTOMER should create a new customer', async () => {
