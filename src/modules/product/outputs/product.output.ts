@@ -28,5 +28,5 @@ export class ProductOutput extends BaseOutput {
   @Field(() => CustomerOutput, { nullable: false })
   @Expose()
   @Type(() => CustomerOutput)
-  customer!: Promise<CustomerOutput>;
+  customer!: CustomerOutput;
 }
