@@ -7,6 +7,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HeaderResolver, I18nModule } from 'nestjs-i18n';
 import { join } from 'path';
+import { cwd } from 'process';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AutoMapInterceptor } from './interceptors/auto-map/auto-map.interceptor';
@@ -36,7 +37,7 @@ import { ProductModule } from './modules/product/product.module';
         username: configService.getOrThrow('DB_USERNAME'),
         password: configService.getOrThrow('DB_PASSWORD'),
         database: configService.getOrThrow('DB_NAME'),
-        entities: [__dirname + '/**/*.entity.js'],
+        entities: [__dirname + '/**/*.entity.ts'],
         synchronize: false,
         migrationsRun: false,
         logging: 'all',
@@ -46,7 +47,7 @@ import { ProductModule } from './modules/product/product.module';
     I18nModule.forRoot({
       fallbackLanguage: 'en',
       loaderOptions: {
-        path: join(__dirname, '../i18n/'),
+        path: join(cwd(), 'i18n/'),
         watch: true,
       },
       typesOutputPath: join(process.cwd(), 'src/generated/i18n.generated.ts'),
