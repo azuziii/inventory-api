@@ -20,13 +20,13 @@ const CUSTOMER_FIELDS = `
 
 export function createCustomer(
   app: INestApplication,
-  input:
+  createCustomerInput:
     | CreateCustomerInput
     | Partial<CreateCustomerInput> = createRandomCustomerInput(),
 ) {
   const query = `
-    mutation CreateCustomer($input: CreateCustomerInput!){
-    createCustomer(input: $input) {
+    mutation CreateCustomer($createCustomerInput: CreateCustomerInput!){
+    createCustomer(input: $createCustomerInput) {
       result {
         __typename
         ... on Customer {
@@ -38,7 +38,7 @@ export function createCustomer(
 
   return request(app.getHttpServer()).post('/graphql').send({
     query,
-    variables: { input },
+    variables: { createCustomerInput },
   });
 }
 
@@ -91,10 +91,10 @@ export function getAllCustomers(app: INestApplication) {
 
 export function updateCustomer(
   app: INestApplication,
-  input: UpdateCustomerInput,
+  updateCustomerInput: UpdateCustomerInput,
 ) {
-  const query = `mutation UpdateCustomer($input: UpdateCustomerInput!){
-    updateCustomer(input: $input) {
+  const query = `mutation UpdateCustomer($updateCustomerInput: UpdateCustomerInput!){
+    updateCustomer(input: $updateCustomerInput) {
       result {
         __typename
         ... on Customer {
@@ -106,7 +106,7 @@ export function updateCustomer(
 
   return request(app.getHttpServer()).post('/graphql').send({
     query,
-    variables: { input },
+    variables: { updateCustomerInput },
   });
 }
 

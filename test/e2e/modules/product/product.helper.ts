@@ -20,13 +20,13 @@ const PRODUCT_FIELDS = `
 
 export function createProduct(
   app: INestApplication,
-  input:
+  createProductInput:
     | CreateProductInput
     | Partial<CreateProductInput> = createRandomProductInput(),
 ) {
   const query = `
-    mutation CreateProduct($input: CreateProductInput!) {
-      createProduct(input: $input) {
+    mutation CreateProduct($createProductInput: CreateProductInput!) {
+      createProduct(input: $createProductInput) {
         result {
           __typename
           ... on Product {
@@ -39,7 +39,7 @@ export function createProduct(
 
   return request(app.getHttpServer()).post('/graphql').send({
     query,
-    variables: { input },
+    variables: { createProductInput },
   });
 }
 
@@ -65,11 +65,11 @@ export function getProduct(app: INestApplication, id: string) {
 
 export function updateProduct(
   app: INestApplication,
-  input: UpdateProductInput,
+  updateProductInputupdate: UpdateProductInput,
 ) {
   const query = `
-    mutation UpdateProduct($input: UpdateProductInput!) {
-      updateProduct(input: $input) {
+    mutation UpdateProduct($updateProductInputupdate: UpdateProductInput!) {
+      updateProduct(input: $updateProductInputupdate) {
         result {
           __typename
           ... on Product {
@@ -82,7 +82,7 @@ export function updateProduct(
 
   return request(app.getHttpServer()).post('/graphql').send({
     query,
-    variables: { input },
+    variables: { updateProductInputupdate },
   });
 }
 
