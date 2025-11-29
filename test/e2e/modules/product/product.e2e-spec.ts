@@ -9,7 +9,11 @@ import {
 } from 'src/shared/domain-errors';
 import { InstanceOfBaseResponse } from 'src/shared/responses/base.response';
 import { DeleteResponse } from 'src/shared/responses/delete.response';
-import { createE2ETestingModule } from 'test/e2e-testing-module';
+import {
+  cleanupTestEnvironment,
+  clearDB,
+  initializeTestEnvironment,
+} from 'test/e2e.helper';
 import {
   createProduct,
   deleteProduct,
@@ -17,7 +21,7 @@ import {
   updateProduct,
 } from 'test/e2e/modules/product/product.helper';
 import { createRandomProductInput } from 'test/fake/product/product.fake';
-import { createCustomer, deleteCustomer } from '../customer/customer.helper';
+import { createCustomer } from '../customer/customer.helper';
 
 describe('Product E2E', () => {
   let app: INestApplication;
@@ -31,9 +35,9 @@ describe('Product E2E', () => {
   let product3: ProductOutput;
 
   beforeAll(async () => {
-    module = await createE2ETestingModule();
-    app = module.createNestApplication();
-    await app.init();
+    [app, module] = await initializeTestEnvironment();
+
+    await clearDB(app);
 
     const resp1 = await createCustomer(app);
     customer1 = resp1.body.data.createCustomer.result;
@@ -43,14 +47,7 @@ describe('Product E2E', () => {
   });
 
   afterAll(async () => {
-    await deleteCustomer(app, customer1.id);
-    await deleteCustomer(app, customer2.id);
-    await deleteProduct(app, product1.id);
-    await deleteProduct(app, product2.id);
-    await deleteProduct(app, product3.id);
-
-    if (app) await app.close();
-    if (module) await module.close();
+    await cleanupTestEnvironment(module, app);
   });
 
   it('CREATE:PRODUCT should create a new product', async () => {

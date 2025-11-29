@@ -8,7 +8,11 @@ import {
 } from 'src/shared/domain-errors';
 import { InstanceOfBaseResponse } from 'src/shared/responses/base.response';
 import { DeleteResponse } from 'src/shared/responses/delete.response';
-import { createE2ETestingModule } from 'test/e2e-testing-module';
+import {
+  cleanupTestEnvironment,
+  clearDB,
+  initializeTestEnvironment,
+} from 'test/e2e.helper';
 import {
   createCustomer,
   deleteCustomer,
@@ -27,22 +31,20 @@ describe('Customer E2E', () => {
   let customer: CustomerOutput;
 
   beforeAll(async () => {
-    module = await createE2ETestingModule();
-    app = module.createNestApplication();
-    await app.init();
+    [app, module] = await initializeTestEnvironment();
+    await clearDB(app);
   });
 
   afterAll(async () => {
-    await deleteCustomer(app, customer.id);
-
-    if (app) await app.close();
-    if (module) await module.close();
+    await cleanupTestEnvironment(module, app);
   });
 
   it('CREATE:CUSTOMER should create a new customer', async () => {
     const response = await createCustomer(app, customerInputDummyData).expect(
       200,
     );
+
+    expect(response.body.data.createCustomer).toBeDefined();
 
     const { result } = response.body.data
       .createCustomer as InstanceOfBaseResponse<CustomerOutput>;
@@ -61,6 +63,8 @@ describe('Customer E2E', () => {
 
     const response = await getCustomer(app, targetCustomerId).expect(200);
 
+    expect(response.body.data.customer).toBeDefined();
+
     const { result } = response.body.data
       .customer as InstanceOfBaseResponse<CustomerOutput>;
 
@@ -73,6 +77,8 @@ describe('Customer E2E', () => {
     customerInput.ice = customerInputDummyData.ice;
 
     const response = await createCustomer(app, customerInput).expect(200);
+
+    expect(response.body.data.createCustomer).toBeDefined();
 
     const { result } = response.body.data
       .createCustomer as InstanceOfBaseResponse<
@@ -101,6 +107,8 @@ describe('Customer E2E', () => {
       name: newCustomerName,
     }).expect(200);
 
+    expect(response.body.data.updateCustomer).toBeDefined();
+
     const { result } = response.body.data
       .updateCustomer as InstanceOfBaseResponse<CustomerOutput>;
 
@@ -116,6 +124,8 @@ describe('Customer E2E', () => {
 
     const response = await deleteCustomer(app, targetCustomerId).expect(200);
 
+    expect(response.body.data.deleteCustomer).toBeDefined();
+
     const { result } = response.body.data
       .deleteCustomer as InstanceOfBaseResponse<DeleteResponse>;
 
@@ -128,6 +138,8 @@ describe('Customer E2E', () => {
     const targetCustomerId = customer.id;
 
     const response = await getCustomer(app, targetCustomerId).expect(200);
+
+    expect(response.body.data.customer).toBeDefined();
 
     const { result } = response.body.data.customer as InstanceOfBaseResponse<
       InstanceType<typeof CustomerNotFound>
