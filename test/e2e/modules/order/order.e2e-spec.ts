@@ -113,11 +113,9 @@ describe('Customer E2E', () => {
     const randomOrder = createRandomOrderInput();
 
     const randomItem = createRandomOrderItemInput();
-    randomItem.quantity = 10;
     randomItem.product_id = product.id;
 
     const randomItem2 = createRandomOrderItemInput();
-    randomItem2.quantity = 9;
     randomItem2.product_id = product.id;
 
     const response = await createOrder(app, {
@@ -181,7 +179,7 @@ describe('Customer E2E', () => {
     expect(result.__typename).toBe('InvalidData');
   });
 
-  it(`CREATE:ORDER should fail to create order if customer does not exist`, async () => {
+  it('CREATE:ORDER should fail to create order if customer does not exist', async () => {
     const randomOrder = createRandomOrderInput();
 
     const randomItem = createRandomOrderItemInput();
@@ -224,7 +222,7 @@ describe('Customer E2E', () => {
     expect(result.__typename).toBe('InvalidData');
   });
 
-  it(`CREATE:ORDER should fail to create order if product does not exist`, async () => {
+  it('CREATE:ORDER should fail to create order if product does not exist', async () => {
     const randomOrder = createRandomOrderInput();
     randomOrder.customer_id = customer.id;
 
@@ -245,7 +243,7 @@ describe('Customer E2E', () => {
     expect(result.__typename).toBe('ProductNotFound');
   });
 
-  it(`CREATE:ORDER should fail to create order if order_number already exists in the same year`, async () => {
+  it('CREATE:ORDER should fail to create order if order_number already exists in the same year', async () => {
     const randomOrder = createRandomOrderInput();
     randomOrder.customer_id = customer.id;
     randomOrder.order_date = order.order_date;
