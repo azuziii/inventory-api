@@ -51,6 +51,13 @@ export class OrderItemRepository extends BaseRepositoty<
       throw this.handleDatabaseError(error, orderItem);
     }
   }
+  async deleteOrderItem(id: string): Promise<void> {
+    try {
+      const deleteResult = await this.delete(id);
+    } catch (error) {
+      throw this.handleDatabaseError(error);
+    }
+  }
 
   protected translateDatabaseError(
     error: any,
