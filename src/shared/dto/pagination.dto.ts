@@ -46,9 +46,6 @@ export class PaginationInput {
 @ObjectType('Pagination')
 export class PaginationDto {
   constructor(props: PaginationProps) {
-    console.log(1);
-    console.log(props);
-    console.log(1);
     const totalPages = Math.ceil(props.total / props.limit);
 
     this.total = props.total;

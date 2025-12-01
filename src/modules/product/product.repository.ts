@@ -1,12 +1,16 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { BaseRepositoty } from 'src/shared/base/repository';
+import { CustomerNotFound } from 'src/shared/domain-errors';
 import { EntityManager } from 'typeorm';
 import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import { Product } from './entities/product.entity';
 import { ProductAlreadyExist, ProductInUse } from './errors/product.error';
 
 @Injectable()
-export class ProductRepository extends BaseRepositoty<Product> {
+export class ProductRepository extends BaseRepositoty<
+  Product,
+  CreateProductDto | UpdateProductDto
+> {
   constructor(protected readonly entityManager: EntityManager) {
     super(Product, entityManager);
   }
@@ -59,7 +63,7 @@ export class ProductRepository extends BaseRepositoty<Product> {
 
   protected translateDatabaseError(
     error: any,
-    entity?: Partial<Product> | undefined,
+    entity?: CreateProductDto | UpdateProductDto | Partial<Product>,
   ): void {
     switch (error.driverError.constraint) {
       case 'UQ_product_customer_name':
@@ -69,6 +73,10 @@ export class ProductRepository extends BaseRepositoty<Product> {
       case 'FK_PRODUCT_ORDER_ITEM':
         throw new ProductInUse({
           resourceName: 'order-item',
+        });
+      case 'FK_product_customer':
+        throw new CustomerNotFound({
+          id: entity?.customer_id,
         });
       default:
         throw new InternalServerErrorException();

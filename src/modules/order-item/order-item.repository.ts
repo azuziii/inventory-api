@@ -6,7 +6,10 @@ import { CreateOrderItemDto, UpdateOrderItemDto } from './dto/order-item.dto';
 import { OrderItem } from './entities/order-item.entity';
 
 @Injectable()
-export class OrderItemRepository extends BaseRepositoty<OrderItem> {
+export class OrderItemRepository extends BaseRepositoty<
+  OrderItem,
+  CreateOrderItemDto | UpdateOrderItemDto
+> {
   constructor(protected readonly entityManager: EntityManager) {
     super(OrderItem, entityManager);
   }
@@ -51,7 +54,7 @@ export class OrderItemRepository extends BaseRepositoty<OrderItem> {
 
   protected translateDatabaseError(
     error: any,
-    entity?: Partial<OrderItem>,
+    entity?: CreateOrderItemDto | UpdateOrderItemDto | Partial<OrderItem>,
   ): void {
     switch (error.driverError.constraint) {
       case 'FK_PRODUCT_ORDER_ITEM':

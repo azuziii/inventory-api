@@ -7,13 +7,16 @@ import { Order } from './entities/order.entity';
 import { OrderAlreadyExist } from './errors/order.error';
 
 @Injectable()
-export class OrderRepository extends BaseRepositoty<Order> {
+export class OrderRepository extends BaseRepositoty<
+  Order,
+  CreateOrderDto | UpdateOrderDto
+> {
   constructor(protected readonly entityManager: EntityManager) {
     super(Order, entityManager);
   }
 
   async insertOrder(
-    order: CreateOrderDto,
+    { items, ...order }: CreateOrderDto,
     entityManager?: EntityManager,
   ): Promise<Order> {
     const manager = this.getManager(entityManager);
@@ -29,7 +32,7 @@ export class OrderRepository extends BaseRepositoty<Order> {
         },
       }) as Promise<Order>;
     } catch (error) {
-      throw this.handleDatabaseError(error);
+      throw this.handleDatabaseError(error, order);
     }
   }
 
@@ -52,7 +55,10 @@ export class OrderRepository extends BaseRepositoty<Order> {
     }
   }
 
-  protected translateDatabaseError(error: any, entity?: Partial<Order>): void {
+  protected translateDatabaseError(
+    error: any,
+    entity?: CreateOrderDto | UpdateOrderDto | Partial<Order>,
+  ): void {
     switch (error.driverError.constraint) {
       case 'UQ_ORDER_NUMBER_YEAR':
         throw new OrderAlreadyExist({

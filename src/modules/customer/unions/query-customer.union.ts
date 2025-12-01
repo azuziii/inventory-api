@@ -1,10 +1,10 @@
 import { createUnionType } from '@nestjs/graphql';
 import { InvalidDataException } from 'src/shared/errors/invalid-data.error';
-import { Customer } from '../entities/customer.entity';
 import { CustomerNotFound } from '../errors/customer.error';
+import { CustomerOutput } from '../outputs/customer.output';
 
 export type CustomerQueryUnion = typeof CustomerQueryUnion;
 export const CustomerQueryUnion = createUnionType({
   name: 'CustomerQueryUnion',
-  types: () => [Customer, CustomerNotFound, InvalidDataException],
+  types: () => [CustomerOutput, CustomerNotFound, InvalidDataException],
 });

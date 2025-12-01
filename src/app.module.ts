@@ -9,7 +9,8 @@ import { HeaderResolver, I18nModule } from 'nestjs-i18n';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { GqlExceptionToDataInterceptor } from './interceptors/gql-exception-to-data/gql-exception-to-data.interceptor';
+import { AutoMapInterceptor } from './interceptors/auto-map/auto-map.interceptor';
+import { GqlResponseWrapperInterceptor } from './interceptors/gql-exception-to-data/gql-response-wrapper.interceptor';
 import { I18nInterceptor } from './interceptors/i18n/i18n.interceptor';
 import { CustomerModule } from './modules/customer/customer.module';
 import { OrderItemModule } from './modules/order-item/order-item.module';
@@ -36,7 +37,8 @@ import { ProductModule } from './modules/product/product.module';
         password: configService.getOrThrow('DB_PASSWORD'),
         database: configService.getOrThrow('DB_NAME'),
         entities: [__dirname + '/**/*.entity.js'],
-        synchronize: true,
+        synchronize: false,
+        migrationsRun: false,
         logging: 'all',
         logger: 'advanced-console',
       }),
@@ -44,10 +46,10 @@ import { ProductModule } from './modules/product/product.module';
     I18nModule.forRoot({
       fallbackLanguage: 'en',
       loaderOptions: {
-        path: join(__dirname, '/i18n/'),
+        path: join(__dirname, '../i18n/'),
         watch: true,
       },
-      typesOutputPath: join(__dirname, '../src/generated/i18n.generated.ts'),
+      typesOutputPath: join(process.cwd(), 'src/generated/i18n.generated.ts'),
       resolvers: [new HeaderResolver(['x-lang'])],
     }),
     EventEmitterModule.forRoot({
@@ -63,7 +65,11 @@ import { ProductModule } from './modules/product/product.module';
     AppService,
     {
       provide: APP_INTERCEPTOR,
-      useClass: GqlExceptionToDataInterceptor,
+      useClass: GqlResponseWrapperInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: AutoMapInterceptor,
     },
     {
       provide: APP_INTERCEPTOR,

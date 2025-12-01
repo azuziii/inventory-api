@@ -7,12 +7,16 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { GetByIdArgs } from 'src/shared/args/get-by-id/get-by-id.args';
-import { ErrorResponseType } from 'src/shared/decorators/meta/error-response-type.decorator';
-import { Customer } from '../customer/entities/customer.entity';
+import { AutoMap } from 'src/shared/decorators/meta/auto-map.decorator';
+import { ResponseType } from 'src/shared/decorators/meta/error-response-type.decorator';
+import { DeleteResponse } from 'src/shared/responses/delete.response';
+import { mapToOutput } from 'src/utils/map-to-output.util';
+import { CustomerOutput } from '../customer/outputs/customer.output';
 import { ProductArguments } from './args/product.args';
 import { Product } from './entities/product.entity';
 import { CreateProductInput, UpdateProductInput } from './inputs/product.input';
 import { ProductList } from './outputs/product-list.output';
+import { ProductOutput } from './outputs/product.output';
 import { ProductService } from './product.service';
 import { CreateProductResponse } from './responses/create-product.response';
 import { DeleteProductResponse } from './responses/delete-product.response';
@@ -20,66 +24,64 @@ import { ProductQueryResponse } from './responses/query-product.response';
 import { ProductsQueryResponse } from './responses/query-products.response';
 import { UpdateProductResponse } from './responses/update-product.response';
 
-@Resolver(() => Product)
+@Resolver(() => ProductOutput)
 export class ProductResolver {
   constructor(private readonly productService: ProductService) {}
 
-  @ErrorResponseType(ProductQueryResponse)
+  @ResponseType(ProductQueryResponse)
+  @AutoMap(ProductOutput)
   @Query(() => ProductQueryResponse, { name: 'product' })
-  async getProduct(@Args() { id }: GetByIdArgs): Promise<ProductQueryResponse> {
-    const queryResult = await this.productService.getProductOrFail(id);
-    return new ProductQueryResponse(queryResult);
+  async getProduct(@Args() { id }: GetByIdArgs): Promise<Product> {
+    return this.productService.getProductOrFail(id);
   }
 
-  @ErrorResponseType(ProductsQueryResponse)
+  @ResponseType(ProductsQueryResponse)
   @Query(() => ProductsQueryResponse, { name: 'products' })
   async listProduct(
     @Args()
     args: ProductArguments,
-  ): Promise<ProductsQueryResponse> {
+  ): Promise<ProductList> {
     const [products, count] = await this.productService.listProducts(
       args.toManyOptions(),
     );
 
-    const productList = new ProductList(products, {
+    const productList = new ProductList(mapToOutput(ProductOutput, products), {
       ...args,
       total: count,
     });
 
-    return new ProductsQueryResponse(productList);
+    return productList;
   }
 
-  @ErrorResponseType(CreateProductResponse)
+  @ResponseType(CreateProductResponse)
+  @AutoMap(ProductOutput)
   @Mutation(() => CreateProductResponse, { name: 'createProduct' })
   async createProduct(
     @Args('input', { type: () => CreateProductInput, nullable: false })
     input: CreateProductInput,
-  ): Promise<CreateProductResponse> {
-    const createResult = await this.productService.createProduct(input);
-    return new CreateProductResponse(createResult);
+  ): Promise<Product> {
+    return this.productService.createProduct(input);
   }
 
-  @ErrorResponseType(UpdateProductResponse)
+  @ResponseType(UpdateProductResponse)
+  @AutoMap(ProductOutput)
   @Mutation(() => UpdateProductResponse, { name: 'updateProduct' })
   async updateProduct(
     @Args('input', { type: () => UpdateProductInput, nullable: false })
     input: UpdateProductInput,
-  ): Promise<UpdateProductResponse> {
-    const updateResult = await this.productService.updateProduct(input);
-    return new UpdateProductResponse(updateResult);
+  ): Promise<Product> {
+    return this.productService.updateProduct(input);
   }
 
-  @ErrorResponseType(DeleteProductResponse)
+  @ResponseType(DeleteProductResponse)
   @Mutation(() => DeleteProductResponse, { name: 'deleteProduct' })
-  async deleteProduct(
-    @Args() { id }: GetByIdArgs,
-  ): Promise<DeleteProductResponse> {
-    const deleteResult = await this.productService.deleteProduct(id);
-    return new DeleteProductResponse(deleteResult);
+  async deleteProduct(@Args() { id }: GetByIdArgs): Promise<DeleteResponse> {
+    return this.productService.deleteProduct(id);
   }
 
-  @ResolveField(() => Customer)
-  customer(@Parent() product: Product): Promise<Customer> {
-    return product.customer;
+  @ResolveField(() => CustomerOutput)
+  async customer(@Parent() product: Product): Promise<CustomerOutput> {
+    const customer = await product.customer;
+    return mapToOutput(CustomerOutput, customer);
   }
 }

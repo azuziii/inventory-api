@@ -5,13 +5,13 @@ import {
   ProductNotFound,
 } from 'src/shared/domain-errors';
 import { InvalidDataException } from 'src/shared/errors/invalid-data.error';
-import { OrderItem } from '../entities/order-item.entity';
+import { OrderItemOutput } from '../outputs/order-item.output';
 
 export type CreateOrderItemUnion = typeof CreateOrderItemUnion;
 export const CreateOrderItemUnion = createUnionType({
   name: 'CreateOrderItemUnion',
   types: () => [
-    OrderItem,
+    OrderItemOutput,
     InvalidDataException,
     ProductNotFound,
     OrderNotFound,
