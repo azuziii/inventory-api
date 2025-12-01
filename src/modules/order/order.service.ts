@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { DeleteResponse } from 'src/shared/responses/delete.response';
 import { DataSource, FindManyOptions } from 'typeorm';
 import { IOrderItem } from '../order-item/interfaces/order-item.interface';
 import { CreateOrderDto, UpdateOrderDto } from './dto/order.dto';
@@ -68,5 +69,10 @@ export class OrderService {
 
   listOrders(options: FindManyOptions<Order>): Promise<[Order[], number]> {
     return this.repo.findAndCount(options);
+  }
+
+  async deleteOrder(id: string): Promise<DeleteResponse> {
+    await this.repo.deleteOrder(id);
+    return new DeleteResponse(id);
   }
 }

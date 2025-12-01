@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { DeleteResponse } from 'src/shared/responses/delete.response';
 import { DataSource, EntityManager } from 'typeorm';
 import { CreateOrderItemDto, UpdateOrderItemDto } from './dto/order-item.dto';
 import { OrderItem } from './entities/order-item.entity';
@@ -65,5 +66,10 @@ export class OrderItemService {
     }
 
     return orderItem;
+  }
+
+  async deleteOrderItem(id: string): Promise<DeleteResponse> {
+    await this.repo.deleteOrderItem(id);
+    return new DeleteResponse(id);
   }
 }

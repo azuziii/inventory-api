@@ -9,6 +9,7 @@ import {
 import { GetByIdArgs } from 'src/shared/args/get-by-id/get-by-id.args';
 import { AutoMap } from 'src/shared/decorators/meta/auto-map.decorator';
 import { ResponseType } from 'src/shared/decorators/meta/error-response-type.decorator';
+import { DeleteResponse } from 'src/shared/responses/delete.response';
 import { mapToOutput } from 'src/utils/map-to-output.util';
 import { Product } from '../product/entities/product.entity';
 import { ProductOutput } from '../product/outputs/product.output';
@@ -20,6 +21,7 @@ import {
 import { OrderItemService } from './order-item.service';
 import { OrderItemOutput } from './outputs/order-item.output';
 import { CreateOrderItemResponse } from './responses/create-order-item.response';
+import { DeleteOrderItemResponse } from './responses/delete-order-item.response';
 import { OrderItemQueryResponse } from './responses/query-order-item.response';
 import { UpdateOrderItemResponse } from './responses/update-order-item.response';
 
@@ -52,6 +54,12 @@ export class OrderItemResolver {
     input: UpdateOrderItemInput,
   ): Promise<OrderItem> {
     return this.orderItemService.updateOrderItem(input);
+  }
+
+  @ResponseType(DeleteOrderItemResponse)
+  @Mutation(() => DeleteOrderItemResponse, { name: 'deleteOrderItem' })
+  async deleteOrderItem(@Args() { id }: GetByIdArgs): Promise<DeleteResponse> {
+    return this.orderItemService.deleteOrderItem(id);
   }
 
   @ResolveField(() => Product)

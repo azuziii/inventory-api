@@ -1,7 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { Order } from 'src/modules/order/entities/order.entity';
 import { Product } from 'src/modules/product/entities/product.entity';
 import { IProduct } from 'src/modules/product/interfaces/product.interface';
-import { ProductForbiddenRelation } from 'src/shared/domain-errors';
+import {
+  OrderNotFound,
+  ProductForbiddenRelation,
+} from 'src/shared/domain-errors';
 import { InvalidDataException } from 'src/shared/errors/invalid-data.error';
 import {
   DataSource,
@@ -29,6 +33,7 @@ export class OrderItemSubscriber implements EntitySubscriberInterface {
   async beforeInsert(event: InsertEvent<OrderItem>): Promise<void> {
     await this.setProductProps(event);
     await this.checkProductCustomerRelation(event);
+    await this.mergeItems(event);
   }
 
   async beforeUpdate(event: UpdateEvent<any>): Promise<void> {
@@ -51,10 +56,12 @@ export class OrderItemSubscriber implements EntitySubscriberInterface {
   async checkProductCustomerRelation(
     event: InsertEvent<OrderItem> | UpdateEvent<OrderItem>,
   ) {
-    if (!event.entity) return;
+    if (!event.entity || !event.entity.order_id) return;
 
     let order_id = event.entity.order_id;
     let product_id = event.entity.product_id;
+
+    await this.getOrder(event, order_id);
 
     const isMatch = await event.manager
       .getRepository(Product)
@@ -87,5 +94,40 @@ export class OrderItemSubscriber implements EntitySubscriberInterface {
         total_shipped,
       },
     });
+  }
+
+  async mergeItems(event: InsertEvent<OrderItem>) {
+    const existingItem = await event.manager.getRepository(OrderItem).findOne({
+      where: {
+        order_id: event.entity.order_id,
+        product_id: event.entity.product_id,
+      },
+    });
+
+    if (!existingItem) return;
+
+    Object.assign(event.entity, {
+      quantity: event.entity.quantity + existingItem.quantity,
+      total_shipped: existingItem.total_shipped,
+    } as OrderItem);
+
+    await event.manager.getRepository(OrderItem).delete(existingItem.id);
+  }
+
+  async getOrder(
+    event: InsertEvent<OrderItem> | UpdateEvent<OrderItem>,
+    orderId: string,
+  ): Promise<Order> {
+    const order = await event.manager
+      .getRepository(Order)
+      .createQueryBuilder('o')
+      .where('o.id = :orderId', { orderId })
+      .getOne();
+
+    if (!order) {
+      throw new OrderNotFound({ id: orderId });
+    }
+
+    return order;
   }
 }
