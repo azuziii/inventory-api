@@ -10,6 +10,7 @@ import {
 import { GetByIdArgs } from 'src/shared/args/get-by-id/get-by-id.args';
 import { AutoMap } from 'src/shared/decorators/meta/auto-map.decorator';
 import { ResponseType } from 'src/shared/decorators/meta/error-response-type.decorator';
+import { DeleteResponse } from 'src/shared/responses/delete.response';
 import { mapToOutput } from 'src/utils/map-to-output.util';
 import { CustomerOutput } from '../customer/outputs/customer.output';
 import { OrderItemOutput } from '../order-item/outputs/order-item.output';
@@ -21,6 +22,7 @@ import { OrderList } from './outputs/order-list.output';
 import { OrderOutput } from './outputs/order.output';
 import { NormalizeOrderItemsPipe } from './pipes/normalize-order-items/normalize-order-items.pipe';
 import { CreateOrderResponse } from './responses/create-order.response';
+import { DeleteOrderResponse } from './responses/delete-order.response';
 import { OrdersQueryResponse } from './responses/list-orders.response';
 import { OrderQueryResponse } from './responses/query-order.response';
 import { UpdateOrderResponse } from './responses/update-order.response';
@@ -70,6 +72,12 @@ export class OrderResolver {
     input: UpdateOrderInput,
   ): Promise<Order> {
     return this.orderService.updateOrder(input);
+  }
+
+  @ResponseType(DeleteOrderResponse)
+  @Mutation(() => DeleteOrderResponse, { name: 'deleteOrder' })
+  async deleteOrder(@Args() { id }: GetByIdArgs): Promise<DeleteResponse> {
+    return this.orderService.deleteOrder(id);
   }
 
   @ResolveField(() => CustomerOutput)
