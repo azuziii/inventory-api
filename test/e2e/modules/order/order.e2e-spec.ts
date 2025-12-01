@@ -4,16 +4,26 @@ import { CustomerOutput } from 'src/modules/customer/outputs/customer.output';
 import { OrderOutput } from 'src/modules/order/outputs/order.output';
 import { InvalidDataException } from 'src/shared/errors/invalid-data.error';
 import { InstanceOfBaseResponse } from 'src/shared/responses/base.response';
+import { DeleteResponse } from 'src/shared/responses/delete.response';
 import {
   cleanupTestEnvironment,
   initializeTestEnvironment,
 } from 'test/e2e.helper';
 import { createRandomOrderItemInput } from 'test/fake/order-item/order-item.fake';
-import { createRandomOrderInput } from 'test/fake/order/order.fake';
+import {
+  createRandomOrderInput,
+  updateRandomOrderInput,
+} from 'test/fake/order/order.fake';
 import { createRandomProductInput } from 'test/fake/product/product.fake';
 import { createCustomer } from '../customer/customer.helper';
 import { createProduct } from '../product/product.helper';
-import { createOrder } from './order.helper';
+import { deleteOrderItem } from './order-item.helper';
+import {
+  createOrder,
+  deleteOrder,
+  getOrder,
+  updateOrder,
+} from './order.helper';
 
 const MIN_ITEM_QUANTITY = 1;
 
@@ -265,5 +275,91 @@ describe('Customer E2E', () => {
 
     expect(result).toBeDefined();
     expect(result.__typename).toBe('OrderAlreadyExist');
+  });
+
+  it('UPDATE:ORDER should update order_date and order_year', async () => {
+    const newOrderDate = createRandomOrderInput().order_date;
+
+    const response = await updateOrder(app, {
+      id: order.id,
+      order_date: newOrderDate,
+    }).expect(200);
+
+    expect(response.body.data.updateOrder).toBeDefined();
+
+    const { result } = response.body.data
+      .updateOrder as InstanceOfBaseResponse<OrderOutput>;
+
+    expect(result).toBeDefined();
+    expect(result.__typename).toBe('Order');
+    expect(result.order_date).toBe(newOrderDate.toISOString());
+    expect(result.order_year).toBe(newOrderDate.getFullYear().toString());
+  });
+
+  it('UPDATE:ORDER should fail to update if order does not exist', async () => {
+    const response = await updateOrder(app, {
+      id: updateRandomOrderInput().id,
+    }).expect(200);
+
+    expect(response.body.data.updateOrder).toBeDefined();
+
+    const { result } = response.body.data
+      .updateOrder as InstanceOfBaseResponse<OrderOutput>;
+
+    expect(result).toBeDefined();
+    expect(result.__typename).toBe('OrderNotFound');
+  });
+
+  it("DELETE:ORDER should fail to delete order because it's referenced in other tables", async () => {
+    const response = await deleteOrder(app, order.id).expect(200);
+
+    expect(response.body.data.deleteOrder).toBeDefined();
+
+    const { result } = response.body.data.deleteOrder as InstanceOfBaseResponse<
+      InstanceType<typeof DeleteResponse>
+    >;
+
+    expect(result).toBeDefined();
+    expect(result.__typename).toBe('OrderInUse');
+  });
+
+  it('DELETE:ORDER should delete order', async () => {
+    const itemResponses = await Promise.all(
+      order.items.map((item) => deleteOrderItem(app, item.id)),
+    );
+
+    itemResponses.forEach((response, i) => {
+      const { result } = response.body.data
+        .deleteOrderItem as InstanceOfBaseResponse<
+        InstanceType<typeof DeleteResponse>
+      >;
+
+      expect(result.__typename).toBe('DeleteResponse');
+      expect(result.id).toBe(order.items[i].id);
+    });
+
+    const response = await deleteOrder(app, order.id).expect(200);
+
+    expect(response.body.data.deleteOrder).toBeDefined();
+
+    const { result } = response.body.data.deleteOrder as InstanceOfBaseResponse<
+      InstanceType<typeof DeleteResponse>
+    >;
+
+    expect(result).toBeDefined();
+    expect(result.__typename).toBe('DeleteResponse');
+    expect(result.id).toBe(order.id);
+  });
+
+  it('GET:ORDER should fail to get order that was deleted', async () => {
+    const response = await getOrder(app, order.id).expect(200);
+
+    expect(response.body.data.order).toBeDefined();
+
+    const { result } = response.body.data
+      .order as InstanceOfBaseResponse<OrderOutput>;
+
+    expect(result).toBeDefined();
+    expect(result.__typename).toBe('OrderNotFound');
   });
 });
