@@ -33,6 +33,6 @@ export function createRandomOrderInputWithItems(
         max: 5,
       },
     }),
-    items: [createRandomOrderItemInput()],
+    items,
   };
 }
