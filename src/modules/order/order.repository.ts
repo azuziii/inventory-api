@@ -4,7 +4,7 @@ import { CustomerNotFound } from 'src/shared/domain-errors';
 import { EntityManager } from 'typeorm';
 import { CreateOrderDto, UpdateOrderDto } from './dto/order.dto';
 import { Order } from './entities/order.entity';
-import { OrderAlreadyExist } from './errors/order.error';
+import { OrderAlreadyExist, OrderInUse } from './errors/order.error';
 
 @Injectable()
 export class OrderRepository extends BaseRepositoty<
@@ -55,6 +55,14 @@ export class OrderRepository extends BaseRepositoty<
     }
   }
 
+  async deleteOrder(id: string): Promise<void> {
+    try {
+      const deleteResult = await this.delete(id);
+    } catch (error) {
+      throw this.handleDatabaseError(error);
+    }
+  }
+
   protected translateDatabaseError(
     error: any,
     entity?: CreateOrderDto | UpdateOrderDto | Partial<Order>,
@@ -67,6 +75,10 @@ export class OrderRepository extends BaseRepositoty<
       case 'FK_CUSTOMER':
         throw new CustomerNotFound({
           id: entity!.customer_id,
+        });
+      case 'FK_ORDER':
+        throw new OrderInUse({
+          resourceName: 'order_item',
         });
       default:
         console.error(error);
