@@ -55,7 +55,7 @@ export async function cleanupTestEnvironment(
     }
     if (module) await module.close();
   } catch (error) {
-    console.error('Failed to cleanup testi enviroment:', error);
+    console.error('Failed to cleanup test enviroment:', error);
     process.exit(1);
   }
 }
