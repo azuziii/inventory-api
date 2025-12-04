@@ -23,7 +23,7 @@ export const createE2ETestingModule = async () => {
         username: configService.getOrThrow('DB_USERNAME_TEST'),
         password: configService.getOrThrow('DB_PASSWORD_TEST'),
         database: configService.getOrThrow('DB_NAME_TEST'),
-        entities: [join(__dirname, '../**/*.entity.js')],
+        entities: [join(__dirname, '../**/*.entity{.ts,.js}')],
         synchronize: false,
         migrationsRun: false,
       }),
