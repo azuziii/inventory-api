@@ -1,8 +1,7 @@
-import { ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { join } from 'path';
 import { AppModule } from 'src/app.module';
+import { TypeormConfig } from 'src/config/typeorm-config.service';
+import { E2ETestConfig } from './config/e2e-typeorm-config.service';
 
 export const createE2ETestingModule = async () => {
   const moduleBuilder = Test.createTestingModule(
@@ -13,22 +12,7 @@ export const createE2ETestingModule = async () => {
       moduleIdGeneratorAlgorithm: 'deep-hash',
     },
   );
-  moduleBuilder.overrideModule(TypeOrmModule).useModule(
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.getOrThrow('DB_HOST_TEST'),
-        port: +configService.getOrThrow('DB_PORT_TEST'),
-        username: configService.getOrThrow('DB_USERNAME_TEST'),
-        password: configService.getOrThrow('DB_PASSWORD_TEST'),
-        database: configService.getOrThrow('DB_NAME_TEST'),
-        entities: [join(__dirname, '../**/*.entity.js')],
-        synchronize: false,
-        migrationsRun: false,
-      }),
-    }),
-  );
+  moduleBuilder.overrideProvider(TypeormConfig).useClass(E2ETestConfig);
 
   return moduleBuilder.compile();
 };
