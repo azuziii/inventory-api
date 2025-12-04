@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { HeaderResolver, I18nModule } from 'nestjs-i18n';
 import { join } from 'path';
 import { cwd } from 'process';
+import { ShipmentModule } from 'src/modules/shipment/shipment.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AutoMapInterceptor } from './interceptors/auto-map/auto-map.interceptor';
@@ -37,7 +38,7 @@ import { ProductModule } from './modules/product/product.module';
         username: configService.getOrThrow('DB_USERNAME'),
         password: configService.getOrThrow('DB_PASSWORD'),
         database: configService.getOrThrow('DB_NAME'),
-        entities: [__dirname + '/**/*.entity.ts'],
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: false,
         migrationsRun: false,
         logging: 'all',
@@ -60,6 +61,7 @@ import { ProductModule } from './modules/product/product.module';
     ProductModule,
     OrderModule,
     OrderItemModule,
+    ShipmentModule,
   ],
   controllers: [AppController],
   providers: [
