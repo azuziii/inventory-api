@@ -11,9 +11,10 @@ export async function clearDB(app: INestApplication) {
       'Failed to retrieve TypeORM DataSource from NestJS application.',
     );
   }
-  const entities = app.get(DataSource).entityMetadatas;
+
+  const entities = dataSource.entityMetadatas;
   for (const entity of entities) {
-    const repository = app.get(DataSource).getRepository(entity.name);
+    const repository = dataSource.getRepository(entity.name);
     await repository.query(
       `TRUNCATE "${entity.tableName}" RESTART IDENTITY CASCADE;`,
     );
