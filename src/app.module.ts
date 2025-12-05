@@ -11,6 +11,7 @@ import { cwd } from 'process';
 import { ShipmentModule } from 'src/modules/shipment/shipment.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { TypeormConfig } from './config/typeorm-config.service';
 import { AutoMapInterceptor } from './interceptors/auto-map/auto-map.interceptor';
 import { GqlResponseWrapperInterceptor } from './interceptors/gql-exception-to-data/gql-response-wrapper.interceptor';
 import { I18nInterceptor } from './interceptors/i18n/i18n.interceptor';
@@ -31,19 +32,7 @@ import { ProductModule } from './modules/product/product.module';
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.getOrThrow('DB_HOST'),
-        port: +configService.getOrThrow('DB_PORT'),
-        username: configService.getOrThrow('DB_USERNAME'),
-        password: configService.getOrThrow('DB_PASSWORD'),
-        database: configService.getOrThrow('DB_NAME'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: false,
-        migrationsRun: false,
-        logging: 'all',
-        logger: 'advanced-console',
-      }),
+      useClass: TypeormConfig,
     }),
     I18nModule.forRoot({
       fallbackLanguage: 'en',
