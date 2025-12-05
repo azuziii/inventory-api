@@ -108,4 +108,24 @@ describe('Customer E2E', () => {
       /"test".+"ShipmentType"\s+enum/,
     );
   });
+
+  it('UPDATE:SHIPMENT should update shipment_number', async () => {
+    const randomShipment = createRandomShipmentInput();
+
+    randomShipment.delivery_date = 'test' as unknown as Date;
+
+    const response = await createShipment(app, randomShipment).expect(200);
+
+    expect(response.body.data.createShipment).toBeDefined();
+
+    const { result } = response.body.data
+      .createShipment as InstanceOfBaseResponse<ShipmentOutput>;
+
+    expect(result).toBeDefined();
+    expect(result.__typename).toBe('InvalidData');
+  });
+
+  it('UPDATE:SHIPMENT should update delivery_date', async () => {});
+
+  it('UPDATE:SHIPMENT should fail to update if shipment_number is invalid', async () => {});
 });
