@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { ShipmentType } from 'src/modules/shipment/enums/shipment-type.enum';
 import { CreateShipmentInput } from 'src/modules/shipment/inputs/create-shipment.input';
+import { UpdateShipmentInput } from 'src/modules/shipment/inputs/update-shipment.input';
 
 export function createRandomShipmentInput(): CreateShipmentInput {
   return {
@@ -13,5 +14,12 @@ export function createRandomShipmentInput(): CreateShipmentInput {
         max: 100000000,
       })
       .toString(),
+  };
+}
+
+export function updateRandomShipmentInput(): UpdateShipmentInput {
+  return {
+    id: faker.string.uuid(),
+    ...createRandomShipmentInput(),
   };
 }
