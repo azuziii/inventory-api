@@ -4,6 +4,7 @@ import { CustomerNotFound } from 'src/shared/domain-errors';
 import { EntityManager } from 'typeorm';
 import { CreateShipmentDto } from './dto/create-shipment.dto';
 import { Shipment } from './entities/shipment.entity';
+import { ShipmentAlreadyExist } from './errors/shipment.error';
 
 @Injectable()
 export class ShipmentRepository extends BaseRepositoty<
@@ -42,6 +43,10 @@ export class ShipmentRepository extends BaseRepositoty<
     entity?: CreateShipmentDto | Partial<Shipment> | undefined,
   ): void {
     switch (error.driverError.constraint) {
+      case 'UQ_SHIPMENT_NUMBER_YEAR':
+        throw new ShipmentAlreadyExist({
+          field: 'order_number',
+        });
       case 'FK_SHIPMENT_CUSTOMER':
         throw new CustomerNotFound({
           id: entity!.customer_id,
