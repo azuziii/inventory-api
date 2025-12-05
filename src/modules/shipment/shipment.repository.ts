@@ -3,6 +3,7 @@ import { BaseRepositoty } from 'src/shared/base/repository';
 import { CustomerNotFound } from 'src/shared/domain-errors';
 import { EntityManager } from 'typeorm';
 import { CreateShipmentDto } from './dto/create-shipment.dto';
+import { UpdateShipmentDto } from './dto/update-shipment.dto';
 import { Shipment } from './entities/shipment.entity';
 import { ShipmentAlreadyExist } from './errors/shipment.error';
 
@@ -38,6 +39,25 @@ export class ShipmentRepository extends BaseRepositoty<
     }
   }
 
+  async updateShipment(
+    { id, ...updateShipmentDto }: UpdateShipmentDto,
+    shipment: Shipment,
+    entityManager?: EntityManager,
+  ): Promise<Shipment> {
+    try {
+      const manager = this.getManager(entityManager);
+
+      Object.assign(shipment, updateShipmentDto);
+
+      await manager.update(Shipment, id, shipment);
+      return manager.findOne(Shipment, {
+        where: { id },
+      }) as Promise<Shipment>;
+    } catch (error) {
+      throw this.handleDatabaseError(error);
+    }
+  }
+
   protected translateDatabaseError(
     error: any,
     entity?: CreateShipmentDto | Partial<Shipment> | undefined,
@@ -45,7 +65,7 @@ export class ShipmentRepository extends BaseRepositoty<
     switch (error.driverError.constraint) {
       case 'UQ_SHIPMENT_NUMBER_YEAR':
         throw new ShipmentAlreadyExist({
-          field: 'order_number',
+          field: 'shipment_number',
         });
       case 'FK_SHIPMENT_CUSTOMER':
         throw new CustomerNotFound({
