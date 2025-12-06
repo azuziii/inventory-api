@@ -5,13 +5,14 @@ import { ShipmentType } from 'src/modules/shipment/enums/shipment-type.enum';
 import { ShipmentOutput } from 'src/modules/shipment/outputs/shipment.output';
 import { InvalidDataException } from 'src/shared/errors/invalid-data.error';
 import { InstanceOfBaseResponse } from 'src/shared/responses/base.response';
+import { DeleteResponse } from 'src/shared/responses/delete.response';
 import {
   cleanupTestEnvironment,
   initializeTestEnvironment,
 } from 'test/e2e.helper';
 import { createRandomShipmentInput } from 'test/fake/shipment/shipment.fake';
 import { createCustomer } from '../customer/customer.helper';
-import { createShipment } from './shipment.helper';
+import { createShipment, deleteShipment } from './shipment.helper';
 
 describe('Customer E2E', () => {
   let app: INestApplication;
@@ -128,4 +129,19 @@ describe('Customer E2E', () => {
   it('UPDATE:SHIPMENT should update delivery_date', async () => {});
 
   it('UPDATE:SHIPMENT should fail to update if shipment_number is invalid', async () => {});
+
+  it('DELETE:SHIPMENT should delete shipment', async () => {
+    const response = await deleteShipment(app, shipment.id).expect(200);
+
+    expect(response.body.data.deleteShipment).toBeDefined();
+
+    const { result } = response.body.data
+      .deleteShipment as InstanceOfBaseResponse<
+      InstanceType<typeof DeleteResponse>
+    >;
+
+    expect(result).toBeDefined();
+    expect(result.__typename).toBe('DeleteResponse');
+    expect(result.id).toBe(shipment.id);
+  });
 });
