@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { DeleteResponse } from 'src/shared/responses/delete.response';
 import { DataSource } from 'typeorm';
 import { CreateShipmentDto } from './dto/create-shipment.dto';
 import { UpdateShipmentDto } from './dto/update-shipment.dto';
@@ -38,5 +39,10 @@ export class ShipmentService {
 
       return this.repo.updateShipment(shipmentDto, shipment, entityManager);
     });
+  }
+
+  async deleteShipment(id: string): Promise<DeleteResponse> {
+    await this.repo.deleteShipment(id);
+    return new DeleteResponse(id);
   }
 }
