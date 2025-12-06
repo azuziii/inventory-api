@@ -66,3 +66,23 @@ export function updateShipment(
     variables: { updateShipmentInput },
   });
 }
+
+export function deleteShipment(app: INestApplication, id: string) {
+  const query = `
+    mutation DeleteShipment($id: ID!) {
+      deleteShipment(id: $id) {
+        result {
+          __typename
+          ... on DeleteResponse {
+            id
+          }
+        }
+      }
+    }
+  `;
+
+  return request(app.getHttpServer()).post('/graphql').send({
+    query,
+    variables: { id },
+  });
+}
