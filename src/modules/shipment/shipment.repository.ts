@@ -57,6 +57,13 @@ export class ShipmentRepository extends BaseRepositoty<
       throw this.handleDatabaseError(error);
     }
   }
+  async deleteShipment(id: string): Promise<void> {
+    try {
+      const deleteResult = await this.delete(id);
+    } catch (error) {
+      throw this.handleDatabaseError(error);
+    }
+  }
 
   protected translateDatabaseError(
     error: any,
