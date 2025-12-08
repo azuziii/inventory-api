@@ -9,56 +9,29 @@ import { ProductAlreadyExist, ProductInUse } from './errors/product.error';
 @Injectable()
 export class ProductRepository extends BaseRepositoty<
   Product,
-  CreateProductDto | UpdateProductDto
+  CreateProductDto,
+  UpdateProductDto
 > {
   constructor(protected readonly entityManager: EntityManager) {
     super(Product, entityManager);
   }
 
-  async insertProduct(
+  insertProduct(
     product: CreateProductDto,
     entityManager?: EntityManager,
   ): Promise<Product> {
-    const manager = this.getManager(entityManager);
-
-    const newProduct = manager.create(Product, product);
-
-    try {
-      const insertResult = await manager.insert(Product, product);
-      return manager.findOne(Product, {
-        where: {
-          id: insertResult.identifiers[0].id,
-        },
-      }) as Promise<Product>;
-    } catch (error) {
-      throw this.handleDatabaseError(error, product);
-    }
+    return this.insertOne(product, entityManager);
   }
 
-  async updateProduct(
-    { id, ...product }: UpdateProductDto,
+  updateProduct(
+    product: UpdateProductDto,
     entityManager?: EntityManager,
   ): Promise<Product> {
-    try {
-      const manager = this.getManager(entityManager);
-
-      const productPayload: Partial<Product> = product;
-
-      await manager.update(Product, id, productPayload);
-      return manager.findOne(Product, {
-        where: { id },
-      }) as Promise<Product>;
-    } catch (error) {
-      throw this.handleDatabaseError(error);
-    }
+    return this.updateOne(product, entityManager);
   }
 
-  async deleteProduct(id: string): Promise<void> {
-    try {
-      const deleteResult = await this.delete(id);
-    } catch (error) {
-      throw this.handleDatabaseError(error);
-    }
+  deleteProduct(id: string): Promise<void> {
+    return this.deleteOne(id);
   }
 
   protected translateDatabaseError(
