@@ -12,7 +12,11 @@ import {
 } from 'test/e2e.helper';
 import { createRandomShipmentInput } from 'test/fake/shipment/shipment.fake';
 import { createCustomer } from '../customer/customer.helper';
-import { createShipment, deleteShipment } from './shipment.helper';
+import {
+  createShipment,
+  deleteShipment,
+  updateShipment,
+} from './shipment.helper';
 
 describe('Customer E2E', () => {
   let app: INestApplication;
@@ -126,7 +130,25 @@ describe('Customer E2E', () => {
     expect(result.__typename).toBe('InvalidData');
   });
 
-  it('UPDATE:SHIPMENT should update delivery_date', async () => {});
+  it('UPDATE:SHIPMENT should update delivery_date', async () => {
+    const randomShipment = createRandomShipmentInput();
+
+    const response = await updateShipment(app, {
+      id: shipment.id,
+      delivery_date: randomShipment.delivery_date,
+    }).expect(200);
+
+    expect(response.body.data.updateShipment).toBeDefined();
+
+    const { result } = response.body.data
+      .updateShipment as InstanceOfBaseResponse<ShipmentOutput>;
+
+    expect(result).toBeDefined();
+    expect(result.__typename).toBe('Shipment');
+    expect(result.delivery_date).toBe(
+      randomShipment.delivery_date.toISOString(),
+    );
+  });
 
   it('UPDATE:SHIPMENT should fail to update if shipment_number is invalid', async () => {});
 
