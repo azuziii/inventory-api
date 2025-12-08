@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Args, Mutation } from '@nestjs/graphql';
+import { Args, Mutation, Query } from '@nestjs/graphql';
 import { GetByIdArgs } from 'src/shared/args/get-by-id/get-by-id.args';
 import { AutoMap } from 'src/shared/decorators/meta/auto-map.decorator';
 import { ResponseType } from 'src/shared/decorators/meta/error-response-type.decorator';
@@ -10,12 +10,20 @@ import { UpdateShipmentInput } from './inputs/update-shipment.input';
 import { ShipmentOutput } from './outputs/shipment.output';
 import { CreateShipmentResponse } from './responses/create-shipment.response';
 import { DeleteShipmentResponse } from './responses/delete-shipment.response';
+import { ShipmentQueryResponse } from './responses/query-shipment.response';
 import { UpdateShipmentResponse } from './responses/update-shipment.response';
 import { ShipmentService } from './shipment.service';
 
 @Injectable()
 export class ShipmentResolver {
   constructor(private readonly shipmentService: ShipmentService) {}
+
+  @ResponseType(ShipmentQueryResponse)
+  @AutoMap(ShipmentOutput)
+  @Query(() => ShipmentQueryResponse, { name: 'shipment' })
+  async getShipment(@Args() { id }: GetByIdArgs): Promise<Shipment> {
+    return this.shipmentService.getShipmentOrFail(id);
+  }
 
   @ResponseType(CreateShipmentResponse)
   @AutoMap(ShipmentOutput)
