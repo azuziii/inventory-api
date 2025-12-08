@@ -10,59 +10,31 @@ import { ShipmentAlreadyExist } from './errors/shipment.error';
 @Injectable()
 export class ShipmentRepository extends BaseRepositoty<
   Shipment,
-  CreateShipmentDto
+  CreateShipmentDto,
+  UpdateShipmentDto
 > {
   constructor(protected readonly entityManager: EntityManager) {
     super(Shipment, entityManager);
   }
 
-  async insertShipment(
+  insertShipment(
     shipmentDto: CreateShipmentDto,
     entityManager?: EntityManager,
   ): Promise<Shipment> {
-    const manager = this.getManager(entityManager);
-    const newShipment = this.create(shipmentDto);
-
-    try {
-      const {
-        identifiers: [{ id }],
-        raw,
-      } = await manager.insert(Shipment, newShipment);
-
-      return manager.findOne(Shipment, {
-        where: {
-          id,
-        },
-      }) as Promise<Shipment>;
-    } catch (error) {
-      throw this.handleDatabaseError(error, shipmentDto);
-    }
+    return this.insertOne(shipmentDto, entityManager);
   }
 
-  async updateShipment(
-    { id, ...updateShipmentDto }: UpdateShipmentDto,
+  updateShipment(
+    updateShipmentDto: UpdateShipmentDto,
     shipment: Shipment,
     entityManager?: EntityManager,
   ): Promise<Shipment> {
-    try {
-      const manager = this.getManager(entityManager);
-
-      Object.assign(shipment, updateShipmentDto);
-
-      await manager.update(Shipment, id, shipment);
-      return manager.findOne(Shipment, {
-        where: { id },
-      }) as Promise<Shipment>;
-    } catch (error) {
-      throw this.handleDatabaseError(error);
-    }
+    Object.assign(shipment, updateShipmentDto);
+    return this.updateOne(shipment, entityManager);
   }
-  async deleteShipment(id: string): Promise<void> {
-    try {
-      const deleteResult = await this.delete(id);
-    } catch (error) {
-      throw this.handleDatabaseError(error);
-    }
+
+  deleteShipment(id: string): Promise<void> {
+    return this.deleteOne(id);
   }
 
   protected translateDatabaseError(
