@@ -151,7 +151,21 @@ describe('Customer E2E', () => {
     );
   });
 
-  it('UPDATE:SHIPMENT should fail to update if shipment_number is invalid', async () => {});
+  it('UPDATE:SHIPMENT should fail to update if shipment_number is invalid', async () => {
+    const randomShipment = createRandomShipmentInput();
+    randomShipment.shipment_number = 'test';
+    randomShipment.customer_id = customer.id;
+
+    const response = await createShipment(app, randomShipment).expect(200);
+
+    expect(response.body.data.createShipment).toBeDefined();
+
+    const { result } = response.body.data
+      .createShipment as InstanceOfBaseResponse<ShipmentOutput>;
+
+    expect(result).toBeDefined();
+    expect(result.__typename).toBe('InvalidData');
+  });
 
   it('DELETE:SHIPMENT should delete shipment', async () => {
     const response = await deleteShipment(app, shipment.id).expect(200);
