@@ -9,58 +9,31 @@ import { OrderAlreadyExist, OrderInUse } from './errors/order.error';
 @Injectable()
 export class OrderRepository extends BaseRepositoty<
   Order,
-  CreateOrderDto | UpdateOrderDto
+  Omit<CreateOrderDto, 'items'>,
+  UpdateOrderDto
 > {
   constructor(protected readonly entityManager: EntityManager) {
     super(Order, entityManager);
   }
 
-  async insertOrder(
+  insertOrder(
     { items, ...order }: CreateOrderDto,
     entityManager?: EntityManager,
   ): Promise<Order> {
-    const manager = this.getManager(entityManager);
-    const newOrder = this.create(order);
-
-    try {
-      const {
-        identifiers: [{ id }],
-      } = await manager.insert(Order, newOrder);
-      return manager.findOne(Order, {
-        where: {
-          id,
-        },
-      }) as Promise<Order>;
-    } catch (error) {
-      throw this.handleDatabaseError(error, order);
-    }
+    return this.insertOne(order, entityManager);
   }
 
-  async updateOrder(
+  updateOrder(
     { id, ...updateOrderDto }: UpdateOrderDto,
     order: Order,
     entityManager?: EntityManager,
   ): Promise<Order> {
-    try {
-      const manager = this.getManager(entityManager);
-
-      Object.assign(order, updateOrderDto);
-
-      await manager.update(Order, id, order);
-      return manager.findOne(Order, {
-        where: { id },
-      }) as Promise<Order>;
-    } catch (error) {
-      throw this.handleDatabaseError(error);
-    }
+    Object.assign(order, updateOrderDto);
+    return this.updateOne(order, entityManager);
   }
 
-  async deleteOrder(id: string): Promise<void> {
-    try {
-      const deleteResult = await this.delete(id);
-    } catch (error) {
-      throw this.handleDatabaseError(error);
-    }
+  deleteOrder(id: string): Promise<void> {
+    return this.deleteOne(id);
   }
 
   protected translateDatabaseError(

@@ -8,53 +8,29 @@ import { CustomerAlreadyExist, CustomerInUse } from './errors/customer.error';
 @Injectable()
 export class CustomerRepository extends BaseRepositoty<
   Customer,
-  CreateCustomerDto | UpdateCustomerDto
+  CreateCustomerDto,
+  UpdateCustomerDto
 > {
   constructor(protected readonly entityManager: EntityManager) {
     super(Customer, entityManager);
   }
 
-  async insertCustomer(
+  insertCustomer(
     customer: CreateCustomerDto,
     entityManager?: EntityManager,
   ): Promise<Customer> {
-    const manager = this.getManager(entityManager);
-
-    const newCustomer = manager.create(Customer, customer);
-
-    try {
-      const insertResult = await manager.insert(Customer, newCustomer);
-      return manager.findOne(Customer, {
-        where: {
-          id: insertResult.identifiers[0].id,
-        },
-      }) as Promise<Customer>;
-    } catch (error) {
-      throw this.handleDatabaseError(error, customer);
-    }
+    return this.insertOne(customer, entityManager);
   }
 
-  async updateCustomer(
+  updateCustomer(
     customer: UpdateCustomerDto,
     entityManager?: EntityManager,
   ): Promise<Customer> {
-    try {
-      const manager = this.getManager(entityManager);
-      await manager.update(Customer, customer.id, customer);
-      return manager.findOne(Customer, {
-        where: { id: customer.id },
-      }) as Promise<Customer>;
-    } catch (error) {
-      throw this.handleDatabaseError(error, customer);
-    }
+    return this.updateOne(customer, entityManager);
   }
 
-  async deleteCustomer(id: string): Promise<void> {
-    try {
-      const deleteResult = await this.delete(id);
-    } catch (error) {
-      throw this.handleDatabaseError(error);
-    }
+  deleteCustomer(id: string): Promise<void> {
+    return this.deleteOne(id);
   }
 
   protected translateDatabaseError(

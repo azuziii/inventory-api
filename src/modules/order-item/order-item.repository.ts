@@ -8,7 +8,8 @@ import { OrderItem } from './entities/order-item.entity';
 @Injectable()
 export class OrderItemRepository extends BaseRepositoty<
   OrderItem,
-  CreateOrderItemDto | UpdateOrderItemDto
+  CreateOrderItemDto,
+  UpdateOrderItemDto
 > {
   constructor(protected readonly entityManager: EntityManager) {
     super(OrderItem, entityManager);
@@ -18,45 +19,20 @@ export class OrderItemRepository extends BaseRepositoty<
     orderItemDto: CreateOrderItemDto,
     entityManager?: EntityManager,
   ): Promise<OrderItem> {
-    const manager = this.getManager(entityManager);
-    const orderItem = this.create(orderItemDto);
-    try {
-      const {
-        identifiers: [{ id }],
-      } = await manager.insert(OrderItem, orderItem);
-      return manager.findOne(OrderItem, {
-        where: {
-          id,
-        },
-      }) as Promise<OrderItem>;
-    } catch (error) {
-      throw this.handleDatabaseError(error, orderItemDto);
-    }
+    return this.insertOne(orderItemDto, entityManager);
   }
 
-  async updateOrderItem(
-    { id, ...updateOrderItemDto }: UpdateOrderItemDto,
+  updateOrderItem(
+    updateOrderItemDto: UpdateOrderItemDto,
     orderItem: OrderItem,
     entityManager?: EntityManager,
   ): Promise<OrderItem> {
-    try {
-      const manager = this.getManager(entityManager);
-      Object.assign(orderItem, updateOrderItemDto);
-
-      await manager.update(OrderItem, id, orderItem);
-      return manager.findOne(OrderItem, {
-        where: { id },
-      }) as Promise<OrderItem>;
-    } catch (error) {
-      throw this.handleDatabaseError(error, orderItem);
-    }
+    Object.assign(orderItem, updateOrderItemDto);
+    return this.updateOne(orderItem, entityManager);
   }
-  async deleteOrderItem(id: string): Promise<void> {
-    try {
-      const deleteResult = await this.delete(id);
-    } catch (error) {
-      throw this.handleDatabaseError(error);
-    }
+
+  deleteOrderItem(id: string): Promise<void> {
+    return this.deleteOne(id);
   }
 
   protected translateDatabaseError(
