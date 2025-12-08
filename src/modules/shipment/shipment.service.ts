@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DeleteResponse } from 'src/shared/responses/delete.response';
-import { DataSource } from 'typeorm';
+import { DataSource, FindManyOptions } from 'typeorm';
 import { CreateShipmentDto } from './dto/create-shipment.dto';
 import { UpdateShipmentDto } from './dto/update-shipment.dto';
 import { Shipment } from './entities/shipment.entity';
@@ -39,6 +39,28 @@ export class ShipmentService {
 
       return this.repo.updateShipment(shipmentDto, shipment, entityManager);
     });
+  }
+
+  async getShipmentOrFail(id: string): Promise<Shipment> {
+    const shipment = await this.repo.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (!shipment) {
+      throw new ShipmentNotFound({
+        id,
+      });
+    }
+
+    return shipment;
+  }
+
+  listShipments(
+    options: FindManyOptions<Shipment>,
+  ): Promise<[Shipment[], number]> {
+    return this.repo.findAndCount(options);
   }
 
   async deleteShipment(id: string): Promise<DeleteResponse> {
