@@ -117,7 +117,7 @@ describe('Customer E2E', () => {
   it('UPDATE:SHIPMENT should update shipment_number', async () => {
     const randomShipment = createRandomShipmentInput();
 
-    randomShipment.delivery_date = 'test' as unknown as Date;
+    randomShipment.customer_id = customer.id;
 
     const response = await createShipment(app, randomShipment).expect(200);
 
@@ -127,7 +127,8 @@ describe('Customer E2E', () => {
       .createShipment as InstanceOfBaseResponse<ShipmentOutput>;
 
     expect(result).toBeDefined();
-    expect(result.__typename).toBe('InvalidData');
+    expect(result.__typename).toBe('Shipment');
+    expect(result.shipment_number).toBe(randomShipment.shipment_number);
   });
 
   it('UPDATE:SHIPMENT should update delivery_date', async () => {
