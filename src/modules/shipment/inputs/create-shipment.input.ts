@@ -1,5 +1,11 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsDate, IsEnum, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import {
+  IsDate,
+  IsEnum,
+  IsNotEmpty,
+  IsNumberString,
+  IsUUID,
+} from 'class-validator';
 import { i18nValidationMessage } from 'nestjs-i18n';
 import { CreateShipmentDto } from '../dto/create-shipment.dto';
 import { ShipmentType } from '../enums/shipment-type.enum';
@@ -20,7 +26,7 @@ export class CreateShipmentInput implements CreateShipmentDto {
 
   @Field()
   @IsNotEmpty()
-  @IsString()
+  @IsNumberString()
   shipment_number!: string;
 
   @Field(() => ShipmentType, { defaultValue: ShipmentType.Outbound })
