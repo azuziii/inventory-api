@@ -17,6 +17,26 @@ const Shipment_FIELDS = `
   }
 `;
 
+export function getShipment(app: INestApplication, id: string) {
+  const query = `
+    query GetShipment($id: ID!) {
+      shipment(id: $id) {
+        result {
+          __typename
+          ... on Shipment {
+            ${Shipment_FIELDS}
+          }
+        }
+      }
+    }
+  `;
+
+  return request(app.getHttpServer()).post('/graphql').send({
+    query,
+    variables: { id },
+  });
+}
+
 export function createShipment(
   app: INestApplication,
   createShipmentInput:
