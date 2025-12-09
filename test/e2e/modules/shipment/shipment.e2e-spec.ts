@@ -15,6 +15,7 @@ import { createCustomer } from '../customer/customer.helper';
 import {
   createShipment,
   deleteShipment,
+  getShipment,
   updateShipment,
 } from './shipment.helper';
 
@@ -167,6 +168,18 @@ describe('Customer E2E', () => {
     expect(result.__typename).toBe('InvalidData');
   });
 
+  it('GET:SHIPMENT should get shipment', async () => {
+    const response = await getShipment(app, shipment.id).expect(200);
+
+    expect(response.body.data.shipment).toBeDefined();
+
+    const { result } = response.body.data
+      .shipment as InstanceOfBaseResponse<ShipmentOutput>;
+
+    expect(result).toBeDefined();
+    expect(result.__typename).toBe('Shipment');
+  });
+
   it('DELETE:SHIPMENT should delete shipment', async () => {
     const response = await deleteShipment(app, shipment.id).expect(200);
 
@@ -180,5 +193,17 @@ describe('Customer E2E', () => {
     expect(result).toBeDefined();
     expect(result.__typename).toBe('DeleteResponse');
     expect(result.id).toBe(shipment.id);
+  });
+
+  it('GET:SHIPMENT should fail to get shipment that was deleted', async () => {
+    const response = await getShipment(app, shipment.id).expect(200);
+
+    expect(response.body.data.shipment).toBeDefined();
+
+    const { result } = response.body.data
+      .shipment as InstanceOfBaseResponse<ShipmentOutput>;
+
+    expect(result).toBeDefined();
+    expect(result.__typename).toBe('ShipmentNotFound');
   });
 });
